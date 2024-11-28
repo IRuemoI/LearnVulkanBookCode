@@ -62,7 +62,7 @@ void setImageLayoutCube(VkCommandBuffer cmd, VkImage image, VkImageAspectFlags a
 
     vkCmdPipelineBarrier(cmd, src_stages, dest_stages, 0, 0, nullptr, 0, nullptr, 1, &image_memory_barrier);
 }
-void setImageLayout(VkCommandBuffer cmd, VkImage image, VkImageAspectFlags aspectMask, VkImageLayout old_image_layout, VkImageLayout new_image_layout) {
+void convertImageLayout(VkCommandBuffer cmd, VkImage image, VkImageAspectFlags aspectMask, VkImageLayout old_image_layout, VkImageLayout new_image_layout) {
     VkImageMemoryBarrier image_memory_barrier = {};
     image_memory_barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
     image_memory_barrier.pNext = nullptr;
@@ -277,12 +277,12 @@ void TextureManager::init_SPEC_2D_Textures(std::string texName, VkDevice &device
         vkCreateFence(device, &fenceInfo, nullptr, &copyFence);
         vkResetCommandBuffer(cmdBuffer, 0);
         result = vkBeginCommandBuffer(cmdBuffer, &cmd_buf_info);
-        setImageLayout(cmdBuffer, textureImage, VK_IMAGE_ASPECT_COLOR_BIT,
+        convertImageLayout(cmdBuffer, textureImage, VK_IMAGE_ASPECT_COLOR_BIT,
                        VK_IMAGE_LAYOUT_UNDEFINED,
                        VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL);
         vkCmdCopyBufferToImage(cmdBuffer, tempBuf,
                                textureImage, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, &bufferCopyRegion);
-        setImageLayout(cmdBuffer, textureImage,
+        convertImageLayout(cmdBuffer, textureImage,
                        VK_IMAGE_ASPECT_COLOR_BIT, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
                        VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
         result = vkEndCommandBuffer(cmdBuffer);
@@ -527,8 +527,8 @@ void TextureManager::initTextures(VkDevice &device,
         if (sa[1].compare("bntex") == 0) {//若为非压缩RGBA8纹理格式
             TexDataObject *ctdo = FileUtil::loadCommonTexData(texName);
             init_SPEC_2D_Textures(texName, device, gpu, memoryProperties, cmdBuffer, queueGraphics, VK_FORMAT_R8G8B8A8_UNORM, ctdo);
-        } else if (sa[1].compare("bntexcube") == 0) {                                                    //若为立方图纹理
-            TexDataObject *ctdo = FileUtil::loadCubemapTexData(texName);                                 //加载纹理数据
+        } else if (sa[1].compare("bntexcube") == 0) {//若为立方图纹理
+            TexDataObject *ctdo = FileUtil::loadCubemapTexData(texName);//加载纹理数据
             printf("%s w %d h %d c %d", texName.c_str(), ctdo->width, ctdo->height, ctdo->dataByteCount);//初始化立方图纹理
             initCubemapTextures(texName, device, gpu, memoryProperties, cmdBuffer, queueGraphics, VK_FORMAT_R8G8B8A8_UNORM, ctdo);
         }

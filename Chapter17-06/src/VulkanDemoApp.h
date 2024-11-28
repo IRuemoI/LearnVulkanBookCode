@@ -4,10 +4,10 @@
 #include "ShaderQueueSuit_SingleTexLight.h"
 #include "TexLightObject.h"
 #include <GLFW/glfw3.h>
-#include <cstdlib>        //标准库标准通用工具函数
-#include <functional>     //标准库与函数对象相关的模板类和函数
-#include <iostream>       //标准库输入输出头文件
-#include <stdexcept>      //标准库异常处理文件
+#include <cstdlib>//标准库标准通用工具函数
+#include <functional>//标准库与函数对象相关的模板类和函数
+#include <iostream>//标准库输入输出头文件
+#include <stdexcept>//标准库异常处理文件
 #include <vulkan/vulkan.h>//引用Vulkan的头文件
 
 class VulkanDemoApp {
@@ -15,7 +15,7 @@ public:
     static constexpr int WIDTH = 800;
     static constexpr int HEIGHT = 600;
 
-    static uint32_t screenWidth; // 屏幕宽度
+    static uint32_t screenWidth;// 屏幕宽度
     static uint32_t screenHeight;// 屏幕高度
     // 窗口辅助结构体
     GLFWwindow *window;
@@ -108,7 +108,6 @@ public:
     // 三角形应用运行函数
     void run();
 
-    // TODO:在该需要重建交换链的地方修改他的值并重建交换链
     bool frameBufferResized = false;
 
 private:

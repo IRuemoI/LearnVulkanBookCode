@@ -2,7 +2,7 @@
 #include "FileUtil.h"
 #include "HelpFunction.h"
 #include <cassert>
-void setImageLayout(VkCommandBuffer cmd, VkImage image, VkImageAspectFlags aspectMask, VkImageLayout old_image_layout, VkImageLayout new_image_layout) {
+void convertImageLayout(VkCommandBuffer cmd, VkImage image, VkImageAspectFlags aspectMask, VkImageLayout old_image_layout, VkImageLayout new_image_layout) {
     VkImageMemoryBarrier image_memory_barrier = {};
     image_memory_barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
     image_memory_barrier.pNext = nullptr;
@@ -190,9 +190,9 @@ void TextureManager::init_SPEC_2D_Textures(std::string texName, VkDevice &device
         vkCreateFence(device, &fenceInfo, nullptr, &copyFence);
         vkResetCommandBuffer(cmdBuffer, 0);
         result = vkBeginCommandBuffer(cmdBuffer, &cmd_buf_info);
-        setImageLayout(cmdBuffer, textureImage, VK_IMAGE_ASPECT_COLOR_BIT, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL);
+        convertImageLayout(cmdBuffer, textureImage, VK_IMAGE_ASPECT_COLOR_BIT, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL);
         vkCmdCopyBufferToImage(cmdBuffer, tempBuf, textureImage, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, &bufferCopyRegion);
-        setImageLayout(cmdBuffer, textureImage, VK_IMAGE_ASPECT_COLOR_BIT, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
+        convertImageLayout(cmdBuffer, textureImage, VK_IMAGE_ASPECT_COLOR_BIT, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
         result = vkEndCommandBuffer(cmdBuffer);
         result = vkQueueSubmit(queueGraphics, 1, submit_info, copyFence);
         do {
@@ -269,11 +269,11 @@ void TextureManager::init_SPEC_2D_Textures(std::string texName, VkDevice &device
 }
 void TextureManager::initTextures(VkDevice &device, VkPhysicalDevice &gpu, VkPhysicalDeviceMemoryProperties &memoryProperties, VkCommandBuffer &cmdBuffer, VkQueue &queueGraphics)//加载所有纹理的方法
 {
-    initSampler(device, gpu);                //初始化采样器
+    initSampler(device, gpu);//初始化采样器
     for (int i = 0; i < texNames.size(); i++)//遍历纹理文件名称列表
     {
-        TexDataObject *ctdo = FileUtil::load_DXT5_BC3_TexData(texNames[i]);                                                          //加载纹理文件数据
-        printf("\n%s w %d h %d", texNames[i].c_str(), ctdo->width, ctdo->height);                                                    //打印纹理数据信息
+        TexDataObject *ctdo = FileUtil::load_DXT5_BC3_TexData(texNames[i]);//加载纹理文件数据
+        printf("\n%s w %d h %d", texNames[i].c_str(), ctdo->width, ctdo->height);//打印纹理数据信息
         init_SPEC_2D_Textures(texNames[i], device, gpu, memoryProperties, cmdBuffer, queueGraphics, VK_FORMAT_BC3_UNORM_BLOCK, ctdo);//加载压缩纹理
     }
 }

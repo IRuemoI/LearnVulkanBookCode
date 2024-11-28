@@ -3,7 +3,7 @@
 #include "HelpFunction.h"
 #include "TexDataObject.h"
 #include <cassert>
-void setImageLayout(VkCommandBuffer cmd, VkImage image, VkImageAspectFlags aspectMask, VkImageLayout old_image_layout, VkImageLayout new_image_layout) {
+void convertImageLayout(VkCommandBuffer cmd, VkImage image, VkImageAspectFlags aspectMask, VkImageLayout old_image_layout, VkImageLayout new_image_layout) {
     VkImageMemoryBarrier image_memory_barrier = {};
     image_memory_barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
     image_memory_barrier.pNext = nullptr;
@@ -191,9 +191,9 @@ void TextureManager::init_SPEC_2D_Textures(std::string texName, VkDevice &device
         vkCreateFence(device, &fenceInfo, nullptr, &copyFence);
         vkResetCommandBuffer(cmdBuffer, 0);
         result = vkBeginCommandBuffer(cmdBuffer, &cmd_buf_info);
-        setImageLayout(cmdBuffer, textureImage, VK_IMAGE_ASPECT_COLOR_BIT, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL);
+        convertImageLayout(cmdBuffer, textureImage, VK_IMAGE_ASPECT_COLOR_BIT, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL);
         vkCmdCopyBufferToImage(cmdBuffer, tempBuf, textureImage, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, &bufferCopyRegion);
-        setImageLayout(cmdBuffer, textureImage, VK_IMAGE_ASPECT_COLOR_BIT, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
+        convertImageLayout(cmdBuffer, textureImage, VK_IMAGE_ASPECT_COLOR_BIT, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
         result = vkEndCommandBuffer(cmdBuffer);
         result = vkQueueSubmit(queueGraphics, 1, submit_info, copyFence);
         do {
@@ -243,15 +243,15 @@ void TextureManager::init_SPEC_2D_Textures(std::string texName, VkDevice &device
         memcpy(pData, ctdo->data, mem_reqs.size);
         vkUnmapMemory(device, textureMemory);
     }
-    VkImageViewCreateInfo view_info = {};                      //构建图像视图创建信息结构体实例
+    VkImageViewCreateInfo view_info = {};//构建图像视图创建信息结构体实例
     view_info.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;//结构体的类型
-    view_info.pNext = nullptr;                                 //自定义数据的指针
-    view_info.viewType = VK_IMAGE_VIEW_TYPE_2D;                //图像视图的类型
-    view_info.format = format;                                 //图像视图的像素格式
-    view_info.components.r = VK_COMPONENT_SWIZZLE_G;           //设置 R 通道调和
-    view_info.components.g = VK_COMPONENT_SWIZZLE_G;           //设置 G 通道调和
-    view_info.components.b = VK_COMPONENT_SWIZZLE_B;           //设置 B 通道调和
-    view_info.components.a = VK_COMPONENT_SWIZZLE_A;           //设置 A 通道调和
+    view_info.pNext = nullptr;//自定义数据的指针
+    view_info.viewType = VK_IMAGE_VIEW_TYPE_2D;//图像视图的类型
+    view_info.format = format;//图像视图的像素格式
+    view_info.components.r = VK_COMPONENT_SWIZZLE_G;//设置 R 通道调和
+    view_info.components.g = VK_COMPONENT_SWIZZLE_G;//设置 G 通道调和
+    view_info.components.b = VK_COMPONENT_SWIZZLE_B;//设置 B 通道调和
+    view_info.components.a = VK_COMPONENT_SWIZZLE_A;//设置 A 通道调和
     view_info.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
     view_info.subresourceRange.baseMipLevel = 0;
     view_info.subresourceRange.levelCount = 1;

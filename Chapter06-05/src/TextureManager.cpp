@@ -3,7 +3,7 @@
 #include "HelpFunction.h"
 #include <cassert>
 #include <cmath>
-void setImageLayout(VkCommandBuffer cmd, VkImage image, VkImageAspectFlags aspectMask, VkImageLayout old_image_layout, VkImageLayout new_image_layout) {
+void convertImageLayout(VkCommandBuffer cmd, VkImage image, VkImageAspectFlags aspectMask, VkImageLayout old_image_layout, VkImageLayout new_image_layout) {
     VkImageMemoryBarrier image_memory_barrier = {};
     image_memory_barrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
     image_memory_barrier.pNext = nullptr;
@@ -197,34 +197,34 @@ void TextureManager::init_SPEC_Textures_ForMipMap(std::string texName, VkDevice 
     vkCreateFence(device, &fenceInfo, nullptr, &copyFence);
     vkResetCommandBuffer(cmdBuffer, 0);
     result = vkBeginCommandBuffer(cmdBuffer, &cmd_buf_info);
-    setImageLayout(cmdBuffer, textureImage, VK_IMAGE_ASPECT_COLOR_BIT, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL);
+    convertImageLayout(cmdBuffer, textureImage, VK_IMAGE_ASPECT_COLOR_BIT, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL);
     vkCmdCopyBufferToImage(cmdBuffer, stagingBuffer, textureImage, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, &bufferCopyRegion);
-    setImageLayout(cmdBuffer, textureImage, VK_IMAGE_ASPECT_COLOR_BIT, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
-    for (int32_t i = 1; i < levels; i++) {                              //遍历所有 mipmap 级数
-        VkImageBlit imageBlit{};                                        //创建图像 blit 实例
+    convertImageLayout(cmdBuffer, textureImage, VK_IMAGE_ASPECT_COLOR_BIT, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
+    for (int32_t i = 1; i < levels; i++) {//遍历所有 mipmap 级数
+        VkImageBlit imageBlit{};//创建图像 blit 实例
         imageBlit.srcSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;//使用方面
-        imageBlit.srcSubresource.layerCount = 1;                        //源资源的层数量
-        imageBlit.srcSubresource.mipLevel = i - 1;                      //源资源的 mipmap 级别
-        imageBlit.srcOffsets[1].x = int32_t(ctdo->width >> (i - 1));    //源资源的 x 偏移量
-        imageBlit.srcOffsets[1].y = int32_t(ctdo->height >> (i - 1));   //源资源的 y 偏移量
-        imageBlit.srcOffsets[1].z = 1;                                  //源资源的 z 偏移量
+        imageBlit.srcSubresource.layerCount = 1;//源资源的层数量
+        imageBlit.srcSubresource.mipLevel = i - 1;//源资源的 mipmap 级别
+        imageBlit.srcOffsets[1].x = int32_t(ctdo->width >> (i - 1));//源资源的 x 偏移量
+        imageBlit.srcOffsets[1].y = int32_t(ctdo->height >> (i - 1));//源资源的 y 偏移量
+        imageBlit.srcOffsets[1].z = 1;//源资源的 z 偏移量
         imageBlit.dstSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;//使用方面
-        imageBlit.dstSubresource.layerCount = 1;                        //目标资源的层数量
-        imageBlit.dstSubresource.mipLevel = i;                          //目标资源的 mipmap 级别
-        imageBlit.dstOffsets[1].x = int32_t(ctdo->width >> i);          //目标资源的 x 偏移量
-        imageBlit.dstOffsets[1].y = int32_t(ctdo->height >> i);         //目标资源的 y 偏移量
-        imageBlit.dstOffsets[1].z = 1;                                  //目标资源的 z 偏移量
-        vkCmdBlitImage(                                                 //从源资源生成目标资源（即通过上一层纹理数据生成下一层纹理数据）
-                cmdBuffer,                                              //命令缓冲
-                textureImage,                                           //源图像
-                VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,                   //源图像瓦片组织方式
-                textureImage,                                           //目标图像
-                VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,                   //目标图像瓦片组织方式
-                1,                                                      //图像 blit 实例数量
-                &imageBlit,                                             //图像 blit 实例列表
-                VK_FILTER_LINEAR);                                      //要应用的纹理采样过滤器
+        imageBlit.dstSubresource.layerCount = 1;//目标资源的层数量
+        imageBlit.dstSubresource.mipLevel = i;//目标资源的 mipmap 级别
+        imageBlit.dstOffsets[1].x = int32_t(ctdo->width >> i);//目标资源的 x 偏移量
+        imageBlit.dstOffsets[1].y = int32_t(ctdo->height >> i);//目标资源的 y 偏移量
+        imageBlit.dstOffsets[1].z = 1;//目标资源的 z 偏移量
+        vkCmdBlitImage(//从源资源生成目标资源（即通过上一层纹理数据生成下一层纹理数据）
+                cmdBuffer,//命令缓冲
+                textureImage,//源图像
+                VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,//源图像瓦片组织方式
+                textureImage,//目标图像
+                VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,//目标图像瓦片组织方式
+                1,//图像 blit 实例数量
+                &imageBlit,//图像 blit 实例列表
+                VK_FILTER_LINEAR);//要应用的纹理采样过滤器
     }
-    result = vkEndCommandBuffer(cmdBuffer);                          //结束命令缓冲（停止记录命令）
+    result = vkEndCommandBuffer(cmdBuffer);//结束命令缓冲（停止记录命令）
     result = vkQueueSubmit(queueGraphics, 1, submit_info, copyFence);//提交给队列执行
     do {
         result = vkWaitForFences(device, 1, &copyFence, VK_TRUE, 100000000);

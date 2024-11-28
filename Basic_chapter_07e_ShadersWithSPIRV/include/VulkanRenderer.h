@@ -9,7 +9,7 @@
 
 // Vulkan Renderer是自定义类，它不是Vulkan特定的类
 // 它可以作为一个窗口呈现管理器
-// 它管理显示窗口和绘图界面
+// 它管理呈现窗口和绘图界面
 class VulkanRenderer {
 public:
     VulkanRenderer(VulkanApplication *app, VulkanDevice *deviceObject);
@@ -23,7 +23,7 @@ public:
 
     // 创建空白窗口
     void createPresentationWindow(const int &windowWidth = 500, const int &windowHeight = 500);
-    void setImageLayout(VkImage image, VkImageAspectFlags aspectMask, VkImageLayout oldImageLayout, VkImageLayout newImageLayout, VkAccessFlagBits srcAccessMask, const VkCommandBuffer &cmdBuf);
+    void convertImageLayout(VkImage image, VkImageAspectFlags aspectMask, VkImageLayout oldImageLayout, VkImageLayout newImageLayout, VkAccessFlagBits srcAccessMask, const VkCommandBuffer &cmdBuf);
 
     //处理Windows窗口事件的回调函数
     static LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);

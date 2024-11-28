@@ -52,7 +52,7 @@ void VulkanRenderer::initialize() {
     // 创建流水线状态管理对象
     createPipelineStateManagement();
 
-    // Build the push constants
+    // 构建推送常量
     createPushConstants();
 }
 
@@ -335,7 +335,7 @@ void VulkanRenderer::createDepthImage() {
     CommandBufferMgr::beginCommandBuffer(cmdDepthImage);
     {
         // 设置图像布局为：深度蒙版优化
-        setImageLayout(Depth.image,
+        convertImageLayout(Depth.image,
                        imgViewInfo.subresourceRange.aspectMask,
                        VK_IMAGE_LAYOUT_UNDEFINED,
                        VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL, (VkAccessFlagBits) 0, cmdDepthImage);
@@ -527,14 +527,14 @@ void VulkanRenderer::createShaders() {
 
 #ifdef AUTO_COMPILE_GLSL_TO_SPV
     vertShaderCode = readFile("./../PushConstant.vert", &sizeVert);
-    fragShaderCode = readFile("./../PushConstant.frag", &sizeFrag);
+	fragShaderCode = readFile("./../PushConstant.frag", &sizeFrag);
 
-    shaderObj.buildShader((const char *) vertShaderCode, (const char *) fragShaderCode);
+	shaderObj.buildShader((const char*)vertShaderCode, (const char*)fragShaderCode);
 #else
     vertShaderCode = readFile("./../PushConstant-vert.spv", &sizeVert);
     fragShaderCode = readFile("./../PushConstant-frag.spv", &sizeFrag);
 
-    shaderObj.buildShaderModuleWithSPV((uint32_t *) vertShaderCode, sizeVert, (uint32_t *) fragShaderCode, sizeFrag);
+    shaderObj.buildShaderModuleWithSPV((uint32_t*)vertShaderCode, sizeVert, (uint32_t*)fragShaderCode, sizeFrag);
 #endif
 }
 
@@ -549,35 +549,35 @@ void VulkanRenderer::createDescriptors() {
     }
 }
 
-void VulkanRenderer::createPushConstants() {
+void VulkanRenderer::createPushConstants()
+{
     CommandBufferMgr::allocCommandBuffer(&deviceObj->device, cmdPool, &cmdPushConstant);
     CommandBufferMgr::beginCommandBuffer(cmdPushConstant);
 
     enum ColorFlag {
-        RED = 1,
-        GREEN = 2,
-        BLUE = 3,
+        RED			= 1,
+        GREEN		= 2,
+        BLUE		= 3,
         MIXED_COLOR = 4,
     };
 
     float mixerValue = 0.3f;
     unsigned constColorRGBFlag = BLUE;
 
-    // Create push constant data, this contain a constant
-    // color flag and mixer value for non-const color
+    // 创建推送常亮的数据，这里包含一个常数形式的颜色标记，以及针对非常亮颜色值的混合选项
     unsigned pushConstants[2] = {};
     pushConstants[0] = constColorRGBFlag;
     memcpy(&pushConstants[1], &mixerValue, sizeof(float));
 
-    // Check if number of push constants does not exceed the allowed size
+    // 检查推送推送常量的大小是否超出了设备的最大推送常亮的大小
     int maxPushContantSize = getDevice()->gpuProps.limits.maxPushConstantsSize;
-    if (sizeof(pushConstants) > maxPushContantSize) {
+    if (sizeof(pushConstants)*2 > maxPushContantSize) {
         assert(0);
-        printf("Push constand size is greater than expected, max allow size is %d", maxPushContantSize);
+        printf("推送常量的数据比预期更大, 最大允许的大小为：%d", maxPushContantSize);
     }
 
     for (VulkanDrawable *drawableObj: drawableList) {
-        vkCmdPushConstants(cmdPushConstant, drawableObj->pipelineLayout, VK_SHADER_STAGE_FRAGMENT_BIT, 0, sizeof(pushConstants), pushConstants);
+        vkCmdPushConstants(cmdPushConstant, drawableObj->pipelineLayout, VK_SHADER_STAGE_FRAGMENT_BIT, 0, sizeof(unsigned) * 2, pushConstants);
     }
 
     CommandBufferMgr::endCommandBuffer(cmdPushConstant);
@@ -592,7 +592,7 @@ void VulkanRenderer::createPipelineStateManagement() {
 
     pipelineObj.createPipelineCache();
 
-    const bool depthPresent = true;
+    const bool depthPresent = false;
     for (VulkanDrawable *drawableObj: drawableList) {
         VkPipeline *pipeline = (VkPipeline *) malloc(sizeof(VkPipeline));
         if (pipelineObj.createPipeline(drawableObj, pipeline, &shaderObj, depthPresent)) {
@@ -605,60 +605,68 @@ void VulkanRenderer::createPipelineStateManagement() {
     }
 }
 
-void VulkanRenderer::setImageLayout(VkImage image, VkImageAspectFlags aspectMask, VkImageLayout oldImageLayout, VkImageLayout newImageLayout, VkAccessFlagBits srcAccessMask, const VkCommandBuffer &cmd) {
-    // 依赖于指令缓冲
+void VulkanRenderer::convertImageLayout(VkImage image, VkImageAspectFlags aspectMask, VkImageLayout oldImageLayout, VkImageLayout newImageLayout, VkAccessFlagBits srcAccessMask, const VkCommandBuffer &cmd) {
     assert(cmd != VK_NULL_HANDLE);
-
-    // deviceObj->queue必须完成初始化
     assert(deviceObj->queue != VK_NULL_HANDLE);
 
-    VkImageMemoryBarrier imgMemoryBarrier = {};
-    imgMemoryBarrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
-    imgMemoryBarrier.pNext = nullptr;
-    imgMemoryBarrier.srcAccessMask = srcAccessMask;
-    imgMemoryBarrier.dstAccessMask = 0;
-    imgMemoryBarrier.oldLayout = oldImageLayout;
-    imgMemoryBarrier.newLayout = newImageLayout;
-    imgMemoryBarrier.image = image;
-    imgMemoryBarrier.subresourceRange.aspectMask = aspectMask;
-    imgMemoryBarrier.subresourceRange.baseMipLevel = 0;
-    imgMemoryBarrier.subresourceRange.levelCount = 1;
-    imgMemoryBarrier.subresourceRange.layerCount = 1;
+    VkImageMemoryBarrier imageMemoryBarrier = {};
+    imageMemoryBarrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+    imageMemoryBarrier.pNext = nullptr;
+    imageMemoryBarrier.srcAccessMask = srcAccessMask;
+    imageMemoryBarrier.dstAccessMask = 0;
+    imageMemoryBarrier.oldLayout = oldImageLayout;
+    imageMemoryBarrier.newLayout = newImageLayout;
+    imageMemoryBarrier.image = image;
+    imageMemoryBarrier.subresourceRange.aspectMask = aspectMask;
+    imageMemoryBarrier.subresourceRange.baseMipLevel = 0;
+    imageMemoryBarrier.subresourceRange.levelCount = VK_REMAINING_MIP_LEVELS;
+    imageMemoryBarrier.subresourceRange.layerCount = VK_REMAINING_ARRAY_LAYERS;
 
-    if (oldImageLayout == VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL) {
-        imgMemoryBarrier.srcAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+    // 设置源和目标访问掩码以及管线阶段
+    VkPipelineStageFlags srcStageFlags = VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT;
+    VkPipelineStageFlags destStageFlags = VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT;
+
+    switch (oldImageLayout) {
+        case VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL:
+            imageMemoryBarrier.srcAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+            srcStageFlags = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+            break;
+            // ... 其他布局的访问标志和阶段 ...
     }
 
     switch (newImageLayout) {
-        // 确保从该映像复制的任何内容都已完成
-        // 这种布局中的图像只能用作命令的目标操作数
         case VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL:
+            imageMemoryBarrier.dstAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
+            destStageFlags = VK_PIPELINE_STAGE_TRANSFER_BIT;
+            break;
         case VK_IMAGE_LAYOUT_PRESENT_SRC_KHR:
-            imgMemoryBarrier.dstAccessMask = VK_ACCESS_MEMORY_READ_BIT;
+            imageMemoryBarrier.dstAccessMask = VK_ACCESS_MEMORY_READ_BIT;
+            destStageFlags = VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT;
             break;
-
-        // 确保任何复制或CPU对图像的写操作先完成
-        // 这种布局中的图像只能用作着色器的只读资源
         case VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL:
-            imgMemoryBarrier.srcAccessMask = VK_ACCESS_HOST_WRITE_BIT | VK_ACCESS_TRANSFER_WRITE_BIT;
-            imgMemoryBarrier.dstAccessMask = VK_ACCESS_SHADER_READ_BIT;
+            imageMemoryBarrier.srcAccessMask = VK_ACCESS_HOST_WRITE_BIT | VK_ACCESS_TRANSFER_WRITE_BIT;
+            imageMemoryBarrier.dstAccessMask = VK_ACCESS_SHADER_READ_BIT;
+            srcStageFlags = VK_PIPELINE_STAGE_HOST_BIT | VK_PIPELINE_STAGE_TRANSFER_BIT;
+            destStageFlags = VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
             break;
-
-        // 此布局中的图像只能用作帧缓冲颜色附件
         case VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL:
-            imgMemoryBarrier.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_READ_BIT;
+            imageMemoryBarrier.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_READ_BIT | VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+            destStageFlags = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
             break;
-
-        // 此布局中的图像只能用作帧缓冲区深度/模板附件
         case VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL:
-            imgMemoryBarrier.dstAccessMask = VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_READ_BIT;
+            imageMemoryBarrier.dstAccessMask = VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_READ_BIT | VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
+            destStageFlags = VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT;
             break;
+            // ... 其他布局的访问标志和阶段 ...
     }
 
-    VkPipelineStageFlags srcStages = VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT;
-    VkPipelineStageFlags destStages = VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT;
-
-    vkCmdPipelineBarrier(cmd, srcStages, destStages, 0, 0, nullptr, 0, nullptr, 1, &imgMemoryBarrier);
+    vkCmdPipelineBarrier(
+            cmd,
+            srcStageFlags, destStageFlags,
+            0,
+            0, nullptr,
+            0, nullptr,
+            1, &imageMemoryBarrier);
 }
 
 // 销毁渲染器中存在的每个管道对象
