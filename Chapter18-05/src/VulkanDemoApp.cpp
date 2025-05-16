@@ -912,5 +912,10 @@ void VulkanDemoApp::recreateSwapChain() {
 
     createVulkanSwapChain();
     createVulkanDepthBuffer();
+    createRenderPass(); // 重新创建渲染通道
     createFrameBuffer();
+
+    // 重新初始化管线
+    destroyPipeline();
+    initPipeline();
 }
