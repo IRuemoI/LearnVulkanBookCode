@@ -348,7 +348,15 @@ void VulkanDrawable::recordCommandBuffer(int currentImage, VkCommandBuffer *cmdD
     // Bound the command buffer with the graphics pipeline
     vkCmdBindPipeline(*cmdDraw, VK_PIPELINE_BIND_POINT_GRAPHICS, *pipeline);
     vkCmdBindDescriptorSets(*cmdDraw, VK_PIPELINE_BIND_POINT_GRAPHICS, pipelineLayout,
-                            0, 1, descriptorSet.data(), 0, nullptr);
+                          0, 1, descriptorSet.data(), 0, nullptr);
+
+    // 设置推送常量
+    unsigned pushConstants[2] = {};
+    pushConstants[0] = 3;
+    float mixerValue = 0.3f;
+    memcpy(&pushConstants[1], &mixerValue, sizeof(float));
+    vkCmdPushConstants(*cmdDraw, pipelineLayout, VK_SHADER_STAGE_FRAGMENT_BIT, 0, sizeof(unsigned) * 2, pushConstants);
+
     // Bound the command buffer with the graphics pipeline
     const VkDeviceSize offsets[1] = {0};
     vkCmdBindVertexBuffers(*cmdDraw, 0, 1, &VertexBuffer.buf, offsets);

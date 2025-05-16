@@ -571,7 +571,7 @@ void VulkanRenderer::createPushConstants()
 
     // 检查推送推送常量的大小是否超出了设备的最大推送常亮的大小
     int maxPushContantSize = getDevice()->gpuProps.limits.maxPushConstantsSize;
-    if (sizeof(pushConstants)*2 > maxPushContantSize) {
+    if (sizeof(pushConstants) > maxPushContantSize) {
         assert(0);
         printf("推送常量的数据比预期更大, 最大允许的大小为：%d", maxPushContantSize);
     }

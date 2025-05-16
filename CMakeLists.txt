@@ -72,7 +72,7 @@ set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 
-include_directories(Include)
+include_directories(include)
 
 # 跳过glslang库中用不到的部分
 set(GLSLANG_TESTS OFF CACHE BOOL "Enable glslang testing" FORCE)
@@ -102,7 +102,7 @@ add_subdirectory(dependencies/glslang)
 #add_subdirectory(Basic_chapter_09b_IndexedDraw)
 #add_subdirectory(Basic_chapter_09c_Resizing)
 #add_subdirectory(Basic_chapter_10a_Uniforms_And_Descriptors)
-add_subdirectory(Basic_chapter_10b_PushConstant) # 黑屏
+#add_subdirectory(Basic_chapter_10b_PushConstant)
 #add_subdirectory(Basic_chapter_11a_Texture_LinearLayout)
 #add_subdirectory(Basic_chapter_11b_Texture_OptimalLayout)
 
