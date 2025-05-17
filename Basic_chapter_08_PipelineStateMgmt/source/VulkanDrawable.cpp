@@ -162,14 +162,32 @@ void VulkanDrawable::render() {
     uint32_t &currentColorImage = swapChainObj->scPublicVars.currentColorBuffer;
     VkSwapchainKHR &swapChain = swapChainObj->scPublicVars.swapChain;
 
+    VkSemaphore presentCompleteSemaphore;
+    VkSemaphoreCreateInfo presentCompleteSemaphoreCreateInfo;
+    presentCompleteSemaphoreCreateInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
+    presentCompleteSemaphoreCreateInfo.pNext = nullptr;
+    presentCompleteSemaphoreCreateInfo.flags = 0;
+    vkCreateSemaphore(deviceObj->device, &presentCompleteSemaphoreCreateInfo, nullptr, &presentCompleteSemaphore);
+
     Sleep(1000);
 
     // 获取下一个可用的交换链图像索引
     VkResult result = swapChainObj->fpAcquireNextImageKHR(deviceObj->device, swapChain,
-                                                          UINT64_MAX, VK_NULL_HANDLE, VK_NULL_HANDLE, &currentColorImage);
+                                                          UINT64_MAX, presentCompleteSemaphore, VK_NULL_HANDLE, &currentColorImage);
+
+    // 设置提交信息以等待图像获取完成
+    VkPipelineStageFlags waitDstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+    VkSubmitInfo submitInfo = {};
+    submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+    submitInfo.waitSemaphoreCount = 1;
+    submitInfo.pWaitSemaphores = &presentCompleteSemaphore;
+    submitInfo.pWaitDstStageMask = &waitDstStageMask;
+    submitInfo.commandBufferCount = 1;
+    submitInfo.pCommandBuffers = &vecCmdDraw[currentColorImage];
 
     // 将指令缓存的内容提交到队列
-    CommandBufferMgr::submitCommandBuffer(deviceObj->queue, &vecCmdDraw[currentColorImage], nullptr);
+    result = vkQueueSubmit(deviceObj->queue, 1, &submitInfo, VK_NULL_HANDLE);
+    assert(result == VK_SUCCESS);
 
     // 将图像呈现到窗口
     VkPresentInfoKHR present = {};
@@ -181,4 +199,9 @@ void VulkanDrawable::render() {
     // 将图像以排队方式呈现
     result = swapChainObj->fpQueuePresentKHR(deviceObj->queue, &present);
     assert(result == VK_SUCCESS);
+
+    // 等待队列空闲后再继续
+    vkQueueWaitIdle(deviceObj->queue);
+
+    vkDestroySemaphore(deviceObj->device, presentCompleteSemaphore, nullptr);
 }

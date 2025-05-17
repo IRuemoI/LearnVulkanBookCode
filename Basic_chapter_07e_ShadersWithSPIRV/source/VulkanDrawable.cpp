@@ -175,8 +175,19 @@ void VulkanDrawable::render() {
     VkResult result = swapChainObj->fpAcquireNextImageKHR(deviceObj->device, swapChain,
                                                           UINT64_MAX, presentCompleteSemaphore, VK_NULL_HANDLE, &currentColorImage);
 
+    // 设置提交信息以等待图像获取完成
+    VkPipelineStageFlags waitDstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+    VkSubmitInfo submitInfo = {};
+    submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+    submitInfo.waitSemaphoreCount = 1;
+    submitInfo.pWaitSemaphores = &presentCompleteSemaphore;
+    submitInfo.pWaitDstStageMask = &waitDstStageMask;
+    submitInfo.commandBufferCount = 1;
+    submitInfo.pCommandBuffers = &vecCmdDraw[currentColorImage];
+
     // 将指令缓存的内容提交到队列
-    CommandBufferMgr::submitCommandBuffer(deviceObj->queue, &vecCmdDraw[currentColorImage], nullptr);
+    result = vkQueueSubmit(deviceObj->queue, 1, &submitInfo, VK_NULL_HANDLE);
+    assert(result == VK_SUCCESS);
 
     // 将图像呈现到窗口
     VkPresentInfoKHR present = {};
@@ -188,6 +199,9 @@ void VulkanDrawable::render() {
     // 将图像以排队方式呈现
     result = swapChainObj->fpQueuePresentKHR(deviceObj->queue, &present);
     assert(result == VK_SUCCESS);
+
+    // 等待队列空闲后再销毁信号量
+    vkQueueWaitIdle(deviceObj->queue);
 
     vkDestroySemaphore(deviceObj->device, presentCompleteSemaphore, nullptr);
 }

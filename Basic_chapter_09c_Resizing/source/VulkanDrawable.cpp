@@ -39,6 +39,10 @@ void VulkanDrawable::destroyCommandBuffer() {
 void VulkanDrawable::destroySynchronizationObjects() {
     VulkanApplication *appObj = VulkanApplication::GetInstance();
     VulkanDevice *deviceObj = appObj->deviceObj;
+
+    // 确保GPU已完成所有使用该信号量的操作
+    vkQueueWaitIdle(deviceObj->queue);
+
     vkDestroySemaphore(deviceObj->device, presentCompleteSemaphore, nullptr);
     vkDestroySemaphore(deviceObj->device, drawingCompleteSemaphore, nullptr);
 }
