@@ -22,6 +22,8 @@ add_executable(${CHAPTER_NAME} ${SOURCES} ${HEADERS})
 
 target_link_libraries(${CHAPTER_NAME}
         Vulkan::Vulkan
-        ${VULKAN_PATH}/Lib/shaderc_shared.lib
+        glslang
+        glslang::SPIRV
+        glslang::glslang-default-resource-limits
         glfw
 )

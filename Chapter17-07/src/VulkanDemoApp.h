@@ -7,6 +7,7 @@
 #include "ShaderQueueSuit_SingleTexLight.h"
 #include "TexDrawableObject.h"
 #include "TexLightObject.h"
+#include "ValidateUtil.h"
 #include <GLFW/glfw3.h>
 #include <cstdlib>//标准库标准通用工具函数
 #include <functional>//标准库与函数对象相关的模板类和函数
@@ -81,6 +82,9 @@ public:
     static float qsj2;
     static float qsj3;
 
+    std::vector<const char *> exceptedLayerNames;
+    DeviceLayerAndExtension deviceLayerAndExtension;
+	
     void initVulkanInstance();
     void destroyVulkanInstance();
     void enumerateVulkanPhysicalDevices();

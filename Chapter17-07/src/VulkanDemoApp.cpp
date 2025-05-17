@@ -102,8 +102,7 @@ void VulkanDemoApp::destroyWindow() const {
 }
 
 // 获取所有glfw要求的扩展
-std::vector<const char *>
-VulkanDemoApp::get_required_extensions() {
+std::vector<const char *> VulkanDemoApp::get_required_extensions() {
     uint32_t glfwExtensionCount = 0;// 定义glfw所需的扩展数量
     const char **glfwExtensions;// glfw所需的扩展名称
     glfwExtensions = glfwGetRequiredInstanceExtensions(&glfwExtensionCount);// 查找glfw所需的扩展
@@ -117,6 +116,7 @@ VulkanDemoApp::get_required_extensions() {
 // 创建vulkan实例的方法
 void VulkanDemoApp::initVulkanInstance() {
     instanceExtensionNames.push_back(VK_KHR_SURFACE_EXTENSION_NAME);
+    instanceExtensionNames.push_back(VK_EXT_DEBUG_REPORT_EXTENSION_NAME);
 
     VkApplicationInfo app_info = {};// 构建应用信息结构体实例
     app_info.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;// 结构体的类型
@@ -127,6 +127,19 @@ void VulkanDemoApp::initVulkanInstance() {
     app_info.engineVersion = VK_MAKE_VERSION(1, 0, 0);// 应用的引擎版本号
     app_info.apiVersion = VK_API_VERSION_1_2;// 使用的Vulkan图形应用程序API版本
 
+    std::vector<const char *> exceptedLayerNames;//期望启动的验证Layer名称列表
+    exceptedLayerNames.push_back("VK_LAYER_LUNARG_core_validation");
+    exceptedLayerNames.push_back("VK_LAYER_LUNARG_parameter_validation");
+    exceptedLayerNames.push_back("VK_LAYER_LUNARG_standard_validation");
+    deviceLayerAndExtension = ValidateUtil::getLayerProperties(exceptedLayerNames);//获取支持情况
+    for (auto s: deviceLayerAndExtension.extensionNames) {//将所需的扩展加入扩展名称列表
+        instanceExtensionNames.push_back((*s).c_str());
+    }
+    exceptedLayerNames.clear();//清空验证Layer名称列表
+    for (auto s: deviceLayerAndExtension.layerNames) {//将能支持的验证Layer名称加入Layer名称列表
+        exceptedLayerNames.push_back((*s).c_str());
+    }
+
     instanceExtensionNames = get_required_extensions();// 获取所有glfw要求的扩展
 
     VkInstanceCreateInfo inst_info = {};// 构建实例创建信息结构体实例
@@ -136,9 +149,9 @@ void VulkanDemoApp::initVulkanInstance() {
     inst_info.pApplicationInfo = &app_info;// 绑定应用信息结构体
     inst_info.enabledExtensionCount = static_cast<uint32_t>(instanceExtensionNames.size());// 设置启用扩展的数量
     inst_info.ppEnabledExtensionNames = instanceExtensionNames.data();// 设置所有启用的扩展名称
+    inst_info.enabledLayerCount = exceptedLayerNames.size();//启动的验证Layer数量
+    inst_info.ppEnabledLayerNames = exceptedLayerNames.data();//启动的验证Layer名称列表
 
-    inst_info.enabledLayerCount = 0;// 启动的层数量
-    inst_info.ppEnabledLayerNames = nullptr;// 启动的层名称列表
 
     VkResult result;// 存储运行结果的辅助变量
 
@@ -149,10 +162,15 @@ void VulkanDemoApp::initVulkanInstance() {
     } else {
         printf("Vulkan实例创建失败!\n");
     }
+
 }
 
 // 销毁vulkan实例的方法
 void VulkanDemoApp::destroyVulkanInstance() {
+    if (!exceptedLayerNames.empty())//销毁调试报告回调
+    {
+        ValidateUtil::destroyDebugReportCallbackSelf(instance);
+    }
     vkDestroyInstance(instance, nullptr);
     printf("Vulkan实例销毁完毕!\n");
 }
@@ -203,6 +221,11 @@ void VulkanDemoApp::createVulkanDevices() {
 
     VkPhysicalDeviceFeatures pdf;
     vkGetPhysicalDeviceFeatures(gpus[USED_GPU_INDEX], &pdf);
+    std::vector<std::string *> needsDeviceExtensions = ValidateUtil::getLayerDeviceExtension(gpus[USED_GPU_INDEX], deviceLayerAndExtension.layerNames);//获取验证Layer所需设备扩展
+    for (auto s: needsDeviceExtensions) {//将所需设备扩展加入列表
+        deviceExtensionNames.push_back((*s).c_str());
+    }
+
 
     VkDeviceCreateInfo deviceInfo = {};// 构建逻辑设备创建信息结构体实例
     deviceInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;// 给出结构体类型

@@ -3,6 +3,7 @@
 #include "ObjObject.h"
 #include "Robot.h"
 #include "ShaderQueueSuit_Common.h"
+#include "ValidateUtil.h"
 #include <GLFW/glfw3.h>
 #include <cstdlib>//标准库标准通用工具函数
 #include <functional>//标准库与函数对象相关的模板类和函数
@@ -64,6 +65,8 @@ public:
     static Robot *robot;
     vector<ObjObject *> robotObj;
     ObjObject *plane;
+    std::vector<const char *> exceptedLayerNames;
+    DeviceLayerAndExtension deviceLayerAndExtension;
     void initVulkanInstance();
     void enumerateVulkanPhysicalDevices();
     void createVulkanDevices();

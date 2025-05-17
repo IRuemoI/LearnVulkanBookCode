@@ -54,11 +54,24 @@ void setImageLayoutCube(VkCommandBuffer cmd, VkImage image, VkImageAspectFlags a
 
     if (new_image_layout == VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL) {
         image_memory_barrier.dstAccessMask =
-                VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
+            VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
     }
 
     VkPipelineStageFlags src_stages = VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT;
     VkPipelineStageFlags dest_stages = VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT;
+
+    // 根据访问掩码选择合适的管线阶段
+    if (image_memory_barrier.srcAccessMask == VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT ||
+        image_memory_barrier.dstAccessMask == VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT) {
+        src_stages = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+        dest_stages = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+    } else if (image_memory_barrier.dstAccessMask == VK_ACCESS_SHADER_READ_BIT) {
+        src_stages = VK_PIPELINE_STAGE_TRANSFER_BIT;
+        dest_stages = VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
+    } else if (image_memory_barrier.dstAccessMask == VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT) {
+        src_stages = VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT;
+        dest_stages = VK_PIPELINE_STAGE_LATE_FRAGMENT_TESTS_BIT;
+    }
 
     vkCmdPipelineBarrier(cmd, src_stages, dest_stages, 0, 0, nullptr, 0, nullptr, 1, &image_memory_barrier);
 }
