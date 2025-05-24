@@ -246,7 +246,7 @@ add_subdirectory(dependencies/glslang)
 #add_subdirectory(Chapter15-07)
 #add_subdirectory(Chapter15-08)
 
-#add_subdirectory(Chapter16-01)
+add_subdirectory(Chapter16-01)
 add_subdirectory(Chapter16-02) #未修复
 #add_subdirectory(Chapter16-03)
 #add_subdirectory(Chapter16-04)
