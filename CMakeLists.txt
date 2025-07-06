@@ -107,7 +107,7 @@ add_subdirectory(dependencies/glslang)
 #add_subdirectory(Basic_chapter_11b_Texture_OptimalLayout)
 
 # Vulkan开发实战详解的各个章节
-#add_subdirectory(Chapter01-01)
+add_subdirectory(Chapter01-01)
 
 #add_subdirectory(Chapter02-01)
 #add_subdirectory(Chapter02-02)

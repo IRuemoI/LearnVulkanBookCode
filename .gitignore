@@ -1,4 +1,5 @@
 /.idea/
+**/.DS_Store
 /dependencies/
 /include/
 /cmake-build-*/
