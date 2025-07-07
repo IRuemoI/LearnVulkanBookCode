@@ -58,7 +58,7 @@ void VulkanDemoApp::initVulkan() {
     initQueue();// 获取设备中支持图形作业的队列
     createVulkanSwapChain();// 初始化交换链
     createVulkanDepthBuffer();// 创建深度缓冲
-    createRenderPass();// 创建渲染通道
+    createRenderPass();// 创建渲染过程
     createFrameBuffer();// 创建帧缓冲
     createDrawableObject();// 创建绘制用的物体
     initPipeline();// 初始化渲染管线
@@ -84,7 +84,7 @@ void VulkanDemoApp::cleanup() {
     destroyPipeline();// 销毁管线
     destroyDrawableObject();// 销毁绘制用物体
     destroyFrameBuffer();// 销毁帧缓冲
-    destroyRenderPass();// 销毁渲染通道相关
+    destroyRenderPass();// 销毁渲染过程相关
     destroyVulkanDepthBuffer();// 销毁深度缓冲相关
     destroyVulkanSwapChain();// 销毁交换链相关
     destroyVulkanCommandBuffer();// 销毁命令缓冲
@@ -635,7 +635,7 @@ void VulkanDemoApp::destroyVulkanDepthBuffer() const// 销毁深度缓冲相关
     printf("销毁深度缓冲相关成功!\n");
 }
 
-// 创建渲染通道
+// 创建渲染过程
 void VulkanDemoApp::createRenderPass() {
     VkSemaphoreCreateInfo imageAcquiredSemaphoreCreateInfo;// 构建信号量创建信息结构体实例
     imageAcquiredSemaphoreCreateInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;// 结构体类型
@@ -673,7 +673,7 @@ void VulkanDemoApp::createRenderPass() {
     depth_reference.attachment = 1;// 对应附件描述信息数组下标
     depth_reference.layout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;// 设置附件布局
 
-    VkSubpassDescription subpass = {};// 构建渲染子通道描述结构体实例
+    VkSubpassDescription subpass = {};// 构建渲染子过程描述结构体实例
     subpass.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;// 设置管线绑定点
     subpass.flags = 0;// 设置掩码
     subpass.inputAttachmentCount = 0;// 输入附件数量
@@ -685,17 +685,17 @@ void VulkanDemoApp::createRenderPass() {
     subpass.preserveAttachmentCount = 0;// preserve附件数量
     subpass.pPreserveAttachments = nullptr;// preserve附件列表
 
-    VkRenderPassCreateInfo rp_info = {};// 构建渲染通道创建信息结构体实例
+    VkRenderPassCreateInfo rp_info = {};// 构建渲染过程创建信息结构体实例
     rp_info.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;// 结构体类型
     rp_info.pNext = nullptr;// 自定义数据的指针
     rp_info.attachmentCount = 2;// 附件的数量
     rp_info.pAttachments = attachments;// 附件列表
-    rp_info.subpassCount = 1;// 渲染子通道数量
-    rp_info.pSubpasses = &subpass;// 渲染子通道列表
+    rp_info.subpassCount = 1;// 渲染子过程数量
+    rp_info.pSubpasses = &subpass;// 渲染子过程列表
     rp_info.dependencyCount = 0;// 子通道依赖数量
     rp_info.pDependencies = nullptr;// 子通道依赖列表
 
-    result = vkCreateRenderPass(device, &rp_info, nullptr, &renderPass);// 创建渲染通道
+    result = vkCreateRenderPass(device, &rp_info, nullptr, &renderPass);// 创建渲染过程
     assert(result == VK_SUCCESS);
 
     clear_values[0].color.float32[0] = 0.2f;// 帧缓冲清除用R分量值
@@ -705,9 +705,9 @@ void VulkanDemoApp::createRenderPass() {
     clear_values[1].depthStencil.depth = 1.0f;// 帧缓冲清除用深度值
     clear_values[1].depthStencil.stencil = 0;// 帧缓冲清除用模板值
 
-    rp_begin.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;// 渲染通道启动信息结构体类型
+    rp_begin.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;// 渲染过程启动信息结构体类型
     rp_begin.pNext = nullptr;// 自定义数据的指针
-    rp_begin.renderPass = renderPass;// 指定要启动的渲染通道
+    rp_begin.renderPass = renderPass;// 指定要启动的渲染过程
     rp_begin.renderArea.offset.x = 0;// 渲染区域起始X坐标
     rp_begin.renderArea.offset.y = 0;// 渲染区域起始Y坐标
     rp_begin.renderArea.extent.width = screenWidth;// 渲染区域宽度
@@ -716,7 +716,7 @@ void VulkanDemoApp::createRenderPass() {
     rp_begin.pClearValues = clear_values;// 帧缓冲清除值数组
 }
 
-// 销毁渲染通道相关
+// 销毁渲染过程相关
 void VulkanDemoApp::destroyRenderPass() const {
     vkDestroyRenderPass(device, renderPass, nullptr);
     vkDestroySemaphore(device, imageAcquiredSemaphore, nullptr);
@@ -736,7 +736,7 @@ void VulkanDemoApp::createFrameBuffer() {
     VkFramebufferCreateInfo fb_info = {};// 构建帧缓冲创建信息结构体实例
     fb_info.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;// 结构体类型
     fb_info.pNext = nullptr;// 自定义数据的指针
-    fb_info.renderPass = renderPass;// 指定渲染通道
+    fb_info.renderPass = renderPass;// 指定渲染过程
     fb_info.attachmentCount = 2;// 附件数量
     fb_info.pAttachments = attachments;// 附件图像视图数组
     fb_info.width = screenWidth;// 宽度
@@ -830,7 +830,7 @@ void VulkanDemoApp::drawObject() {
     if (result != VK_SUCCESS) {
         std::cout << "at vkAcquireNextImageKHR:" << (VkResult) result << '\n';
     }
-    // 为渲染通道设置当前帧缓冲
+    // 为渲染过程设置当前帧缓冲
     rp_begin.framebuffer = framebuffers[currentBuffer];
 
     vkResetCommandBuffer(cmdBuffer, 0);// 恢复命令缓冲到初始状态
@@ -841,7 +841,7 @@ void VulkanDemoApp::drawObject() {
     VulkanDemoApp::flushUniformBuffer();// 将当前帧相关数据送入一致变量缓冲
     VulkanDemoApp::flushTexToDesSet();// 更新绘制用描述集
 
-    vkCmdBeginRenderPass(cmdBuffer, &rp_begin, VK_SUBPASS_CONTENTS_INLINE);// 启动渲染通道
+    vkCmdBeginRenderPass(cmdBuffer, &rp_begin, VK_SUBPASS_CONTENTS_INLINE);// 启动渲染过程
 
     MatrixState3D::pushMatrix();//保护现场
     MatrixState3D::rotate(xAngle, 1, 0, 0);//绕X轴旋转xAngle

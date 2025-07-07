@@ -589,7 +589,7 @@ void VulkanDemoApp::createRenderPass() {
                                VK_FORMAT_R32G32B32A32_SFLOAT, VK_FORMAT_R8G8B8A8_UNORM};
     for (int i = 0; i < COLOR_ATTACH_COUNT; i++) {//遍历所有颜色附件(服务于各个子通道)
         attachments[i].format = colorFormat[i];//设置颜色附件的格式
-        attachments[i].storeOp = (i == 3) ? VK_ATTACHMENT_STORE_OP_STORE : VK_ATTACHMENT_STORE_OP_DONT_CARE;//设置渲染通道结束时附件的存储操作
+        attachments[i].storeOp = (i == 3) ? VK_ATTACHMENT_STORE_OP_STORE : VK_ATTACHMENT_STORE_OP_DONT_CARE;//设置渲染过程结束时附件的存储操作
         attachments[i].finalLayout = (i == 3) ? VK_IMAGE_LAYOUT_PRESENT_SRC_KHR : VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;//设置结束时的最终布局
         attachments[i].stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
         attachments[i].stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
@@ -613,7 +613,7 @@ void VulkanDemoApp::createRenderPass() {
     VkAttachmentReference depth_reference = {};
     depth_reference.attachment = 4;
     depth_reference.layout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
-    VkSubpassDescription subpass[2];//渲染子通道描述结构体数组
+    VkSubpassDescription subpass[2];//渲染子过程描述结构体数组
     subpass[0].colorAttachmentCount = 3;//第1 个子通道的颜色附件数量
     subpass[0].pColorAttachments = color_reference;//第1 个子通道的颜色附件引用
     subpass[0].pDepthStencilAttachment = &depth_reference;//第1 个子通道的深度附件引用
@@ -668,13 +668,13 @@ void VulkanDemoApp::createRenderPass() {
     dependencies[2].srcAccessMask = VK_ACCESS_COLOR_ATTACHMENT_READ_BIT | VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
     dependencies[2].dstAccessMask = VK_ACCESS_MEMORY_READ_BIT;
     dependencies[2].dependencyFlags = VK_DEPENDENCY_BY_REGION_BIT;
-    VkRenderPassCreateInfo rp_info = {};//构建渲染通道创建信息结构体实例
+    VkRenderPassCreateInfo rp_info = {};//构建渲染过程创建信息结构体实例
     rp_info.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
     rp_info.pNext = nullptr;
     rp_info.attachmentCount = 5;
     rp_info.pAttachments = attachments;
-    rp_info.subpassCount = 2;//渲染子通道数量
-    rp_info.pSubpasses = subpass;//渲染子通道列表
+    rp_info.subpassCount = 2;//渲染子过程数量
+    rp_info.pSubpasses = subpass;//渲染子过程列表
     rp_info.dependencyCount = 3;//子通道依赖数量
     rp_info.pDependencies = dependencies;//子通道依赖列表
     result = vkCreateRenderPass(device, &rp_info, nullptr, &renderPass);
@@ -842,7 +842,7 @@ void VulkanDemoApp::drawObject() {
     vkCmdBindDescriptorSets(cmdBuffer,//绑定描述集
                             VK_PIPELINE_BIND_POINT_GRAPHICS, sqsL->pipelineLayout, 0, 1, &(sqsL->descSet[0]), 0, nullptr);
     vkCmdDraw(cmdBuffer, 3, 1, 0, 0);//绘制一个三角形
-    vkCmdEndRenderPass(cmdBuffer);//结束渲染通道
+    vkCmdEndRenderPass(cmdBuffer);//结束渲染过程
     result = vkEndCommandBuffer(cmdBuffer);
     submit_info[0].waitSemaphoreCount = 0;
     submit_info[0].pWaitSemaphores = nullptr;

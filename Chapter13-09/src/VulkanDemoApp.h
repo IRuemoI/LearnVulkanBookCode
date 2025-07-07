@@ -55,9 +55,9 @@ public:
     VkImageView depthImageView;// 深度缓冲图像视图
     VkSemaphore imageAcquiredSemaphore;// 渲染目标图像获取完成信号量
     uint32_t currentBuffer;// 从交换链中获取的当前渲染用图像对应的缓冲编号
-    VkRenderPass renderPass;// 渲染通道
-    VkClearValue clear_values[2];// 渲染通道用清除帧缓冲深度、颜色附件的数据
-    VkRenderPassBeginInfo rp_begin;// 渲染通道启动信息
+    VkRenderPass renderPass;// 渲染过程
+    VkClearValue clear_values[2];// 渲染过程用清除帧缓冲深度、颜色附件的数据
+    VkRenderPassBeginInfo rp_begin;// 渲染过程启动信息
     VkFence taskFinishFence;// 等待任务完毕的栅栏
     VkPresentInfoKHR present;// 呈现信息
     VkFramebuffer *framebuffers;// 帧缓冲序列首指针
@@ -86,7 +86,7 @@ public:
     void createVulkanSwapChain();// 初始化交换链
     void createVulkanDepthBuffer();// 创建深度缓冲相关
     void createVulkanSelfColorBuffer();//创建绘制到纹理用颜色缓冲的方法
-    void createRenderPass();// 创建渲染通道
+    void createRenderPass();// 创建渲染过程
     void initQueue();// 获取设备中支持图形作业的队列
     void createFrameBuffer();// 创建帧缓冲
     void initTextures();
@@ -102,7 +102,7 @@ public:
     void destroyTextures();
     void destroyVulkanSelfColorBuffer();//销毁绘制到纹理用颜色缓冲相关的方法
     void destroyFrameBuffer() const;// 销毁帧缓冲
-    void destroyRenderPass() const;// 销毁渲染通道
+    void destroyRenderPass() const;// 销毁渲染过程
     void destroyVulkanDepthBuffer() const;// 销毁深度缓冲相关
     void destroyVulkanSwapChain();// 销毁交换链
     void destroyVulkanCommandBuffer();// 销毁命令缓冲

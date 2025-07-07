@@ -64,7 +64,7 @@ void VulkanDemoApp::initVulkan() {
     createVulkanSwapChain();// 初始化交换链
     createVulkanDepthBuffer();// 创建深度缓冲
     createVulkanSelfColorBuffer();
-    createRenderPass();// 创建渲染通道
+    createRenderPass();// 创建渲染过程
     createFrameBuffer();// 创建帧缓冲
     initTextures();
     createDrawableObject();// 创建绘制用的物体
@@ -93,7 +93,7 @@ void VulkanDemoApp::cleanup() {
     destroyTextures();
     destroyVulkanSelfColorBuffer();
     destroyFrameBuffer();// 销毁帧缓冲
-    destroyRenderPass();// 销毁渲染通道相关
+    destroyRenderPass();// 销毁渲染过程相关
     destroyVulkanDepthBuffer();// 销毁深度缓冲相关
     destroyVulkanSwapChain();// 销毁交换链相关
     destroyVulkanCommandBuffer();// 销毁命令缓冲
@@ -661,7 +661,7 @@ void VulkanDemoApp::destroyVulkanSelfColorBuffer() {//销毁颜色缓冲相关
     vkDestroyImage(device, colorImage, nullptr);//销毁图像对象
     vkFreeMemory(device, memColor, nullptr);//释放图像设备内存
 }
-// 创建渲染通道
+// 创建渲染过程
 void VulkanDemoApp::createRenderPass() {
     VkSemaphoreCreateInfo imageAcquiredSemaphoreCreateInfo;// 构建信号量创建信息结构体实例
     imageAcquiredSemaphoreCreateInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;// 结构体类型
@@ -699,7 +699,7 @@ void VulkanDemoApp::createRenderPass() {
     depth_reference.attachment = 1;// 对应附件描述信息数组下标
     depth_reference.layout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;// 设置附件布局
 
-    VkSubpassDescription subpass = {};// 构建渲染子通道描述结构体实例
+    VkSubpassDescription subpass = {};// 构建渲染子过程描述结构体实例
     subpass.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;// 设置管线绑定点
     subpass.flags = 0;// 设置掩码
     subpass.inputAttachmentCount = 0;// 输入附件数量
@@ -711,17 +711,17 @@ void VulkanDemoApp::createRenderPass() {
     subpass.preserveAttachmentCount = 0;// preserve附件数量
     subpass.pPreserveAttachments = nullptr;// preserve附件列表
 
-    VkRenderPassCreateInfo rp_info = {};// 构建渲染通道创建信息结构体实例
+    VkRenderPassCreateInfo rp_info = {};// 构建渲染过程创建信息结构体实例
     rp_info.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;// 结构体类型
     rp_info.pNext = nullptr;// 自定义数据的指针
     rp_info.attachmentCount = 2;// 附件的数量
     rp_info.pAttachments = attachments;// 附件列表
-    rp_info.subpassCount = 1;// 渲染子通道数量
-    rp_info.pSubpasses = &subpass;// 渲染子通道列表
+    rp_info.subpassCount = 1;// 渲染子过程数量
+    rp_info.pSubpasses = &subpass;// 渲染子过程列表
     rp_info.dependencyCount = 0;// 子通道依赖数量
     rp_info.pDependencies = nullptr;// 子通道依赖列表
 
-    result = vkCreateRenderPass(device, &rp_info, nullptr, &renderPass);// 创建渲染通道
+    result = vkCreateRenderPass(device, &rp_info, nullptr, &renderPass);// 创建渲染过程
     assert(result == VK_SUCCESS);
 
     clear_values[0].color.float32[0] = 0.2f;// 帧缓冲清除用R分量值
@@ -731,9 +731,9 @@ void VulkanDemoApp::createRenderPass() {
     clear_values[1].depthStencil.depth = 1.0f;// 帧缓冲清除用深度值
     clear_values[1].depthStencil.stencil = 0;// 帧缓冲清除用模板值
 
-    rp_begin.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;// 渲染通道启动信息结构体类型
+    rp_begin.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;// 渲染过程启动信息结构体类型
     rp_begin.pNext = nullptr;// 自定义数据的指针
-    rp_begin.renderPass = renderPass;// 指定要启动的渲染通道
+    rp_begin.renderPass = renderPass;// 指定要启动的渲染过程
     rp_begin.renderArea.offset.x = 0;// 渲染区域起始X坐标
     rp_begin.renderArea.offset.y = 0;// 渲染区域起始Y坐标
     rp_begin.renderArea.extent.width = screenWidth;// 渲染区域宽度
@@ -742,7 +742,7 @@ void VulkanDemoApp::createRenderPass() {
     rp_begin.pClearValues = clear_values;// 帧缓冲清除值数组
 }
 
-// 销毁渲染通道相关
+// 销毁渲染过程相关
 void VulkanDemoApp::destroyRenderPass() const {
     vkDestroyRenderPass(device, renderPass, nullptr);
     vkDestroySemaphore(device, imageAcquiredSemaphore, nullptr);
@@ -762,7 +762,7 @@ void VulkanDemoApp::createFrameBuffer() {
     VkFramebufferCreateInfo fb_info = {};// 构建帧缓冲创建信息结构体实例
     fb_info.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;// 结构体类型
     fb_info.pNext = nullptr;// 自定义数据的指针
-    fb_info.renderPass = renderPass;// 指定渲染通道
+    fb_info.renderPass = renderPass;// 指定渲染过程
     fb_info.attachmentCount = 2;// 附件数量
     fb_info.pAttachments = attachments;// 附件图像视图数组
     fb_info.width = screenWidth;// 宽度
@@ -914,7 +914,7 @@ void VulkanDemoApp::flushTexToDesSetForToScreen() {
 void VulkanDemoApp::drawSceneToTex() {//将场景镜像绘制到纹理的方法
     CameraUtil::flushMirrorCameraToMatrix();//根据镜像摄像机参数更新摄像机矩阵
     mirrorMatrix = MatrixState3D::getViewProjMatrix();//获取镜像摄像机投影与观察组合矩阵
-    rp_begin.framebuffer = selfTexFramebuffer;//将镜像绘制专用帧缓冲设置为渲染通道的当前帧缓冲
+    rp_begin.framebuffer = selfTexFramebuffer;//将镜像绘制专用帧缓冲设置为渲染过程的当前帧缓冲
     vkResetCommandBuffer(cmdBuffer, 0);//恢复命令缓冲到初始状态
     VkResult result = vkBeginCommandBuffer(cmdBuffer, &cmd_buf_info);//启动命令缓冲
     flushUniformBufferForToTex();//将一致变量数据送入缓冲
@@ -934,7 +934,7 @@ void VulkanDemoApp::drawSceneToTex() {//将场景镜像绘制到纹理的方法
 void VulkanDemoApp::drawSceneToScreen() {//将场景绘制到屏幕的方法
     CameraUtil::flushMainCameraToMatrix();//根据主摄像机的参数更新摄像机矩阵
     VkResult result = vkAcquireNextImageKHR(device, swapChain, UINT64_MAX, imageAcquiredSemaphore, VK_NULL_HANDLE, &currentBuffer);
-    rp_begin.framebuffer = framebuffers[currentBuffer];//指定渲染通道使用的帧缓冲
+    rp_begin.framebuffer = framebuffers[currentBuffer];//指定渲染过程使用的帧缓冲
     vkResetCommandBuffer(cmdBuffer, 0);//重置命令缓冲到初始状态
     result = vkBeginCommandBuffer(cmdBuffer, &cmd_buf_info);//启动命令缓冲
     flushUniformBufferForToScreen();//将一致变量数据送入缓冲

@@ -672,8 +672,8 @@ void VulkanDemoApp::createRenderPass() {
     //二级命令缓冲的继承信息
     cmd_buf_inheritance_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_INHERITANCE_INFO;//结构体类型
     cmd_buf_inheritance_info.pNext = nullptr;//自定义数据指针
-    cmd_buf_inheritance_info.renderPass = renderPass;//绑定对应的渲染通道
-    cmd_buf_inheritance_info.subpass = 0;//设置渲染子通道数量
+    cmd_buf_inheritance_info.renderPass = renderPass;//绑定对应的渲染过程
+    cmd_buf_inheritance_info.subpass = 0;//设置渲染子过程数量
     cmd_buf_inheritance_info.occlusionQueryEnable = VK_FALSE;//关闭遮挡查询
     cmd_buf_inheritance_info.queryFlags = 0;//设置查询标志
     cmd_buf_inheritance_info.pipelineStatistics = 0;//控制统计如何执行的附加标志

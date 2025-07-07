@@ -41,7 +41,7 @@ void VulkanRenderer::initialize() {
     createVertexBuffer();
 
     const bool includeDepth = true;
-    // 创建渲染通道
+    // 创建渲染过程
     createRenderPass(includeDepth);
 }
 
@@ -325,7 +325,7 @@ void VulkanRenderer::createRenderPass(bool isDepthSupported, bool clear) {
     // VulkanSwapChain::createSwapChain()来获得彩色表面图像;VulkanRenderer::createDepthBuffer()来获得深度缓冲图像
 
     VkResult result;
-    // 将颜色附件和深度附件关联到渲染通道实例
+    // 将颜色附件和深度附件关联到渲染过程实例
     VkAttachmentDescription attachments[2];
     attachments[0].format = swapChainObj->scPublicVars.format;
     attachments[0].samples = NUM_SAMPLES;
@@ -373,7 +373,7 @@ void VulkanRenderer::createRenderPass(bool isDepthSupported, bool clear) {
     subpass.preserveAttachmentCount = 0;
     subpass.pPreserveAttachments = nullptr;
 
-    // 设置渲染通道中的子通道和附件信息
+    // 设置渲染过程中的子通道和附件信息
     VkRenderPassCreateInfo rpInfo = {};
     rpInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
     rpInfo.pNext = nullptr;
@@ -384,7 +384,7 @@ void VulkanRenderer::createRenderPass(bool isDepthSupported, bool clear) {
     rpInfo.dependencyCount = 0;
     rpInfo.pDependencies = nullptr;
 
-    // 创建渲染通道对象
+    // 创建渲染过程对象
     result = vkCreateRenderPass(deviceObj->device, &rpInfo, nullptr, &renderPass);
     assert(result == VK_SUCCESS);
 }

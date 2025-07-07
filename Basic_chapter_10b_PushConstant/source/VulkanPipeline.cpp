@@ -166,7 +166,7 @@ bool VulkanPipeline::createPipeline(VulkanDrawable *drawableObj, VkPipeline *pip
     pipelineInfo.renderPass = appObj->rendererObj->renderPass;
     pipelineInfo.subpass = 0;
 
-    // 使用VkGraphicsPipelineCreateInfo对象中的元数据存储创建管道
+    // 使用VkGraphicsPipelineCreateInfo对象中的元数据存储创建流水线
     if (vkCreateGraphicsPipelines(deviceObj->device, pipelineCache, 1, &pipelineInfo, nullptr, pipeline) == VK_SUCCESS) {
         return true;
     } else {
@@ -174,7 +174,7 @@ bool VulkanPipeline::createPipeline(VulkanDrawable *drawableObj, VkPipeline *pip
     }
 }
 
-// 当不再需要时，销毁管道缓存对象
+// 当不再需要时，销毁流水线缓存对象
 void VulkanPipeline::destroyPipelineCache() {
     vkDestroyPipelineCache(deviceObj->device, pipelineCache, nullptr);
 }

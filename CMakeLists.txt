@@ -107,7 +107,7 @@ add_subdirectory(dependencies/glslang)
 #add_subdirectory(Basic_chapter_11b_Texture_OptimalLayout)
 
 # Vulkan开发实战详解的各个章节
-#add_subdirectory(Chapter01-01)
+add_subdirectory(Chapter01-01)
 
 #add_subdirectory(Chapter02-01)
 #add_subdirectory(Chapter02-02)
@@ -246,8 +246,8 @@ add_subdirectory(dependencies/glslang)
 #add_subdirectory(Chapter15-07)
 #add_subdirectory(Chapter15-08)
 
-add_subdirectory(Chapter16-01)
-add_subdirectory(Chapter16-02) #未修复
+#add_subdirectory(Chapter16-01)
+#add_subdirectory(Chapter16-02) #未修复
 #add_subdirectory(Chapter16-03)
 #add_subdirectory(Chapter16-04)
 #add_subdirectory(Chapter16-05)
@@ -258,7 +258,7 @@ add_subdirectory(Chapter16-02) #未修复
 #add_subdirectory(Chapter17-04)
 #add_subdirectory(Chapter17-05)
 #add_subdirectory(Chapter17-06)
-add_subdirectory(Chapter17-07) #未修复
+#add_subdirectory(Chapter17-07) #未修复
 #add_subdirectory(Chapter17-08)
 #add_subdirectory(Chapter17-09)
 #add_subdirectory(Chapter17-10)

@@ -66,11 +66,11 @@ public:
     VkSemaphore imageAcquiredSemaphore;// 渲染目标图像获取完成信号量
     uint32_t currentBuffer;// 从交换链中获取的当前渲染用图像对应的缓冲编号
     VkRenderPass renderPassScreen;
-    VkRenderPass renderPassSelf;//渲染通道（服务于 MRT）
+    VkRenderPass renderPassSelf;//渲染过程（服务于 MRT）
     VkClearValue clear_values_screen[2];
-    VkClearValue clear_values_self[5];//渲染通道用清除帧缓冲的数据（服务于 MRT）
+    VkClearValue clear_values_self[5];//渲染过程用清除帧缓冲的数据（服务于 MRT）
     VkRenderPassBeginInfo rp_begin_screen;
-    VkRenderPassBeginInfo rp_begin_self;//渲染通道启动信息（服务于 MRT）
+    VkRenderPassBeginInfo rp_begin_self;//渲染过程启动信息（服务于 MRT）
     VkFence taskFinishFence;// 等待任务完毕的栅栏
     VkPresentInfoKHR present;// 呈现信息
     VkFramebuffer *framebuffers;// 帧缓冲序列首指针

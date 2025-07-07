@@ -347,7 +347,7 @@ void VulkanDrawable::recordCommandBuffer(int currentImage, VkCommandBuffer *cmdD
     renderPassBegin.clearValueCount = 2;
     renderPassBegin.pClearValues = clearValues;
 
-    // 开始录制渲染通道
+    // 开始录制渲染过程
     vkCmdBeginRenderPass(*cmdDraw, &renderPassBegin, VK_SUBPASS_CONTENTS_INLINE);
 
     // Bound the command buffer with the graphics pipeline
@@ -375,7 +375,7 @@ void VulkanDrawable::recordCommandBuffer(int currentImage, VkCommandBuffer *cmdD
     // Issue the draw command 6 faces consisting of 2 triangles each with 3 vertices.
     vkCmdDraw(*cmdDraw, 3 * 2 * 6, 1, 0, 0);
 
-    // 完成渲染通道录制
+    // 完成渲染过程录制
     vkCmdEndRenderPass(*cmdDraw);
 }
 
@@ -388,7 +388,7 @@ void VulkanDrawable::prepare() {
         CommandBufferMgr::allocCommandBuffer(&deviceObj->device, *rendererObj->getCommandPool(), &vecCmdDraw[i]);
         CommandBufferMgr::beginCommandBuffer(vecCmdDraw[i]);
 
-        // 创建渲染通道实例
+        // 创建渲染过程实例
         recordCommandBuffer(i, &vecCmdDraw[i]);
 
         // 完成指令缓存的录制

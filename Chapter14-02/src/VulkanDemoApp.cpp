@@ -847,7 +847,7 @@ void VulkanDemoApp::drawObject() {//执行绘制的方法
                           &(sqsCT->descSet[0]), 0);//绘制平面
     drawThings(1);//绘制平面上各个物体的阴影
     drawThings(0);//绘制平面上各个物体本身
-    vkCmdEndRenderPass(cmdBuffer);//结束渲染通道
+    vkCmdEndRenderPass(cmdBuffer);//结束渲染过程
     result = vkEndCommandBuffer(cmdBuffer);
     submit_info[0].waitSemaphoreCount = 1;
     submit_info[0].pWaitSemaphores = &imageAcquiredSemaphore;

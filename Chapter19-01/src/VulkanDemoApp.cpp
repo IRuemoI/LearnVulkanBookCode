@@ -624,7 +624,7 @@ void VulkanDemoApp::destroyVulkanDepthBuffer() {
     printf("销毁深度缓冲相关成功!\n");
 }
 
-//创建渲染通道
+//创建渲染过程
 void VulkanDemoApp::createRenderPass() {
     //创建VkSemaphoreCreateInfo实例
     VkSemaphoreCreateInfo imageAcquiredSemaphoreCreateInfo;
@@ -667,7 +667,7 @@ void VulkanDemoApp::createRenderPass() {
     depth_reference.attachment = 1;
     depth_reference.layout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
 
-    //渲染子通道描述
+    //渲染子过程描述
     VkSubpassDescription subpass = {};
     subpass.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
     subpass.flags = 0;
@@ -680,7 +680,7 @@ void VulkanDemoApp::createRenderPass() {
     subpass.preserveAttachmentCount = 0;
     subpass.pPreserveAttachments = nullptr;
 
-    //渲染通道创建用信息
+    //渲染过程创建用信息
     VkRenderPassCreateInfo rp_info = {};
     rp_info.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
     rp_info.pNext = nullptr;
@@ -691,7 +691,7 @@ void VulkanDemoApp::createRenderPass() {
     rp_info.dependencyCount = 0;
     rp_info.pDependencies = nullptr;
 
-    //创建渲染通道
+    //创建渲染过程
     result = vkCreateRenderPass(device, &rp_info, nullptr, &renderPass);
     assert(result == VK_SUCCESS);
 
@@ -717,7 +717,7 @@ void VulkanDemoApp::createRenderPass() {
     rp_begin.pClearValues = clear_values;
 }
 
-//销毁渲染通道相关
+//销毁渲染过程相关
 void VulkanDemoApp::destroyRenderPass() {
     vkDestroyRenderPass(device, renderPass, nullptr);
     vkDestroySemaphore(device, imageAcquiredSemaphore, nullptr);
@@ -917,7 +917,7 @@ void VulkanDemoApp::drawObject() {
     //将纹理与描述集关联
     VulkanDemoApp::flushTexToDesSet();
 
-    //启动渲染通道
+    //启动渲染过程
     vkCmdBeginRenderPass(cmdBuffer, &rp_begin, VK_SUBPASS_CONTENTS_INLINE);
 
 
@@ -928,7 +928,7 @@ void VulkanDemoApp::drawObject() {
     CameraUtil::calCamera();
 
 
-    //结束渲染通道
+    //结束渲染过程
     vkCmdEndRenderPass(cmdBuffer);
     //结束一级命令缓冲
     result = vkEndCommandBuffer(cmdBuffer);

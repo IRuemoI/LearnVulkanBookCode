@@ -3,7 +3,7 @@
 #include "VulkanDrawable.h"
 #include "VulkanSwapChain.h"
 
-// 采样数需要在图像创建时相同，用于渲染通道创建（附件）和管道创建
+// 采样数需要在图像创建时相同，用于渲染过程创建（附件）和流水线创建
 #define NUM_SAMPLES VK_SAMPLE_COUNT_1_BIT
 
 // Vulkan Renderer是自定义类，它不是Vulkan特定的类

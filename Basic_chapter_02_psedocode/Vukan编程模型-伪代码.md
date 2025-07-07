@@ -205,7 +205,7 @@ pipelineLayoutCI.pSetLayouts				= descLayout.data();
 vkCreatePipelineLayout(device, &pipelineLayoutCI, nullptr, &pipelineLayout);
 
 
-/**************** 10. 渲染通道 ****************/
+/**************** 10. 渲染过程 ****************/
 
 // 定义两个附件，分别对盈利颜色和深度缓冲
 VkAttachmentDescription attachments[2];
@@ -222,7 +222,7 @@ VkSubpassDescription subpass	= {};
 subpass.pColorAttachments		= &colorReference;
 subpass.pDepthStencilAttachment = &depthReference;
 
-// 定义渲染通道控制的结构体
+// 定义渲染过程控制的结构体
 VkRenderPassCreateInfo rpInfo	= { &attachments,&subpass ...};
 
 VkRenderPass renderPass; // Create Render Pass object
@@ -355,7 +355,7 @@ vkCreateSemaphore(device, &imageAcquiredSemaphoreCreateInfo,
 vkAcquireNextImageKHR(device, swapChain, UINT64_MAX, 
                       imageAcquiredSemaphore , nullptr, &currentSwapChainImageIndex);
 
-/****************  17. 准备渲染通道的控制结构体 ****************/
+/****************  17. 准备渲染过程的控制结构体 ****************/
 
 // 定义清屏颜色以及深度/模板值
 const VkClearValue clearValues[2] = {
@@ -363,7 +363,7 @@ const VkClearValue clearValues[2] = {
     [1] = { .depthStencil = { 1.0f, 0 } },
 };
 
-// 帧缓存的渲染通道执行数据结构
+// 帧缓存的渲染过程执行数据结构
 VkRenderPassBeginInfo renderPassBegin;
 renderPassBegin.sType		= VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
 renderPassBegin.pNext		= nullptr;
@@ -377,8 +377,8 @@ renderPassBegin.clearValueCount				= 2;
 renderPassBegin.pClearValues				= clearValues;
 
 
-/****************  18. 渲染通道执行 ****************/
-/**** 开始渲染通道 ****/
+/****************  18. 渲染过程执行 ****************/
+/**** 开始渲染过程 ****/
 vkCmdBeginRenderPass(cmd, &renderPassBegin, VK_SUBPASS_CONTENTS_INLINE); 
 
 vkCmdBindPipeline(cmd, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline); // 绑定流水线
@@ -388,7 +388,7 @@ vkCmdSetViewport(cmd, 0, NUM_VIEWPORTS, &viewport); // 视口 = {0, 0, 500, 500,
 vkCmdSetScissor(cmd, 0, NUM_SCISSORS, &scissor);	 // 裁剪器  = {0, 0, 500, 500}
 vkCmdDraw(cmd, 3, 1, 0, 0);			 //绘制指令 - 3 顶点, 1 实例, 初始索引为0
 
-/**** 结束渲染通道 ****/
+/**** 结束渲染过程 ****/
 vkCmdEndRenderPass(cmd);
 
 // 设置交换链图像布局

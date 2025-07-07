@@ -688,8 +688,8 @@ void VulkanDemoApp::createRenderPass() {
     VkAttachmentDescription attachments[4];//附件描述信息数组
     attachments[0].format = colorFormat;//设置用于多重采样的颜色附件格式
     attachments[0].samples = MULSAMPLE_FACTOR;//设置多重采样数
-    attachments[0].loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;//渲染通道开始时颜色附件的操作
-    attachments[0].storeOp =//渲染通道结束时颜色附件的操作
+    attachments[0].loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;//渲染过程开始时颜色附件的操作
+    attachments[0].storeOp =//渲染过程结束时颜色附件的操作
             VK_ATTACHMENT_STORE_OP_DONT_CARE;
     attachments[0].finalLayout =//颜色附件的最终布局
             VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
@@ -699,9 +699,9 @@ void VulkanDemoApp::createRenderPass() {
     attachments[0].flags = 0;
     attachments[1].format = formats[0];//设置解析附件的格式(服务于呈现)
     attachments[1].samples = VK_SAMPLE_COUNT_1_BIT;//设置多重采样数
-    attachments[1].loadOp =//渲染通道开始时解析附件的操作
+    attachments[1].loadOp =//渲染过程开始时解析附件的操作
             VK_ATTACHMENT_LOAD_OP_DONT_CARE;
-    attachments[1].storeOp =//渲染通道结束时解析附件的操作
+    attachments[1].storeOp =//渲染过程结束时解析附件的操作
             VK_ATTACHMENT_STORE_OP_STORE;
     attachments[1].finalLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;//解析附件的最终布局
     attachments[1].stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
@@ -736,7 +736,7 @@ void VulkanDemoApp::createRenderPass() {
     VkAttachmentReference resolve_Reference = {};//解析附件引用
     resolve_Reference.attachment = 1;//对应附件描述信息数组下标
     resolve_Reference.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;//附件布局
-    VkSubpassDescription subpass = {};//构建渲染子通道描述结构体实例
+    VkSubpassDescription subpass = {};//构建渲染子过程描述结构体实例
     subpass.colorAttachmentCount = 1;//颜色附件数量
     subpass.pColorAttachments = &color_reference;//颜色附件列表
     subpass.pDepthStencilAttachment = &depth_reference;//深度附件列表

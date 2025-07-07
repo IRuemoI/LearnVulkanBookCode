@@ -360,8 +360,8 @@ void ShaderQueueSuit_Common::createPipeline(VkDevice &device, VkRenderPass &rend
     pipelineInfo.pDepthStencilState = &ds;// 管线的深度模板测试状态信息
     pipelineInfo.stageCount = 2;// 管线的着色阶段数量
     pipelineInfo.pStages = shaderStages;// 管线的着色阶段列表
-    pipelineInfo.renderPass = renderPass;// 指定的渲染通道
-    pipelineInfo.subpass = 0;// 设置管线执行对应的渲染子通道
+    pipelineInfo.renderPass = renderPass;// 指定的渲染过程
+    pipelineInfo.subpass = 0;// 设置管线执行对应的渲染子过程
 
     VkPipelineCacheCreateInfo pipelineCacheInfo;// 管线缓冲创建信息
     pipelineCacheInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_CACHE_CREATE_INFO;

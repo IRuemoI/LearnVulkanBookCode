@@ -993,7 +993,7 @@ void VulkanDemoApp::drawSceneToScreen()//完成第二轮绘制的方法
     desk->drawSelf(cmdBuffer, sqsD2D->pipelineLayout, sqsD2D->pipeline,
                    &(sqsD2D->descSet[0]));
     MatrixState3D::popMatrix();
-    vkCmdEndRenderPass(cmdBuffer);//结束渲染通道
+    vkCmdEndRenderPass(cmdBuffer);//结束渲染过程
     result = vkEndCommandBuffer(cmdBuffer);
     submit_info[0].waitSemaphoreCount = 1;
     submit_info[0].pWaitSemaphores = &imageAcquiredSemaphore;

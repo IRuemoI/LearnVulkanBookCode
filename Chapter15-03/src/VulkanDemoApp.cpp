@@ -929,7 +929,7 @@ void VulkanDemoApp::drawSceneToTex()//用于完成第一轮绘制的方法
     floor->drawSelf(cmdBuffer, sqsCTLD->pipelineLayout, sqsCTLD->pipeline,
                     &(sqsCTLD->descSet[TextureManager::getVkDescriptorSetIndexForCommonTexLight(tp + (string) ("floor.bntex"))]));
     MatrixState3D::popMatrix();
-    vkCmdEndRenderPass(cmdBuffer);//结束渲染通道
+    vkCmdEndRenderPass(cmdBuffer);//结束渲染过程
     result = vkEndCommandBuffer(cmdBuffer);
     submit_info[0].waitSemaphoreCount = 0;
     submit_info[0].pWaitSemaphores = nullptr;
@@ -961,7 +961,7 @@ void VulkanDemoApp::drawPeopleToTex()//用于完成第二轮绘制的方法
     people->drawSelf(cmdBuffer, sqsCTL->pipelineLayout, sqsCTL->pipeline,//绘制人物
                      &(sqsCTL->descSet[TextureManager::getVkDescriptorSetIndexForCommonTexLight(tp + (string) ("people.bntex"))]));
     MatrixState3D::popMatrix();//恢复现场
-    vkCmdEndRenderPass(cmdBuffer);//结束渲染通道
+    vkCmdEndRenderPass(cmdBuffer);//结束渲染过程
     result = vkEndCommandBuffer(cmdBuffer);
     submit_info[0].waitSemaphoreCount = 0;
     submit_info[0].pWaitSemaphores = nullptr;
@@ -995,7 +995,7 @@ void VulkanDemoApp::drawSceneToScreen()//用于完成第三轮及第四轮绘制
     people->drawSelf(cmdBuffer, sqsXRay->pipelineLayout, sqsXRay->pipeline,//绘制人物
                      &(sqsXRay->descSet[0]));
     MatrixState3D::popMatrix();//恢复现场
-    vkCmdEndRenderPass(cmdBuffer);//结束渲染通道
+    vkCmdEndRenderPass(cmdBuffer);//结束渲染过程
     result = vkEndCommandBuffer(cmdBuffer);
     submit_info[0].waitSemaphoreCount = 1;
     submit_info[0].pWaitSemaphores = &imageAcquiredSemaphore;

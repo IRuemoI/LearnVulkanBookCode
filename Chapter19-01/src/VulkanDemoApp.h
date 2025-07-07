@@ -88,11 +88,11 @@ public:
     VkSemaphore imageAcquiredSemaphore;
     //从swapChain中获取的当前渲染用Image的缓冲编号或称之为索引
     uint32_t currentBuffer;
-    //渲染通道
+    //渲染过程
     VkRenderPass renderPass;
-    //渲染通道用清除帧缓冲数据
+    //渲染过程用清除帧缓冲数据
     VkClearValue clear_values[2];
-    //渲染通道启动信息
+    //渲染过程启动信息
     VkRenderPassBeginInfo rp_begin;
     //等待任务完毕Fence
     VkFence taskFinishFence;
