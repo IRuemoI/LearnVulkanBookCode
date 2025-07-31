@@ -1,5 +1,12 @@
 #pragma once
+
+#ifdef _WIN32
 #include <windows.h>
+#elif __APPLE__
+#include <mach/mach_time.h>
+#else
+#include <time.h>
+#endif
 
 class FPSUtil {
 public:
@@ -13,11 +20,12 @@ public:
 
     // 计算FPS相关方法
     static void init();
-
     static void calFPS();
 
     // 控制帧速率相关方法
     static void before();
-
     static void after(int dstFPS);
+
+    // 跨平台获取毫秒时间函数
+    static long long getCurrentTimeMillis();
 };
