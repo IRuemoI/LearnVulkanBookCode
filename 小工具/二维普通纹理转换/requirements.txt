@@ -1,0 +1,9 @@
+# 二维普通纹理转换工具依赖包
+# Python GUI框架
+PySide6>=6.5.0
+
+# 图像处理库
+Pillow>=9.0.0
+
+# 其他依赖
+pathlib2>=2.3.0; python_version < "3.4"

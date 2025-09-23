@@ -1,0 +1,11 @@
+# 立方图纹理生成工具依赖包
+# Python版本要求: >= 3.8
+
+# GUI框架
+PySide6>=6.5.0
+
+# 图像处理
+Pillow>=9.0.0
+
+# 类型提示支持（Python 3.8需要）
+typing-extensions>=4.0.0
