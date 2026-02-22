@@ -1,0 +1,138 @@
+06-03.Vulkan-SubPass封装
+
+我们之前呢，已经讲完了render pass相关的一些理论知识啊，那么我们现在啊，就开始把我们的这个r里面啊补上render pass相关的内容，仍然新建一个文件叫render pass点h。
+然后呢？
+拷贝一份叫做render pass点cpt。
+好，那么在这边呢，我们仍然是把帽子先摘过来啊，然后。
+好，这里呢class render pass。
+仍然是它的构造系统函数public private。
+上面render pass。
+瑞恩达。
+然后wender。
+pass okay，那么在这里呢？
+我们先写一下啊，我们编写render pass这个类的思路啊。
+思路好，第一步我们应该先认识一下啊，关于render pass当中的catchment。
+attachment呢，是不是有两种东西对吧？
+第一种是vk attachment description。
+这个是用来干嘛的呢？
+我们来讲一下啊，是用来。
+描述。
+当前啊，比如说啊，应该说描述一个啊，颜色或者深度模板附着的一个描述结构啊，一个结构。
+它呢，并不是一个真正的附着，而是一种单纯的啊。
+描述说白了啊，就是外界要对我输入怎样的一个attachment啊，然后呢？
+那么这个attachment做好之后啊，比如说我们做了三个颜色，这个attachment description，然后呢，我们还做了一个深度，就比如说这样。
+我们做一个这个一号，然后呢？
+第二个颜色以及呢？
+第三个颜色还有一个诶叫做深度。
+山洞模板。
+那么，有了这三个描述之后呢啊，外界啊，就得给我们按照这样的结构给到我们三四张啊，这种类型的图片告诉外界我要什么啊？
+OK，那么有了这几个东西之后呢？
+我们就要构建sub pass啊，那么每一个sub pass呢？
+他们是引用了啊，这几个颜色附着对吧？
+或者是说他要用上一趴给出的颜色附着信息或者图片信息。
+那么，如果是它使用了啊，这几个颜色附着当中的某几个，那么我们就要给到它vk attachment reference。
+啊，这个呢会说明啊，本个sub。
+诶sub pass需要哪些啊？
+需要的这个需要的attachment。
+其中的一个啊，这个代表了其中的一个啊，它可以有好多个，对吧？
+那么这一个的数组索引ID是多少？
+然后呢？
+这一个啊附着的图片。
+格式啊，或者说期望格式是什么？
+对吧？
+那么就是放在了这个结构体里面啊，那么接下来呢？
+就是vk啊。
+sub pass这个是用来干嘛的呢？
+这个是用来填写一个什么呢子啊子pass的结构啊，或者说它的子pass的描述结构。
+OK，那么这么来看的话啊，我们还需要一个东西，就是dependency啊vk dependency哎，叫做应该叫做。
+vk sub pass dependency啊。
+描述描述呢啊，不同的子流程之间的依赖关系啊，用definitive来表达啊OK，我们梳理好这些东西之后呢，我们先不去写这个类，我们这节课的目标是写出来。
+sub pass这个类，我们把sub pass呢给它填写成一个类的结构class。
+sub pass away.sub pass.double pass.every OK那么在这里面呢？
+我们的目标是什么呀？
+目标是填写一个vk stub pass诶，这还没有啊，我们把这个先引入到编译链条。
+比如说我们把它放到这。
+render pass okay，重新把它。
+再回来。
+那么前边就应该有了等等位k sub pass。
+description啊，这么个东西，那这个东西呢，就是用来记录当的sub pass啊，我们应该把它放在这儿，这个sub pass description。
+m sub pass.滞空啊，这个就是把它们全滞空，这里面的结构，这是一个结构体，这个结构体里面呢，有很多的东西啊，包括说啊，它的flex啊，一些标注位，然后呢，这边是它要绑定在哪一种啊，渲染上面，比如说graphic还是计算？
+那么这个的话呢？
+就是它的啊input test ment就是说呃，可能是从上一爬过来的啊，上一爬过来的，这样一个test ment的数量，然后这边呢，就是它绑定的啊，那种现成的color test ment的数量，然后以及color test ment。
+那这边接下来就是深度啊，等等都是我们用到的啊。
+OK，那么我们接下来给它一个结构。
+我们知道一个sub pass需要被指定什么呢？
+需要被指定啊，它输入的颜色附着和深度附着以及上一趴对它的输入的啊，这样一个附着对吧？
+所以说呢，我们把它统一放到一个里面。
+第一个颜色附着vk attachment。
+reference来这个东西，刚才我们讲了啊，这个reference是最终输入到render pass当中的这样一个大数组里面的啊，哪一个对吧？
+指定的里面的哪一个ID或以及这个sava has它所期望的格式。
+讲一个东西好，这叫color attachment。
+reference然后呢？
+第二个matter。
+vk attachment.reference.m叫做input attachments。
+reference.啊，这个的话呢，就是呃上一盘需要对我输出啊，怎样的一个数组啊？
+这个数组里面是怎样的一个结构？
+我应该引用其中的哪一个？
+然后呢？
+就是直接是Vicky attachment leverence。
+只有一个，只有一个是谁啊？
+是APP sstantial那么attachment reference？
+OK，那么这就是它的输入了啊，那么对于这些输入来讲的话呢，我们要给出一些接口啊，我们希望生成一个some pass的描述信息，然后呢，我们要对外暴露几个什么样的接口呢，是add color attachment。
+reference okay，这边是传入这样一个结构。
+啊，叫做reference，然后呢？
+我们同样啊，复制这个函数and into s attachment reference。
+以及set。
+set depth.呃stential attachment reference啊OK也是一个reference，那么最后呢，我们要给出一个什么呢？
+喂，saber pass。
+description好，那么就是将这些东西啊，都填充好之后，我们就可以将它们一股脑的都塞给这个summer pass啊，把这个结构体给填充起来，就用这个函数。
+然后填充完毕之后呢，我们希望把它获取出来。
+auto get double pass description.诶description。
+ss诶，这边加des吧。
+description啊，这个名字好，那样的话，我们这个类啊就写完了。
+然后呢？
+我们去到我们的cpp里面实现一下。
+在你的pass这边。
+你可录的人的pass in space。
+OK.然后呢？
+这边是嗯萨帕斯。
+sub pass做到。
+sub pass，然后sub pass的虚构啊，这个虚构也没什么可惜的，其实。
+然后呢，就是void sub pass。
+add color test reference.我们把它拷过来。
+大粉丝好。
+name color action reference push back.哎呀。
+第二个应该什么add input attached reference是吧？
+这边就是input。
+最后20。
+set深度啊以及模板附着。
+哎，然后这边呃m depth。
+等于ref。
+OK，所以我是build。
+这个的话怎么办呢啊？
+我们需要啊，首先指定一下。
+是否为空啊？
+我们首先判断是否为空，因为你怎么着给我一个颜色附着吧，对不对m呃叫做color attachment reference啊，这样吧，我们。
+用set直接如果m color attachment reference是empty的话。
+slows d runtime mirror.哎l。
+呃，叫做color attachment。
+啊group is empty。
+好按空之后呢，我们开始构建sub pass description，它的第一个是color attachments count。
+等于static。
+pass啊int 32d。
+然后后面是。
+color attachment rest呃，size好，然后subpart。
+description的p color attachments=color attachment reference的beta好，那么在此之前呢，我们还要去规定一下它的bending point啊，bending point。
+诶，那么它binding point信息呢？
+放在这里sub pass description啊，它的bind呃，这儿bind point啊，然后呢，把它写成vk pipeline bind。
+point graphics我们看到有好多的这种band point的种类是吧？
+我们是图像处理的啊，用于这个呃图像渲染的这样一个band point OK，那么接下来的话呢，我们来继续构建啊，上面已经有了这两个东西了，考一下。
+呃，它的input attachment count那么这边就是input test ment reference啊，这边input这边pin put OK。
+那么这边弄完之后呢？
+马上最后还有一个什么depth center对吧？
+m sub pass。
+呃，description depths分手等于我们的depths分手reference OK，那这样的话呢，就阅读完了，是不是我们其实只是填充了这样一个物体啊？
+前面的话呢，我们可以灵活的插入各种各样的color touch ment啊，各种各样的touch ment reference在后面的话呢，给它集中构建出来啊。
+好，那么这边的话，我们还缺一个函数啊，这个函数写到写到这地方。
+啊，我这边已经写完了OK好，那么关于sub cast的构建啊，我们就到这里。
+

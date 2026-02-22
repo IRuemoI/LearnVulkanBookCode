@@ -1,0 +1,120 @@
+06-04.Vulkan-RenderPass类封装
+
+我们上节课呢，已经完成了sub pass的构建，那么这节课呢，我们开始制作render pass，render pass呢，与sub pass不一样啊，这个的目的呢，是为了填充这样一个结构体而render pass呢，去创造一个啊，render pass的一个实例句柄叫做vk render pass，这么一个结构啊。
+m radar pass它呢是可以被赋予，也可以now handler的啊，那我们知道啊，一旦说需要做这样一个结构体，这个malkin的对象句柄的时候呢，就一定需要传入一个什么一个device啊。
+好device，那么我们也给它补上前缀。
+等于delete share。
+window pass.再加二。
+那么，create的函参数啊，就是这个。
+return cma ke share.这边都是pass。
+把device放进去好，那么我们再想啊，再做一个render pass的话，我们很重要的一点是什么呢？
+那就是啊，要把这个sub pass填充进去啊，一个render pass可能还有多个sub pass，所以这边我们也记录下来。
+叫做sub pass。
+给它取名叫sub passes。
+好，那么除了sub pass之外啊，每两个sub pass之间一定要有一个什么，有一个依赖关系，对吧？
+有一个依赖关系啊，这个叫dependency啊，dependency icd vector。
+这个叫做sub sub pass dependency啊，这个东西我们给它取名叫dependency。
+好，我们这个结构大家可能还不熟悉啊，这个sub pass dependence是什么东西呢？
+我们看一下这边啊，有一个source subs有个desk sub pass它呢，就是啊，上这个dependence的控缩控制的所控制的区域啊的上一个呃sub pass以及它的下一个sub pass，这两个pass之间有怎样的依赖呢？
+那么我们这。
+对于上一个pass来讲，它的在这个阶段的什么这个操作完成了才能开启下一个saber pass的这个阶段的这个操作啊，道理。
+好dependence完之后呢？
+我们还需要一个这样的球体啊better。
+叫做vk attachment是。
+取名dis呃attachment。
+descriptions啊，这是个什么东西呢？
+它呀，就是存储了这样一个大的render pass，它所总体需用用到的啊attachment总体用到的attachment就存在这里面，那么每一个attachment的描述信息就是这个ment description啊。
+我们看一看啊，总结一下sa as里面它是要加入啊，它的它所绘制的目标，这样一个attachment reference以及它要向下一它所输出啊，以及上一它向它输入的啊，就是应付的attachment reference。
+那么attachment reference和attachment之间的关系是什么？
+我们在之前讲过attachment构成了这样一个大的数组，对吧？
+总共有这么多的attachment description啊，这么多的attachment，然后呢？
+attachment reference是指这个supplement它所用到的是这一个。
+和这一个那么就是一号号对吧？
+如果是这个和这个就是二号和三号啊，它用到的哪一些attachment被写在了attachment reference里面啊，所以说我们继续看attachment reference就有一个attachment的ID以及一个layout格式。
+好，那么这里面存了什么呢？
+大家也要注意一点啊，这里面并没有存真正的，它只是存储了这个，它这么的描述信息啊，只是一个描述信息，比如说呢，现在啊，一个是什么样的格式啊，它的这个初始的layout以及它最终的操作完之后要转换成什么样的layout？
+所以说这个touch ment discreet，它只是一个描述信息啊，并没有含有真正的图片，所以说呢，这个red pass我们可以理解，为什么呀？
+它又是和pipeline很像了啊，它是类似于一种渲染模板的东西，它只是规定了我想向你要这么多的啊，这些样子的attachment。
+啊，那么请你把这些图片做成这副样子，要是做这么多输送到我的这个rend AR pass里面来啊，这个道理那么最终。
+device点m device啊，一定要记着，然后点一下好，那么我们构建完了它的成员，接下来就是填充了add。
+大宝怕死。
+看萨帕。
+some pass.然后呢？
+va dependency。
+cons TV k dependent civ k.sub pass哎，超了，真的是不用写呃dependent three，然后void add attachment。
+那么，里面是const？
+那它是不是可以这么选呢？
+这个attachment es好，那么我们把它啊拷过来，在里面实现一下。
+首先，我们先实现它的构造函数吧，run点pass。
+window pass里面传的是account device。
+m device.等于device。
+哦，render pass。
+虚构函数里面，如果m render pass这个句柄，它等于啊，不等于v know handle，那么我们就把它虚构掉啊destroy。
+呃，render pass。
+m render pass.okay，然后。
+嗯噢okay，这里还有啊，它参数不止这个，还有device get device。
+呃，还有就是它最后的那个默认的啊，分配器好，这样才完整啊，然后接下来我们把它拷过来，实现这几个函数，哎，特别简单。
+呃，这。
+诶，好。
+先把帽子摘过来。
+这边sub pass直接就用m配SUP SUP pass。
+边儿用m dependent点。
+谁分的谁？
+最后，用m apache ment。
+descriptions拖出来。
+attachment ds.好这几个啊，添加参数啊，添加参数完了我们再回来做一个什么呢？
+我们来做一个void build render pass啊，那么我们这些参数都设置完毕之后啊，需要进入一个构建的流程了啊，就是构建整个render pass。
+然后我们再去做一下这个函数，what underpass 6？
+在构建之前呢，我们首先检查一下，如果m啊第一个sabo has sis，如果为空是不是不行啊？
+对吧？
+或者m attachment descriptions也不能为空啊empty。
+如果它为空或者呃dependency，它为空。
+那么，任意一条实线的话都不行啊！
+throw呃STD long time error。
+error呃叫做not enough。
+elements for.to build，render，pass好。
+那么，如果这些元素都OK的情况下呢？
+我们首先第一个工作就是解包啊，为什么要解包呢？
+因为啊，这三个数组里面其中有一个这家伙比较特殊，对吧？
+其他的这两个都是VAL Ken变量的VAL Ken，这里面的类型的数组，那么只有它是我们自己定义的啊，我需要把它的。
+这样一个in prescription给拆出来，然后利用这个组成一个数组。
+好，这边二一I=0 I小于叫做sub CSS es的size。
+现在按按照顺序啊，一定是按照顺序向其中复制，那复制到哪里呢？
+复制到这里sd actor。
+AK sub house description.subpart is.好sub passes诶，这样。
+put back，put back一个什么呢？
+是sub passes啊，原来这个数组里面的第r一个去get sub pass description啊，这样就可以。
+好，我们现在啊，就是已经拿到了所有信息了，开始构建，那么构建一个啊walk n的句柄对象的时候呢，一定要有一个什么create infer是吧？
+一定要有一个create infer，we可以learned US create infer。
+要先写这个结构啊great infer。
+要把它置零啊，后面这个是用把它置零的意思，然后rin fer首先啊，它的类型。
+等于vk structure。
+type呃render pass create infer。
+然后第一个步骤啊。
+attachment count=static cast。
+打印的32杠d。
+谁呢m attachment？
+description啊，science好，然后create infer the p attachment就是它的内容等于m attachment description的data。
+第二个内容，我们先讲呃dependency的count啊，多少个依赖同样划过来。
+这边是m dependency。
+下面回去。
+infer它的p dependence啊，等于dependency。
+诶一拼好data，然后再接下来。
+就是sub pass。
+胖子学。
+它的sub passes啊，我们用这个新的变量啊，sub passes。
+那么f infer。
+的p sub passes=sub passes是吧的data好，那么这些结构我们就填完了啊，填结构填完之后呢，我们就可以创建这个sub passes，如果vk create。
+呃render pass第一个参数device。
+第二个参数啊，是create infer，create infer。
+第三个参数默认构造器。
+第四个参数就是我们要生成的那个render pass。
+如果它不等于vk success的话，那么我们就要报警throw呃SD runtime error。
+error failed to create render pass.诶render pass好OK，那么到这里呢？
+我们就算是啊，把它做出来了，然后呢？
+做出来之后呢？
+检查一下啊，看一看有没有什么问题？
+嗯，也没有什么问题，暂时啊好那么做出来之后我们跑一下。
+现在呢，主要是跑编译啊，因为毕竟还没有练进去。
+好，还没有使用，那么我们对于啊render pass的设置，那么接下来就要使用这两个类了。
+

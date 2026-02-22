@@ -1,0 +1,22 @@
+我们上节课已经做了descript、 layout 这种类型，那么这节课我们就做一些后续的准备工作。第一个准备工作是将 descriptor set layout 给它做到我们的 pipeline 里面，我们看在 application 里面 create pipeline 这个函数，我们在这里面设置了一堆 pipeline 的状态，在这里我们有一个 uniform 的传递信息，我们还没有做，在这里我们把它做进去它的 set layout，我们应该有一个 layout 要给它，然后这个东西它等于什么呢？我们看一下它是descriptor， layout 是 Vulkan 的这种类型，所以说我们在这里要给它获取一下 auto layout。那这个信息等于我们的 descriptor set layout get，把它拿出来，那么这是个临时变量，对吧？然后把它放到这里，因为我们设置完毕之后就立即开始 build 了，所以说这边是可以这样去用这种临时变量的，OK，那么它就加到 pipeline 里面。
+
+接下来我们要去到这边看一看我们的 VP 矩阵是在这做了声明，然后这是我们的每一个物体相关的uniform，我们现在把它拷出来，拷到哪里去都把它拷到 base 里面，先把它们集约化管理都放在这，OK，那么放在这之后我们要去到 model 看一下这里，在这个 model 里面我们去给它们声明出来啊。
+
+对于每一个物体而言，它都会有一个自己的 object uniform，对吧？ m Uniforms m uniform 好在这里。那么对于每一个物体而言，它都得有如下几个接口，首先第一个 get uniform，对吧？跟它拿的出来，我就 return uniform 这样就好了。
+
+然后我们还有一个对它的设置，对吧？我能设置它的这样一个位置，或者是设置它的这个旋转，我们在这为了方便，我们就直接给它做成设置矩阵，这样比较简单。 BYTE set 叫做 model Matrix。那么它传入的是一个 GL m Mat four model Matrix，就 Matrix 这边 m uniform 里面应该会有一个 model Matrix，让它等于Matrix，这样我们就实现了在外部对它的更新，是吧？然后在 application 里面，那这边我们还要把这个矩阵给声明出来，我们后面会引入一架摄像机，那现在的话先不引入，先把它临时放在这边，叫 VP matrixes， MVP matrixes，OK，把它放在这，现在就都是两个大阵，OK，那么接下来我们要去到 shader 里面修改一下，对于 Vertex shader 而言，我们传入顶点就直接，是不是就这样出去了，对吧？也没有做任何变换。
+
+在这里我们就声明一下，在这边我们先写 layout binding，等于 0 号的位置，我们放一个uniform，然后这个 uniform 它是什么东西呢？它是一个 vpmatrices 的uniform。OK，我们把这里面的变量跟外面声明的一模一样就行了。首先是一个MAT4，它是个什么呢？是一个VEC4，然后是一个MAT4，是一个 projection Matrix OK，然后依托于这样一个结构体，我们声明一个变量就是叫做 v p ubo，OK，那么接下来我们layout。
+
+绑定等于一的位置，我们也做一个uniform，把它叫做 object uniform 好，这边存一个 MAT4 model Matrix 同样声明一个变量 object UBO 好， UBO 就有了。之后我们的 GL position 它就不是这样子了，而说它要进行级联相乘了，它是不是要首先乘以自己的 object UBO 的？叫做 model Matrix，对吧？先做一下 model 矩阵的变换，然后第二步是要把它变换到摄像机坐标系了，就是 VP UBO 里面有一个 view Matrix，OK，这第二个，第三个就是将它变换到这个屏幕空间，就 project Matrix VP UBO 的 m project Matrix，OK，这样相乘下来之后，它就到达我们需要的这样一个，这个 0 到1，或者说- 1 到 1 的这样一个里面，关于 0 到 1 和- 1 到 1 这块也要给大家说明一下这个哪里，就在这里给大家说明白一点啊。
+
+就是说我们看这边，我们引入了 GL m，是吧？然后这边我们还要再引入个东西， GL m 的叫做。 GTC 这边 GTC 下面的 Matrix transform Matrix OK，这里transform，那么我们进到这看东西，还得把它再生成一下文件缓存，这个东西在这里面我们搜一下叫做 Zero to one，哎，这没有，应该在 GLM 的 projection 这边关于投影，然后这边我们看一下Zero，这边好，这边说了 to change the default near and far clip plane definition use 这个东西。
+
+那么也就是说在我们这个 Vulkan 里面，我们的深度不是说像 NDC 一样，我们把它变- 1 到1，它的深度剪裁的范围是 0 到1，那么这样的话，我们的 projection Matrix 在做计算的时候，你就得使用另外一种投影矩阵了，为了使用这种投影矩阵，我们就得把这个东西声明起来，应该是在我们的 base 点 h 里面，在这个前面我需要给放一下这个。
+
+把这个开启，然后开启之后我们再回来看一下，去到 projection 应该是在哪里？projector，稍等，我们看一看，我们去到 application 这边，我们先随便写一个函数，就是 GLM 的transpose， GLM 的叫author，哎，这个rtho，这个是正交投影矩阵的这样一个函数，我们进去看一看，嗯，这里，OK，你看它，这里面有很多的正交投影的函数在这边，这个就是我们 GLM 的这样一个函数入口，如果说你定义的是 CLIP 这个 Zero to one，那么它就给你用这种 Zero to one 的这种形式，你看我们这一行就亮起来了，对吧？其他几行就灰掉了啊。这样子，这个道理，OK。
+
+所以说我们再回来，刚才聊这么多，先删掉，我们再回来，到我们的vs，从我们的 vs 里面到这里。好，那么刚才聊这么多，就是说通过这一计算，刚才我们设置那个宏，导致了这个 Matrix 是会算出来最终的结果是 0 到 1 的一个z， 0 到 1 的一个深度，那么是这个道理。
+
+好，那么我现在这边也搞定了，搞定之后我们要去生成一下，咱们生成一下compile，OK，没有问题。然后把我们的两个 SV 弄出来，去到 out build shaders。替换进来，OK，好， shader 我们也搞定了，那么 application 这边我们也有 wiki metrics 了，那么接下来就可以继续往下进行了。好，那么这节课就到这里。
+

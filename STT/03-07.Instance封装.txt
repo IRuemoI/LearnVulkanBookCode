@@ -1,0 +1,147 @@
+03-07.Vulkan-Instance封装
+
+在这里啊我们要先加一个try cash啊，为什么因为vulkan在执行的过程当中啊，肯定会有失败的情况，我们会丢出一些runtime的一些exception就是异常，所以在这里抓一下，我们需要显示一下这个异常的内容啊try。
+然后呢，把这家伙放进来这边cache。
+const STD.exception我们抓到这个异常之后呢？
+我们要对它打印啊CD coute what sdd扔掉OK，这样我们就啊稍微放心了是吧？
+就算输出异常啊，也可以把它那么接下来呢，我们要开始思考了b是一个很零碎的API系统，那么关于instances OP chain device等等，我们都要把它包装起来，对吧？
+防止什么？
+防止太多了啊，我们写到一个程序里面太急了，这也是封装引擎很重要的一步。
+所以说呢，我们在这儿加一个文件夹，叫什么叫vulkan wrapper啊？
+这个vulkan wrapper建好之后呢？
+我们想一想啊，第一个类我们要写什么类啊？
+第一个类的话就是要它的原信息要生产出来，对吧？
+什么是原信息来着？
+就是vulkan的instance啊，所以在这里我们做一下vulkan instance的一个包装。
+叫instance点h啊，一个instance类，那这家伙呢，我们同样要这写一个。
+它的cpp啊，它的实现，但是有个问题啊，这个呃怎么说在这个wal CON的呃文件夹里面的东西啊，并没有被囊括到这个semi IC list里面来啊，所以我们给它的下面啊，加一个s emic list这个过程看上去也挺麻烦的是吧，但是加一次。
+就可以一直用是吧？
+其实还是挺爽的啊，所以lesson one进到里面把这家伙拷进来啊，我们拷进来一个什么拷进来一个新的sim MIT list，这新的simm it case给大家解读一下啊，就是说这边是file命令，这发明的什么意思啊？
+是从这个文件夹就是当前这个wrapper文件夹下读取所有APP文件。
+然后把它输入到vulkan这个变量当中存储，并且是recursive的类型，就是说如果再有文件夹的话，我们也要深入进去，把下面的cpp也要给我放到vulkan里面。
+然后呢，我把这个东西啊，我们取个新名字啊AD library什么什么library呢，是叫做vulkan lib br lib啊，是这么一个vulkan lib的呃，那个library，然后我们用的是这个vulkan这一堆文件生成的啊，上面搞到的是这一堆cpp。
+这边大家注意啊，不能有不能有这个呃空格，不能有这个空格，然后这个makeup style啊，这个make list我们就写完了，那么有个问题啊，如何从这个主make list里面去调这个东西呢？
+我们要进到主make list里面，大家在这个地方一定要注意啊。
+我在这里面要开始可能从上往下进行的过程当中啊，我要找一个时间点去到这个文件夹下执行这个cm ake，什么情况下呢啊？
+什么什么时间点？
+一定是要在这两边的include和。
+link的direction啊，都已经被加进去之后啊，加到系统环境里面后才去到这个文件夹上，所以在这里呢，我们一定要在它们俩的后面做一个add subdirectory。
+什么SUP direction呢？
+叫vulkan wrapper啊！
+这么一个SUP direction，然后啊，这个vulkan wrapper下面是不是已经被生成了一个走到这一步之后啊？
+过了是不是就为我们生成了一个叫做vulkan lab的东西？
+那么在最后啊link它给它的时候啊，我们要在这儿把vulkan lab给它拿进来就好了。
+OK，我们走一走，看一看啊。
+呃，暂时没有问题，可以啊，暂时没有问题，那么这个simic list结构变好之后，我们要进到什么vulkan的instance的写呃书写当中啊，首先肯定要problem once啊，就是说我们不要，我们要防止一下这个变量的重定义啊，然后啊，我们要做什么include？
+我们把必要的头文件先拿进来啊，是不是在这个链家外面的base我们定义了很多，我们需要的这些头文件对吧？
+把它拿进来，拿进来之后呢，我们接下来要namespace。
+name says呃OK ff，然后叫做wrapper，那么这个wrapper的这样一个命名空间当中呢？
+我们编一个类啊，叫glass instance，然后为它做一个public，做一个private。
+然后呢？
+这边肯定是它的构造函数和它的析构函数，然后呢？
+我们要思考啊，关于这样一个呃，这样一个头文件啊，我们如何让系统能够识别到它呢啊？
+就cm ake来讲的话，不一定就是说在现在就开始识别它了。
+那么我们最好啊，在现在就把它加到这个application的里面，把它include进来啊，在我们的编译链条里面就有它的一席之地了是吧？
+vulkan wrapper下面的instance先进来啊。
+进来之后呢，我们哎呦，没找到是不是为什么没找到，我们要把这个重新做一下缓存啊，右键c mic list，然后什么生成缓存这样，然后再进去，哎，我们就找到了对吧，所以c mic稍微复杂了一丢丢啊，但是大家要注意这些点，那老师在。
+书写的过程当中呃遇到的问题，大家可能要要跟着一起去解决，这样未来在工程当中才可以应用，对吧？
+那么接下来呢？
+我们要开始给到我们的主体了啊，就是walgreen里面的那个instance如何译啊？
+叫做vk。
+instance这么个玩意儿，然后min stance什么是vk instance啊，我们点进去看一下啊，按住ctrl点那个这个类的呃，这个dd啊，我们就到这了，到vk define handle vk instance，我们还记得什么是handle吗？
+handle是指啊，就好像是一部字典里面的k对吧，也是一个名称，就是说呢，它在客户端host端存储，然后呢，通过这家伙啊，可以它做一个代理，我们可以向gpu端啊，发送我们的信息，更改它那边的内存，对吧？
+所以说呢，这个就是我们在客户端的一个代理人。
+vk instance啊，然后呢，拿到这个东西之后呢，我们接下来啊，要开始对它进行一系列的生成，在生成之前呢，我们再试一下这个类啊，大家在写引擎的时候，或者写这个程序的时候啊，我们遵从一个推荐一个方式，叫raii，什么意思呢？
+就是说啊，运行时啊，我们走到一个函数里面，我们会生成一个变量，对吧？
+那这个变量是不是出了这个作用域之后，它就消失了呢啊？
+我们一定要全部都是这样子做，但有的人啊，老师，这个呃指针怎么办啊？
+指针怎么办？
+所以我们指针的话呢？
+就把它变成智能指针。
+啊，就是C加加11的智能指针shared r，所以说在这边啊，我们为这个类定义一个类型叫做using ptr=shared啊，等于STD。
+shared add然后叫做instance这样一个定义意思呢，有了这样一个定义之后啊，我们就可以这样来书写这个程序了，去掉application点h。
+在这边我们肯定要啊，在application里面加一个instance的，这么一个变量对吧？
+这么一个成员变量，它叫做wrapper诶。
+啊，叫做wrapper。
+instance p trm instance，唉，你看这样定义是不是很方便啊？
+就不用再次书写什么ste 12 ptr什么点括号什么什么东西了，我们直接这样定义就好了啊，我们把这个关于这个类的智能指针的定义就已经定义到这个类里面了啊，这么个意思。
+那么接下来呢？
+我们要给到一个静态的create函数，这样我们就能直接去在外面create这样一个instance的实例啊，这么一个类的实例怎么写呢？
+ST呃thirty ptr create OK，在这边我们直接returns TD make。
+shared然后呢？
+叫做啊instance，然后好啊，这样呃，关于这个这两句话呢，大家可以，如果不会的话，可以网上查一下C加加11的智能指针的用法啊shared是什么意思？
+在这里不做赘述啊。
+然后share rtr的生成一般是跟make来搭对儿的啊，跟make来搭对儿的OK，那这样的话呢，我们接下来就要努力的啊，集中精力去构建这个min stance，而这个min stance的话，我们把它的构建写在这个里面啊，首先一个路子。
+呃，instance，然后name namespace ff下面的wrapper APP I，然后它的构造函数instance instance。
+OK，就在这个构造函数里面，我们去构造这个，这个instance实例就可以了啊，我们看一下这边还没有构建对吧？
+所以说这个我们先把它等于default吧。
+啊，因为这个我们呃回头呢，实际上它不能等于给sorry啊，那么这个instance需要实现，因为要释放是吧，这个instance实力的资源，所以说在这边我们还要来一个instance。
+啊，instance。
+诶OK，看一下啊，说有什么一个重载是吧？
+重载什么意思？
+看一看啊嗯。
+啊，应该没有重载啊，编一下。
+啊，没有问题OK，那么在这里面的话呢，我们就要开始去着手生成instance啊，这个这个关于v里面的什么关于welcome里面的原信息，那么首先第一步啊，在v里面有个变量，叫做v啊，叫做。
+vk application infer在这个application infer，我们就要填一系列的关于这个application，就是我们当前这个程序的一些源信息，那在包括里面呢？
+我们生成任何的东西啊，生成任何的handle，或者说是句柄都需要为它先做一个什么什么什么infer。
+然后把这个infer呢填充一下，填充完毕之后呢，再用一个creat什么什么啊，这样一个函数把这个用这个infer和这个creat函数去生成这个句柄，这么个意思？
+然后呢？
+我们在这边写啊application APP infer，然后呢？
+等于一个啊，先把它初始化一下，等于个空值这一步很重要啊，就是将当前这个APP infer里面的东西都给置零了啊。
+随后，我们要开始填写嗯，一般情况下呢，都会要先填写一个很重要的参数，叫做s type啊，它等于vk嗯struck叉，然后type application infer啊很长对吧？
+这个东西呢，主要是来区别各种各样的structure用的啊，在系统里面会先调验这个东西，看你到底是不是呃，要为这个f APP去生成什么什么东西的，这么一条infer啊，这个意思。
+然后呢，填写完这个份之后呢，我们先来继续填写啊APP infer。
+呃，第二个参数是p application name，它叫什么名字？
+我们就叫做a locken lesson。
+OK，接下来APP infer啊什么呢？
+就是application the version啊，这个version的话呢，就是填这个APP的这么一个版本啊，非常简单vk make。
+make avk,make worry.然后呢？
+我们现在是应该是一点零点零版本啊，接下来APP infer它里面有什么呢？
+叫做p engine name啊engine name的话呢？
+其实怎么说呢？
+驱动啊，会根据你的引擎不同啊，可以做一些优化，在这里对我们来说并没有什么意义啊，我们直接就no engine啊。
+no angie啊no ang没有什么引擎，然后APP infer当然还有一个叫做ang veriant的东西啊，这个anveriant的话我们也给它搞成make veriant。
+然后一点零点零就可以了，最后APP infer它的API ver，我们用的这个mocking API vk API啊ver一点零好了。
+没有用什么太多的，这样我们就填写完了这么一个APP infer的东西啊，然后呢，我们这个infer是为是怎么说呢？
+它是一个子结构体啊，我们再填写，我们还要填几个东西叫做vk instance呃，叫v vk instance。
+呃，create infer。
+这个就是真正的create instance啊，这个时候我们要用的这么个结构体啊，这么一个信息体啊，叫做create instance，create infer，仍然把它先吃空啊。
+好这关之后呢？
+我们把它填写上instance great infer的，首先是s type是吧？
+很重要的一点啊，就它到底是个什么结构体vk structure？
+type呃叫做instance create infer。
+很长，但是很实用，对吧？
+很明确啊，然后呢？
+instance create infer再给它填写一个papp infer啊，这是一个指针啊，这要的是地址类型，等于我们取下地址APP infer就是把上面这个。
+一堆填写的东西啊，就给它放到这儿来了是吧？
+给它用进去了啊，然后我们填写好了这个instance，create infer之后呢，我们还需要思考一点啊，就是说。
+嗯，它还需要一些扩展啊，什么叫扩展呢？
+就是嗯instance的话呢，它里面会定义这个程序的原信息，那么vulkan的话，它是一个很薄的一层薄的驱动层的api，它呀，把很多东西都已经拍出，在核心的括号ap时代了，你比如说哈，它有很多的。
+呃，扩展呃，比如说是坐标系统的扩展，比如说是与窗口交互的扩展啊，甚至说还有一些内耳的层啊debug什么这些信息的出呢，它都已经排到外面了，所以说我们现在做的是非常非常干净的这么一个啊，系统非常干净的一种，那么关于扩展这块啊，我们后面再讲。
+我们现在先不去想啊APP的扩展啊，create infer的扩展，我们直接先把它create出来，如果啊vk啊create instance。
+这个API就是来创建in sta区柄的啊，那么叫做great infer，首先把great infer放进来，然后呢，第二个是关于内存，我们可以实现自己的啊，内存分配器，但是我们这边先没有必要啊，那我AP呃，那我ptr先用它默认的就可以了。
+最后呢，就是我们要为哪个句柄是呃进行生成，我们不是原来声明了一个，因此嘛，对吧，就给它生成，那如果说生成不成功啊，不等于为k success的话，那么我们要。
+抛出一个异常来呃，叫做throw。
+那么s dd run time error。
+叫做failed error，failed to create instance。
+OK，这样这个过程就完毕了啊，这个过程就完毕了，那么我们在application里面，我们应该怎么去做呢啊？
+这边有个in net talk en对吧？
+所以说我们要直接在application这边啊in net talk en里面。
+我们去做一件事儿，就是呃min stance就是这个，我们自己写的这个类啊，等于什么呢wrapper？
+instance create那create返回的是个什么？
+大家看是不是返回了？
+我们刚才定义的这种智能指针啊，对吧啊，拿到一个智能指针啊，给到了application这个呈现变量里面啊，这样就把它初始化成功了。
+那初始化完毕之后，我们还要考虑一点啊，这个instance啊，它在析构的时候啊，会发生一些什么事儿，那么我们知道啊，在那个整个程序完毕之后啊，会有一个什么？
+会有一个clear up，对吧？
+那么在clear up的时候，我们就需要去把这个呃instance给它销毁掉啊，所以说我们呃销毁掉的时候呢，也会把这样一个instance的类给销毁掉，那这个类销毁掉的时候就会掉这个类的什么析构函数，所以在这个析构函数的时候，我们也要把这个instance的实例刚才创建的这家伙。
+它这边vk destroy。
+ins sence诶，这儿呢？
+min stance那么，在第二个参数什么意思啊？
+第二个参数仍然是说啊，你要调用怎样的内存分配器给它回收回去啊？
+我们现在用的还是一个什么呃，默认的嗯，默认的。
+好，那么这样的话就稍微把它背一点了啊，我们把这个程序走一下。
+啊，就是这样子啊，所以还没有生成什么东西啊，比较自然那么呃，我们理一理啊，在m函数里面，我们调用了run啊，这里面呢，我们int window intwalconintwalcon之后呢，我们让这个instance等于让自己写这个instance类是吧，create。
+规则的时候呢，做了做了一个智能指针，在这个智能指针里面呢，又会create一个这样一个instance的实例是吧？
+这个instance实例呢，就会调它的构造函数，把application 1份填写，把Vicky in crete in呃Vicky in crete infer填写，然后把这个instance给它构建出来，在吸收的时候呢，又会去调这个啊，把它给干掉对吧？
+如果有问题，可以抛出异常，就这样子，所以说我们看啊，在这里给大家提嘴啊，这个写法是很多引擎都会去这么写的一个写法啊，非常好用啊，非常好用OK，这节课给大家讲到这里。
+

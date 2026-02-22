@@ -1,0 +1,58 @@
+各位同学，大家好，我们上节课二折类，那么还有一些比较小的问题，我们来更改一下，补充一下啊。第一个是这个我们的参数需要拷贝到 create 里面，否则是运行不起来的。然后这边我们把参数填上size，然后usage，然后 properties 好。然后第二点我们还有一个这样的一个问题，就是这边这两个条件相与，然后再去是否等于它进行判断？这边的话不太明确，我们需要把这边给做成一个这样就 ok 了。好，那么我们编一下。好，没有问题。哎，这边出现了一个这样的一个validationlayer，他说 vertexconsumes 什么？因为我们已经更改了这个vertexshader，对吧？但是我们还没有去 pipeline 里面绑定这个 vertexshader 相关的这个顶点描述，另外我们也并没有在这个 command 里面去给它传入顶点的buffer，因为我们还没有写完。
+
+OK，那我们第回到 buffer 这个类，我们应该还缺少几个函数，最重要的函数是什么呢？是更新这个 buffer 的里面的内容，我们给它函数取个名字叫updatebuffer，叫做 by map。为什么说 by map 呢？我们 updatebuffer 有两种方法给大家写在这里。第一种方法通过内存 Mapping 的形式对内存进行更改，适用于叫做Lo，叫做 host visible 类型的内存。我们都知道这个properties，它里面有一个 host visible 的 u 一个property，那么如果你是我们 CPU 可见的话，我们可以把它 mapping 到我们的 CPU 的可见内存空间，然后对它进行更改，如果不能的话。如果本内存是叫做local，那么 local optimal，那么。
+
+就必须创建中间的 stage buffer，那么这个 stage buffer 它就是那个叫 host visible 类型的，就是再搞一个buffer，先把东西复制到这个 buffer 上，再通过先复制到 staging buffer， stage buffer，再拷贝入我们的相关buffer，目标buffer。
+
+这个什么意思呢？我们看如果说我们有对于内存频繁更改的需求，就是对这个buffer，这个 buffer 是 GPU 端的，如果我们要频繁的更改它，我们就要让它去做成一个 host visible，就是 CPU 端可见，那么我们就通过 Mapping 的形式把它的内存地址 Mapping 到我们的可见空间范围，然后就用 memory copy 直接向这个内存地址的指针拷贝内容就好了。
+
+如果说我们并不去常用它，不，并不去常去更改它，而 GPU 对它的调用非常的频繁，就比如我们现在如果把它当成一个顶点，存储顶点数据的这么个 buffer 的话，那么它的内存的空间，它的这个 properties 里面一定是 local 类型的，就是对 GPU 端可读，但是对于 CPU 端不可读的，因为这样是对于 GPU 速度最快的、最优化的。
+
+那么我们就创建一个中间的buffer，这个 buffer 是 host visible 的，然后把数据先复制到这个内存上，然后再通过它拷贝进去，这样的话我们就能够实现有利于 GPU 去快速读取，然后又不至于说 CPU 无法向其复制内存，对吧？我们先看第一种方式，通过 Mapping 的形式，也就是说如果它是 host visible 类型的内存的话该怎么办？这边第一个 byte 星data，第二个的话是 size t size 就是说我要复制的内存是哪个啊？它的起始位置，然后这边是我要复制内存的大小。
+
+好，那么我们接下来到里面看一看，我们把这个函数写在这里， byte buffer update by map，然后把它的参数搞过来，这一个参数好。我们首先做一个 void 星类型的指针，叫做 memory PTR， memory 的PTR，对，然后等于 NULL PTR，这个就是我们要去 map 的那个地址，我们看一看怎么做的啊。
+
+首先 AK map memory 通过这样一个函数，我们首先传入的是device，然后再传入一个 memory M8 分memory，是吧？就是这个真正的 GPU 的内存，然后就是它的offset。 offset 什么意思呢？就是一会我要这段内存里拷贝，那么我偏移多少啊？一般情况下我们肯定从这段存的头开始往里拷内容，但是我有可能偏移一段地址，比如说偏移一个 8 字节，对吧？然后从那个 8 字节后面再开始拷，有可能这样更新可能会很快，对吧？然后这边我们就给它0，我们要拷贝整段，然后是它的之后的话是Flex，这边我们就设为0，然后就是 data memory PTR，好，那么经过这个操作之后，这个 memory PTR 它就指向了这个内存的起始位置，它指向这段的内存的起始位置，它被赋值了，然后我们就可以用简单的 memory copy 的形式把它把内容 copy 到这段内存里面去。
+
+首先目标内存肯定就是这段已经映射好的内存，然后从哪里拷呢？肯定从 data 里面拷，对吧？传进来的 byte 星拷多少拷size？然后我们用完了，用完之后我们把这个 map 给它取消掉，LMAP、offmap、 memory device，然后 memory 这个孔其实就是跟我们操作系统的那个虚拟内存有关的，这段内存其实是存在于 GPU 上的，但是我们为了让它显示到，或者说从我们的 CPU 端可以控制，那么其实是在操作系统的层面上把 GPU 还有内存 GPU 的显存打成了一片虚拟地址空间，是一片近乎连续的空间，那么这个 map 操作就是把它 map 到了我们的内存里面。
+
+CPU 端好，那么接下来我们来看一看另外一个函数，这个就结束了。另外一个函数是 updatebuffer bystage。好，那么传进来的参数仍然是一个数据，一个长度。好，那拷过来，OK，那么在这里我们首先应该创建一个stagebuffer，创建 stagebuffer 就是用来中间承接的那个buffer，首先 stagebuffer 这个 buffer 怎么办呢？我们是不是直接可以用 buffercreate 来创造，对吧？好，传进来的首先是一个device，第二个数是它的大小，那么就是我们传进来的这个size，第三个就是它的usage，就你用于何方，那么我们给它这样一个参数叫vkbuffer。
+
+usage transfer source 好，那么这个是什么意思呢？这就是说我这个 buffer 它被用于用来传输数据的，那么并且它是一个源头，就是由它向别人拷贝数据，那么我想这个 source 为什么要 source 呢？因为这个 data 在被我们先 map 一下之后，对吧？拷贝进去数据了，那数据就到它身上了，对吧？然后到它身上之后它需要作为一个源头，然后从它拷贝到我们的这个里面去，对吧？所以说它是一个 source bit，然后就是它的 properties 这边我们用 AK memory。
+
+property host visible 就是既CPU，可见这样的话我们才能够就是直接向它去 map 数据啊。接下来是 VK memory property host coherent bit OK，这个是什么意思呢？就是说我们通过这种方式向其拷贝的时候，这样一做它就直接被输送到了 GPU 里面。因为我们有两种方式，第一种方式的话是直接通过 map 之后，然后直接去copy，然后 copy 的话这个操作就直接把它刷进去了，刷到 GPU 里面去了，那么这是来保证这一点的啊。
+
+那么另外一种的话就是你 MA memory copy 完毕之后，你什么时候Flash？什么时候直接把它刷入内存？是由你自己来做的，所以说我们可以拷贝一整段之后，然后做一个 Flash 操作 write 这个命令，但是我们这边是直接做的是coherent，就是直接就每做一次我们就往里刷数据，每做一次往里刷数据，这样子好，那么我们创建完这个 stage buffer 之后，那么我们就要向它里面去拷贝数据了，首先，对吧？那么它是 host visible 的，所以我们可以直接调用 update buffer by map，是吧？传去 data 这样子一个 stage buffer update by map，然后 data size。好，那么现在我们已经能保证是不是这里面充满了我们所需求的数据，对吧？那么接下来我们就要做一个操作，一个拷贝 buffer 的操作，那么我们现在也做一个工具函数，把这个buffer。把这个 buffer 的数据从我们的 stage buffer 拷向我们的 memory buffer。好，那么这个函，我们把它写为一个这种内部的函数，考虑一下把它写为内部了，我写到外部，这样也方便我们外部调用。
+
+void 叫做 copy buffer，好， const VK buffer source buffer， const VK buffer dest buffer 好，然后最后是要拷贝的大小 VK device。 size 好。把它拷贝过去，帽子带上。OK，那么我们接下来就实现这个拷贝buffer，那么这个拷贝的话是一个操作，这个操作是个什么呢？它是一个命令，它是用我们的 command buffer，用命令来做的，所以说我们还要用命令来做这件事，所以把它给搞进来 command buffer，然后还得把它的 pool 拿进来，因为得需要 pool 来分配 command buffer， pool 好，都搞进来，搞进来之后我们看一看，首先是 command pool，叫 command pool。等于 command pull create，那么。
+
+传入一个device，然后第二个的话是 m device，其实这边的话它需要一个看一下，OK，其实这边的话它需要的是一个传输队列，我们知道这个 Vulkan 它里面有很多队列组，有graphics，就是说你绘制用的有present，就是你显示用的队列。那么还有一种是 transfer queue family，但是 transfer 我们现在并没有单独去获取一个 transfer queue，所以说我们是可以用 graphics queue 来代替的。
+
+我们看一下目前我们在写的时候，在这里我们来写的时候是直接用的看 Graphics queue family，因为这个绘制队列组它也是拥有传输的属性的，所以说我们可以直接用它。暂且这么用，如果大家想要搞一个。单独队列也可以，那么就需要在 device 里面单独去 transfer queue 给跳出来了，写法跟我们原来差不多。好，那么接下来 command buffer 等于 command buffer create，那 create 的话device，然后 command pool。
+
+好，这样我们的这个命令 buffer 也做出来了，然后我们开启使用这个命令begin，这个 begin 里面我们传入什么参数呢？因为这个命令它是在 copy 完毕之后它就结束了，是吧？它就结束了，所以说这边我们直接写 VK command buffer usage。
+
+one time submit 就是说它只提交一次，我们只使用它一次，它就没有了，就结束了，是吧？接下来我们就要去做拷贝命令，那么拷贝命令第一个问题我们要解决描述这个拷贝的过程叫copy， region 叫copy，那么我们叫做 copy infer 吧。好，然后这个 copy infer 的 size 等于size， copy infer，接下来。好，那么接下来我们要去到 command buffer 里面去补充几个函数，就跟这个拷贝命令相关的函数，我们看这个之前就写了这么几个零零散散的命令，对吧？显然是不够的，所以说我们要加一个拷贝 buffer 的命令，把它写到这个外面吧。
+
+void 叫做 copy buffer，然后它的参数第一个是VK，想一下好，VK，然后叫 source buffer 第二个是 VK buffer dest buffer 好，那么还有第三个数，就是它的 region count，就是我们叫说 INT32 杠T，应该叫做 copy infer count，就是说我们刚才做的那个，看一下我们刚才做的这个描述拷贝用的这个buffer，描述拷贝用的这个infer，好，我们再回去，然后我们还需要它既然是 count 的话，它可能有很多个拷贝的这个信息。那么我们把它都放在一个。
+
+s t d cos s t d factor。
+
+里面找到 wait buffer copy，然后这边叫 copy infer。好，OK，那么我们接下来去完成这个函数也非常容易，其实就是把这个命令包装了一下啊。拷贝过来。好，这边我们直接调用我们的 buffer 命令 wait CMD 叫做 copy buffer 就可以了。第一个传入的参数 command buffer，第二个传入的参数是buffer，那我们把它传进去。第三个 dest buffer，好，我看一下，第四个是 region count，就是它的 copy infer count，我们就改了个名，后面叫regions，就是 copy infer，OK。
+
+copy infer data 应该是这样，在这里给大家提个醒，这个地方是必须引用的，因为不用引用的话，你这边它就是一个临时变量的 data 数据了，临时变量的指针那就一会就没有了，是这样的，OK，我们回来之后我们继续来写，现在我们描述了这个 copy infer 的size，对吧？然后我们直接调用 command buffer，然后 copy buffer 传参第一个参数是source，我们这边是传source，然后第二个 dest 目标，第三个 copy infer 是一，然后最后是一个region，我们把它直接简写成一个 convert 放到里面。好，然后这个 command buffer 就可以 end 了。
+
+选择 end 完之后，我们就遇到一个提交的问题，比较麻烦一点，就是说这次的提交是我不仅要 submit 进去，然后我还得要去等待它执行结束啊。我们这个 copy buffer 是一个操作，必须要等它执行结束，那么我们就需要在 command buffer 里面自己去做一个命令，自己去做一个函数，还是要回到 command buffer 里面逐步的我们去完善它啊。
+
+在这里我们再写个命令 void 叫做submit，我们取个名字 submit sync，就是说不仅说我们要提交这个命令。我们还得要去干嘛呀？我们还要去sync，就同步它，等待它完毕，那么我们就要给它一个是为KQ，就是向哪个队列提交，然后是为 k Fence，我们到底用哪个 Fence 来给它做同步啊？之前我们学过 Fence 是同步一个队列完成，对吧？好，那么我们把它做完成。诶，这没有写好。
+
+把帽子摘过来，我们先做一个为 k submit infer，我们把这个事情给它通用化，对吧？ submit infer，然后开始填写它的 command buffer count 等于一，我们要提交一个。然后 p command buffers 提交，提交我们当前的这个 command buffer 就提交自己，然后 waitqueue submit 第一个参数 q 向这个队列进行提交， submit 一个，然后 submit 的是这个infra，然后用的是这个 fence 啊。好，然后我们接下来waitqueue，waitidle，就等待这个队列完成，等它空闲，等哪个队列，等这个队列就好了。
+
+OK，那么这个函数我们也完成了，完成之后我们再回到，对，好，回到这里之后我们就开始提交他，然后他去叫做 submit sync，然后这边的话 m device 我们传一个设备的，然后get。 graphicq 好，把这个队列给过去，然后第二个参数，我们传一个 voidcall back 就好了。为什么？为什么？因为你传这个 face 意义并不大，然后因为这边的话它是直接是 wait 这个 q 了，所以说一定会等待它这个队列空的，所以这边传个空就可以了啊。这边也可以做优化，这边在设计上还有很多优化的地方，所以说大家在这里也可以自己动一下脑子，看到底该怎么办为好啊。
+
+然后这边我们再回来 update buffer by stage 这个地方我已经把数据是不是拷贝到了 stage buffer 里面，对吧？ stage buffer 是个什么呀哦？这一个我们看是一个 buffer 的指针，然后我们接下来要通过函数拷贝buffer，然后对它进行拷贝，把它拷贝到我们的真正的 buffer 里面。那么 stage buffer get 这个 get 函数还没有，是吧？我们把它把这个 get 函数做起来啊。
+
+all this card get offer。
+
+l buffer 好，回来，在这里 source 就是 stage get buffer，然后我们要拷贝向谁，拷贝向这个咱们自己 buffer 就可以了，然后接下来就是说它的size，这个 size 的话我们直接把它先做一次强转， static cast vkdevice size 转的，谁转的是这个size，对吧？好，那么这样的话这个命令就调取完毕了，那么我们整个拷贝过程就结束了，我们看通过这个工具函数，是吧？还有上面这个工具函数，我们做出来的是 update buffer by stage。好，那么我们再回过来看一看啊。这样我们整个接口就设计完毕了，滑跑看一看有没有什么语法错误。OK，没有什么语法错误。好，那么这节课就到这里。
+

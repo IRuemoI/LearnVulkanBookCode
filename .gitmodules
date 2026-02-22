@@ -1,0 +1,28 @@
+[submodule "dependencies/glfw"]
+	path = dependencies/glfw
+	url = https://github.com/glfw/glfw
+	branch = 3.4
+[submodule "dependencies/gli"]
+	path = dependencies/gli
+	url = https://github.com/g-truc/gli
+	branch = main
+[submodule "dependencies/glm"]
+	path = dependencies/glm
+	url = https://github.com/g-truc/glm
+	branch = main
+[submodule "dependencies/glslang"]
+	path = dependencies/glslang
+	url = https://github.com/KhronosGroup/glslang
+	branch = vulkan-sdk-1.3.290
+[submodule "include/imgui"]
+	path = include/imgui
+	url = https://github.com/ocornut/imgui
+	branch = master
+[submodule "include/nlohmann"]
+	path = include/nlohmann
+	url = https://github.com/nlohmann/json
+	branch = develop
+
+# 以下文件不是Git子模块，而是直接包含的头文件：
+# include/STD/stb_image.h - 来自 https://github.com/nothings/stb
+# include/TOL/tiny_obj_loader.h - 来自 https://github.com/tinyobjloader/tinyobjloader

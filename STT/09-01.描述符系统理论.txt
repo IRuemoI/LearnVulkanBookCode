@@ -1,0 +1,48 @@
+各位同学大家好，我们这节课开始呢，学习 form buffer 这个非常重要的东西，那么我们先认识一下这个 uniform buffer，那么我们看我们已经有可以为每个模型传入顶点数据了，也就是说我们已经可以做到传一些静态的数据了，那么这些数据可能会非常大，比如说一个模型可能有，比如说几百兆，那么这几百兆的数据肯定不是频繁更新的，所以我们用了一个 stage buffer 中间做了个跳板，然后将它直接分配在了 GPU 上。那么这样的话 GPU 就可以快速的诶，从 GPU 的内部的这个显存去读取顶点数据，并且进行绘制。但是如果说我们有一个时长更新的数据。
+
+必须要去做的话怎么办呢？那么就要用到 uniform buffer，经常用来存储什么呢？就比如说 MVP 变换矩阵，那么我们举个例子，我们假设有两个模型，一个6G，一个3G，这是它的大小，那么这些模型数据就会用 attribute 顶点数据的类型直接通过 stage buffer 作为跳板传入到咱们 GPU 的显存当中，那么它还有一些数据，就比如 view projection， view Matrix 跟 projection Matrix，那这两个矩阵咱们之前在最开始给大家讲过，对吧？一个是变换到摄像机坐标系，一个是投影到屏幕空间，那么它的大小是多少？一个矩阵有 16 个元素。
+
+那么每个元素有 4 字节，因为是 float 类型，然后我们有两个矩阵，就是一把字节，那么这样一套内容是公用的，我们看这就可以把它放到一个 uniform buffer 里面了，而这个 uniform buffer 是两个模型共用的，所以说我们知道，OK，我们可以做一个 uniform buffer，把我们的 view 矩阵跟 projection 矩阵它们的数据在每一帧都可以更新到这个 uniform buffer 里面去，然后供模型它们所有的顶点与之相乘进行变换，而且它只有128bytes，所以说它并不很大。我们可以每一帧都去更新它。
+
+OK，那么说明了什么呢？这个 uniform buffer 是他俩一起用的，可以说是所有，比如说 10 个、 8 个、 100 个、1万个都用这个好，那么还有一种是 model 矩阵，就是它自己的模型变换矩阵平移、缩放、旋转，那么我们把每一个模型的这个 model 矩阵都放到各自的 uniform buffer 里面，所以说我们看到我们又来了第二种 uniform buffer，在使用上进行分类的话，有公用的，有每一个模型自己的。
+
+好，那么请问这两种 buffer 有什么本质上的区别吗？其实并没有本质的区别，大家可以理解为我们统共在系统里面就放搞出来了这三个 uniform buffer，只不过它在渲染的时候既用了它又用它，它在渲染的时候既用了它又用了它。是这么个意思，OK，那么接下来我们看一看，仔细观察一下这个 uniform buffer，应该要去描述它所谓的描述系统是什么意思，就像我们在做顶点缓冲的时候， VBO Vao 的时候一样，在构建命令缓冲的时候就要将本次绘制与某一个或者某几个 uniform buffer 进行绑定，那么绑定之后我们就知道这次的绘制它的 view Matrix， projection Matrix 是从那个 buffer 里去读，然后它的 model Matrix 我们从另外一个 buffer 去读。
+
+然后我们还需要确定斑定点，第一次接触的时候是在 attribute 的 location 里面，我们接触的，那么就是在 shader 里面有一个attribute，是吧？它叫做 location 等于0， location 等于1。这样的话它就能找到到底哪一个地方我能找到position，哪个地方能找到color。那么同样我们还得要在 shader 里面知道哪个地方能找到 VP 矩阵，哪个地方能找到 model 矩阵。我们看这是一个沃泰克斯shader，那么它上面写了 layout binding 等于0，且是一个 uniform 类型。那么呢，我希望在这个 binding 为 0 的位置能找到这么一种数据结构，它是由两个矩阵构成，一个是 view Matrix，一个是 projection Matrix。那么这个数据结构我们做一个对象叫 VPO object，然后我们。在 bind 为一的地方，希望找到另外一个uniform，那么这个是多少呢？是modeluniform， model 矩阵，我们叫modelmatrix。
+
+OK，我们看到这有个 BIND 0，BIND1，那么其实映射到 buffer 里面就是这样的，我们这边有一个 view 和 projection 共用的Uniformbuffer，然后还有每一个 model 独享的一个 Uniformbuffer 是modelmatrix，那么它的 bind 为0，它的 bind 为一，我们的绘制是顺序绘制，假设有三个物体，那么我们就给绘制这三个物体的时候，我们绘制第一个，再绘制第二个，再绘制第三个，那么比如说我们绘制到第一个体，我们就让它 bind 为 0 的地方，诶绑到这边来，这个 buffer 就跟这个 bind 绑定了。那么这个地方的数据就会从这个 buffer 里拷贝过来。然后我们再把绑定唯一的地方这边与这个 buffer 绑定，与他自己的这个 1 号物体的这个模型矩阵 buffer 绑定，然后把这个数据就拷贝到这边来，然后这个 Vertex shader 就可以执行了。
+
+OK，那么我们有一个问题， UBO 的类型是什么类型？因为绑定，因为我们的这个 uniform 这种被类型的变量，它不光是这种 buffer 类型，可能还是一张图片，就是贴图，对吧？ UBO 的大小如何？管线里面怎么布局的？就是 PIPELINE 里面，因为这个属于 PIPELINE 的布局，这两个都属于布局信息单定布局如何怎么设置，它都需要使用描述系统来做这件事。所以说这个整体上来讲，它就需要一套这种 uniform buffer 的描述系统。
+
+为了描述这一些buffer，我们要先看最小粒度的描述方式，就是 uniform 描述符， uniform descriptor 描述符，它是对单个 uniform 变量的参数，比如说它到底占了多大的空间？它到底这个所 new 出来的这个显存空间，它在 CPU 端应该有一个句柄，然后是否有offset？就是说我读取你数据的时候是不是可以向后移几个字节再开始读？那么你的采样器是谁？你有多大？这些都属于对于单个 uniform 变量的描述，那么我们先看一看对于 uniform buffer 类型描述是怎么做的。
+
+这个 buffer 类型就是我们平常用的传 view Matrix，传 projection Matrix 所用的那种buffer。那么我们需要告知这个结构体你与哪一个 buffer 绑定，这个就是实际的存储空间了。那么你偏移多少？ offset 偏移多少去读取这个数据？我可以向后 10 个字节再开始读，对吧？然后我绑定的大小是多大？这个 buffer 可能非常的大，但我从这个 buffer 偏移这些地方开始绑定这么多的数据，所以说有偏移和大小，就是开头跟它的长度。
+
+那这一系列就构成了 descriptor buffer info，它是描述一个 uniform buffer，还有一个地方我们可能接触这个东西比较早，现在因为我们在后面会用它就叫做 image 的纹理描述符，那么它可以，那么它的采样器是哪一个？它的绑定的纹理图片，它的 view 是哪一个？这个图片它的布局是什么样子？那么这个就是对 texture 的一个描述，我们只是先了解一下，重点是看它，看 buffer 描述，OK，我们现在已经有了描述符了，那么接下来我们要看一看在 pipeline 里面如何布局，因为我们的 shader 是用 pipeline 来生成的， shader 读入，然后加入到 pipeline 里面，成为其中的一部分。
+
+所以我们就要描述这个 pipeline 里面到底布局着怎样的一些变量？好，这个就是 descriptor set layout，看到 layout 的时候我们就应该反映出来这是一种什么布局的模板，正好 pipeline 也是一个对于渲染过程的描述模板，所以说在它的头上我们就可以放上这样一个 descriptor set layout，用来描述我这条 pipeline 里面每一个 shader 它到底需要哪一些，哪一种，应该说哪一种 uniform 变量，我们看这是对于因为我们一个 pipeline 里面可能会绑很多种 uniform 的变量，比如说我们绑两个buffer，绑一个图片了，那么对于其中的任何一个来讲。都要填写一个叫做 layout binding 信息的这么一个结构体。
+
+首先是binding，在 shader 当中的 bind ID 就是我们刚才那个 binding 等于0， binding 等于一，这个东西那么好，我们现在知道 binding 等于 0 的位置上，我们放了一个什么类型的描述符，什么类型的uniform，那么这个地方就是说它是一个 buffer 还是一个image？那么我们放了几个，我们这个地方暂且把它写成一，在进阶课程里面，我们再去怎么用它？然后是 stage flags，也就是说我们当前的 uniform 变量，我们当前描述的这个 uniform 变量，它到底是出现在了 Vertex shader，还是出现在 fragment shader？最后是采样数这边我们就忽略掉，先不用理它，OK，然后我们做 n 多个，比如做了 3 个这种 layout binding 的描述。
+
+因为我们可能在管线中布局了三个 uniform 变量，比如第一个是 view Matrix 跟 projection Matrix，它俩合在一起的那个uniform，第二个可能是什么？可能是个 model Matrix，第三个可能张图片也是一个纹理，然后我们把这三个合在一起共同传给 PIPELINE 的设置信息，再生成PIPELINE，这样的话在 PIPELINE 就知道了。
+
+OK，我们到底里面 uniform 的布局如何？怎么绑定的？那么接下来我们就要该考虑一个问题，有东西叫描述符集，它是干嘛的呢？我们先总结一下，我们现在已经有了 uniform buffer，对吧？这个 buffer 我们之前就写过，对吧？一个 buffer 类，它就能够负责在 GPU 端搞一个 uniform 的类型的空间，然后我们还有对 buffer 的描述符。
+
+就是我们一开始介绍的要么是图片，对吧？要么是这个buffer，那么 pipeline 里面我们也布局好了，这时候我们就开始要绘制了，绘制的时候其实我们是向管线提交了一个 command buffer，所以说我们在 command buffer 命令录制的过程当中，需要告诉 command buffer，那么要送入管线的是哪些 uniform buffer 或者 uniform texture？前面所有的描述除了这个之外，这些描述都是一种模，就说我这种渲染方式我想要什么样子的 uniform 的类型的东西，但是你具体绑的是这个buffer， a buffer 还是 b buffer 是吧？我不关心，只要这些 buffer 符合我这个管线它的格式要求即可。
+
+OK，那么在 command 里面诶，它就得去确定我到底要绑哪个 uniform buffer。或者绑哪个 unit texture？那么将这些对于他们这两个两种，或者说他们这 n 多个这个 uniform 的描述变成一个集合，一块塞到 command buffer 里面，那么这个集合就叫做描述符集，我们看我们之前做了可能做了 3 个描述符，一个是有一个 uniform buffer index 为 0 的位置，可能是一个 view Matrix 跟 projection Matrix 那个buffer，对吧？那么他们做成一个描述符，然后放进来，我们再做一个描述符，这个可能是什么啊？可能是某一个物体它的 model Matrix，所以说比较有意思的事就是我们是可以为每一个物体做一个 descriptor set 的。
+
+只不过说每一个物体如果说它都有一个 descriptor set，那么它的里面的这个整体的描述符，这个就是公用的那个，对吧？这个就是他自己的，绑他自己的那个buffer，这个就是绑的是公用的，公用的一张texture，也可能只有他用，也可能别人也用，对吧？所以说这样我们就把一个物体在绘制的过程当中需要用到的这个 uniform buffer 装到了描述符里面，且把所有描述符都做成了一个集合，把这个集合送到 command buffer 里面录制进去，通过 binddescriptor set 把它放进去，这样它里面就有了本次绘制的绘制这个物体的描述信息。OK，那么接下来我们把这一堆东西都给综合的梳理一下。
+
+首先我们先搞出来了三个 uniform buffer，第一个是放到了 binding 为 0 的位置，我们给每一个第二个放到了这个一，第三个放到2，然后我们给每一个 buffer 生成一个描述符，就是descriptor，对吧？那么这里面就蕴含着他们的班订信息，然后我们把这堆描述符再把它抽起来放成一个 discourse set，就是祝福集，描述符集我们又提交到了命令里面。
+
+好，然后这边我们看一下，这边就是要做模板了，我们做了三个，我们说这个 pipeline 里面需要三个uniform，它们分别的描述跟它们的绑定如何呢？是这样的，然后把它们都送到 pipeline 里面，生成这条 pipeline 的时候去用到，所以这条 pipeline 里面就知道了。
+
+OK，我要的是有三个 uniform 变量，每一个它的绑定情况如何？它的 layout 信息如何？此时 command buffer 被送到管线里面去渲染了，开始绘制。诶，它到了我 test shader 的阶段，它发现，诶这个 shader 里面要求 binding 为 0 的位置，要个这个东西 binding 为一的位置要这个东西，于是它就到 pipeline 里面来核对一下。
+
+这个 pipeline 首是这样的布局，发现 ok 没有问题，然后它的布局里面虽然说123，但是我们只要它的001，这个边应该是012，这个稍微改一下012，诶，OK，那么在会议室我们继续在这边他核对完毕之后， 012 这边 01 发现存在没有问题，然后他去 command buffer 里面去查找描述符，因为我得把数据读出来，我得用那个放 buffer 里面的数据，对吧？然后他发现这个地方描述是这样子的，然后他就通过描述符查找buffer，因为这个描述符里面不是有一个变量，是 wait buffer，对吧？然后他就到这个 wait buffer 里面去找数据，然后找数据的时候呢。
+
+这个描述符它里面是有 offset 和range，对不对？那么它就会告诉他说你从这个 buffer 的 0 号位，就它开头的位置偏移多少个地方开始读，然后读 range 这么多的内容给我赋值过来，那么 0 号找到， 1 号找到，就这样，OK，那么如果我们是整个 buffer 都拿过来用的话，那么 offset 就是0， range 就是它的大小嘛。
+
+接下来把 fragment shader 如法炮制 2 号位去看一下有没问题，然后到 command buffer 里面找找描述符，找到描述符拿出来，然后通过描述符就可以找到它的 texture 和 sample 在这，然后把它们集体拿过来复制进去，把 sample 拿进来复制进去，那么就可以通过这个 sample 去采样这个 texture 上面的像素了，做贴图。OK，那么关于描述符，咱们的理论方面，系统介绍方面就到这里。
+

@@ -1,0 +1,18 @@
+各位同学大家好，我们上节课呢，已经完成了 data set 这个东西的创建，那么今这节课我们来先整理一下这个代码，就是说关于uniform，你看我们有这么多种概念，是吧？目前就这三种概念，然后我们现在把它写到 application 里面，确实是比较混乱，那么为了这个教学方面的作用，那么清晰度上来讲，我专门做一个 uniform 的类，在这个地方，在我们整个根目录下，不是从这里面，从根目录下面我们做一个 uniform manager，这样的话我们把东西放在这里就会更加的清晰，OK。 include 我们把这些东西都弄进来，这三样加上 buffer 好，然后叫 uniform manager 在这边普通指针 return add make。 share uniform manager OK，然后把这个 Uniform manager 作为我们 application 的一个对象，这里面一个对象就好了。
+
+uniform manager 这样的话我们就把这些东西就都放到咱们的 uniform manager 里面去做，包括说这个 uniform params 这一整块我们都要干掉的，一会这边叫 uniform manager PDR uniform manager，OK，好，然后我们把东西给它移过来。变成它内部的东西，我们再写一个。
+
+Uniform manager 的构造函数？ Uniform manager 的析构？OK，好，那么对于这个 uniform manager，我们应该给到它一个引力函数。
+
+init OK，在这里首先我们要把关于这个 uniform 的描述信息给它拉到这边来，就是这个函数发挥的作用，看一下，诶，就是这个。把它直接剪切过来，我们看一下，可以，没有问题啊。
+
+0 号、 1 号搬定好，然后第二步我们一个个来看一下，这个地方是不是还缺东西，对吧？这边缺什么呢？我们进去看一看，这边我们还没有给他 buffer 生成，是不是这个描述信息没有带着buffer，这样不行，那么我们就给他 buffer 在这边生成出来，这个是关于 VP 矩阵的buffer，不是这样的，这边我们如果想要更想要做出他的 buffer 来，那么我们就需要知道做几个buffer。OK，那这个引内函数这里面就需要有一个 frame count，对吧？ int frame count 代表这个召唤链多少帧放过来，然后在这边我们可以做 for int i 等于 0 i 小于这个 frame count，再加i，然后开始生成 buffer auto buffer 等于这个 buffer 应该是 rapper buffer 诶，这还没有引进来看一下。OK，我们需要做一下这个缓存生成好，然后再去到这边看一看啊。嗯， buffer 已经拿进来了吗？ buffer 拿进来了，好，然后我们到这边去做一下namespace，然后再到这边来就可以了。
+
+然后 buffer create uniform buffer 那首先传入的是device，那么我们这边是不是又缺一个 device 参数，对吧？OK，继续添加device，OK，把它拿过来。device，OK， wrapper device，然后把 device 给到这边，然后是它的size，那 size 的话肯定就是它自己的这个 size 喽？多大的内存？然后最后是now，并且这个 data 我们可以先不给它，然后做，每做出来一个buffer，我们就把这个 buffer 给它推进去，buffers，OK，这边就完事了。然后呢？我们在。再把它同样为objectparam，也生成 3 个buffer，也是写 framecount 之后create，然后这边是用的 objectparam 的size，以及把它推到了 objectparam 的 buffers 里面。
+
+好，这样的话这些参数我们就生成了这些参数，那么在生成完参数之后，我们还要继续看在 application 里面这个函数任务就完成了，那么接下来 descriptor set layout 跟 descriptor pool 这两个东西也需要生成出来，还是去到uniform，OK，这边。把它放这，那么这边是device，然后 build 的话就是正好把这个 uniform parameters 就传进去了，对吧？这边的话也是device，这边的话就是 frame count 就可以了。
+
+好，这样的话 pool 和 layout 我们也做成了，那么这个以内函数就完事了。我们现在回到 application 这边来修改一下，这三个东西就都去掉了，然后 m uniform manager，它等于我们的 uniform manager create，然后直接用它去做 init device，然后 frame count， socket get image count，好，这样的话它就生成了，是吧？我们看一下还有没有其他错误，还有其他错误。OK，把这个没用的函数就先删掉，在这。好，我们编译一下看一看啊。对，没有错误。
+
+未声明标识符 layout OK，这里面 layout 这个我们就需要去传递过来才行。 layout 需要传递过来才行，那么我们在 uniform manager 里面我们做个接口， no discar auto get layout get descriptor layout return m layout m descriptor set layout 把它搞出去好，然后我们再回到我们的 application 边， layout 应该等于 m uniform manager get descriptor layout，这里面它就要 get layout，对吧？把这个真正的 lock 对象拿出来，给到这个pipeline。好，我们再试一下。得到的结果跟之前也差不多，这个更改没什么问题。好，那我们这节课就到这里。
+

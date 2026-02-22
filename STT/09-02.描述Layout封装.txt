@@ -1,0 +1,46 @@
+好，各位同学，大家好，我们已经了解了关于 uniform buffer 以及一切 uniform 变量的这样一个理论，那么我们这节课首先就从它的 layout 开始， layout 是要给到 pipeline 的一种关于 uniform 的布局信息，那么我们这节课的目标是把这个 layout 封装成一个类，然后并且给到一些外界对于它的构造接口，那么这个 layout 构造完毕之后，就需要给到我们的pipeline，然后去加到里面成为其中的一个state，然后我们再去构建这个pipeline，OK，那么我们现在开始先做一个叫做descriptor。 layout 的这么一个头文件，然后复制一份，好，然后我们还是要把头先弄过来，嗯，OK。
+
+classdescriptorlayout 叫 descriptor set layout，这样名字比较准确，我们也更改一下名字， set 好 public private 构造函数，析构函数。同样这边我们还是要加上智能指针，OK，然后把这个架子写出来之后，我就要把它先加到 application 里面编链条。好，然后我们清理一下更新，OK，然后我们就开始去写，在这边我们首先将这个 Vulkan 系统里面 isperseid layout 的这样一个变量写在这里， VK descriptor。
+
+set layout OK，这个，那么 layout 我们可以 now handle 对于这样一个 Vulkan 的这样一个句柄对象，我们肯定要存储一下device，对吧？它的构造也是需要 device 的， m device，OK，那构造函数里面肯定就会有一个device，对吧？把它拷贝到 create 里面。
+
+好，OK，那么接下来要看一看了，如果说我想做这样一个 descriptor set layout 的话，我是不是需要知道？写在这里我们需要知道。局当中到底需要哪些？就是 uniform 有哪些？ uniform 一个多大？如何binding？那么又每一个是什么类型？因为它是有图片的，也是有这个buffer， uniform buffer，对吧？不同的种类，那么我们在这里就给到它一个描述信息结构体struct，叫做 descriptor binding parameter，OK，那么我们只需要去填这个结构体，比如说我们现在有 5 个uniform，那么我们就填 5 个这样的结构体，然后呢？把它加到 setdescriptorout 这个里面怎么加进去呢？那么我们就需要在这里面写一个。写一个Vector，将它都存进来，然后一口气在最后去 build 出来。OK，我们先看一看这里面都有什么样的变量啊。
+
+首先第一个一定是它的大小 size 初始化为0，然后我们还需要什么呢？还需要一个它的班定点，是班定为 0 还是一，还是什么东西啊？班定还需要什么呢？我们还需要一个count，这个 count 一会给大家解释，先写好，在这边我们要解释一下了，对于每一个班定点。那么都有可能绑定。就是说都有可能传入不止一个，这个 uniform 什么意思呢？比如说我们这边可能绑定的这个 0 号位置需要传入的是一个 VP 矩阵的组合信息，它有可能会传入 n 多个或这样我们换句话说不是 p 矩阵了啊。
+
+举个例子，比如说这边要传入的是一个一个骨骼动画的Matrix，那么这边可能在这个绑定点上就是一个 Matrix 的数组，可能是一个Matrix，那么它是一个数组，那么这个的 count 就代表了数组的大小组到底有多少个，那么在这边我们暂时还不能去做这个传一个 uniform 数组的一个情况，在这边我们就在这啊。
+
+需要使用 index Uni indexdescriptor 这样一个特性或者这样一种类型才能够存入数组，那么一般情况下这边都是一，所以说我们一般传入的是一个矩阵，而不是一个矩阵的动态数组这个道理。OK，好，我们继续。现在我们还需要个什么呢？还需要一个 descriptor 的type。那么这个 descriptor 的 type 的话它叫什么呢？那么它的类型就是 VKDESCRIPTOR type 这么个类型。
+
+mtype 叫 descriptor typedescriptor 名字尽量取详细一些，那么这个就是表示你是一个 uniform 的buffer，还是一个比如 combineimage sampler，比如说是一个关于图片纹理的东西，我们这边用的都是 uniform buffer 的类型。
+
+那么接下来是什么呢？就是它这个 uniform buffer，这个 uniform 它是传入了 shader 的什么阶段？VkShaderstageinput。 Flag, it's m stage. Okay, the moment only. Okay, hope. How do a descriptor?
+
+然后 static share great return share OK，那么对于每一个 uniform 都会有这样的一个描述，所以说在这边我们要做一个数组，叫做 descriptor landing parameter，这条叫做params。OK，好，那么接下来我们就要给它增加一个接口，就是说你往里增加参数了，加一个uniform，最终把它给做出来，对吧？所以说这边是 add uniform。对，好，那么我们就将这个 adduniform 跑过来加一下，每次都会加一个这样的一个参数表parameter。
+
+好，那么这是这个，那么接下来应该还有一个函数，对不对？就是说我把所有的 uniform 的 param 都加完之后，我得把它 build 出来，那直接 build 就可以了，那么接下来还有一个 get 函数。对。 auto get layout 是我们这个本体给它回去 m layout。好，再看一下应该就没有需要别的东西了。那我们现在去实现一下，在 CPP 里面 include layout，然后 namespace 好，先是它的构造函数 script set layout， script set layout，然后是析构，在这里面我们会有一个 const device，然后给到它。在析构的时候，如果 mlayout 不等于 we can now handle，那么我们就 we can joy，那么。叫做 descriptor set layout，传入的是device，然后是我们的 descriptor set layout，最后默认分配器，OK，这是构造和析构，然后我们再来去把它的这两个函数实现一下，把帽子抓过来，这个函数就简单了， m 叫做parameters，直接 push 进去就好了。
+
+param 接下来我们就要进入 build 函数，在 build 函数里面我们首先要判断一下对不对？因为你可能连续调两次build，是吧？比如说重建，更改了这个 parameters 之后再去重建它，对吧？所以如果 layout 不等于，我们就把这句话拷过来。如果 layout 不等于 null handle 的话，我们先把它给干掉啊。然后我们再重建，或者是说在第一次做，然后我们要把这个 parameters 给它翻译成我们这个 Vulkan 里面必须用的这种结构体Vector，我们把这个翻译过来的结果装到一个 vector 里面，叫 vkdescriptor set layout bindings，叫做 layout bindings OK，然后我们开始遍历 for auto，诶，这边应该是 const auto params，在这里面的话我们一个个来啊。
+
+首先声明一个 descriptor ban set layout binding。做一个这个，然后 layout 绑定好，然后我们开始给它填写，首先填写它的 descriptor 的 type 等于 param 里面的这个 descriptor type，然后第二个我们填写绑定点 param ending，接下来我们填写的是 stage flex 等于 vertical 诶，不需要直接param，然后叫做它的stage。好，那么接下来是它的 count 等于 param 的count。
+
+好，然后我们都填写完了之后，把这个 Vulkan 结构体。给它推进去， layout 完毕。好，那么我们关于这个布局的结构体的信息就填写完毕了，接下来我们就要开始创建这个 descript set layout，那么它的描述信息是这样的， descriptor set layout create infer，就填这么一个结构体 create infer 老生常谈的东西又来了，然后它的 s type 等于 VK structure，用 2E type descriptor set layout，然后 create infer。那么我们就填写一下它的 binding count，它有多少个binding？它有这么。多的 binding 是吧？ start cast INT32 layoutbindings 它的size，然后再把我的这个 binding 的信息给它也填进去， bindings 等于 layoutbindings 的data。
+
+好，这样就填写完毕了，那么接下来创建 vkcreatedescriptor set layout 传入参数，第一个是device，第二个是createinfo，第三个是一个默认分配器，第四个是它的，我们的最终的这个layout。如果不等于 VK success 的话， throw runtimeerror failed create descriptor set layout OK，那么这么样的话，我们的 layout 就创建完毕了，对吧？那么接下来我们去使用一下，首先我们在这个 application 里面我们再加一个变量，先看一看，OK，没有问题，把 model 放在下面。然后这边我们就是开始声明rapper。
+
+Descriptor set layout. 1PTR m 叫做 descriptor set layout。好，然后我们去到 initwork 里面，我们去声明一下，去初始化一下，现在在这里 mdescriptor set layout 等于ok，这边应该提前一下，已经一需要提前到这个 pipeline 前面，提前到前面会好一些。 pipeline 这，那么它等于 descriptor set layout create m device OK，那么接下来我们就是要去增加一下这个里面的参数了，加里面的参数我们也专门做一个数吧。
+
+这边。 create vector set layout 这边我们写上 create vector set layout 那在这边我们就开始去做啊。首先我们先做一个这个 VP 矩阵，就view，project， view Matrix 跟 project Matrix，那么我们这个的话就得声明一个结构体了，声明一个结构体，我们把这个结构体放在 application 里面，放在上面这边 struct vpmatrices GLM Mat for view Matrix。
+
+cmnetfor 这个叫做projectionmatrix，OK，那么这个结构体就是我们要传入到 uniform 里面的这个结构体。现在我们回到 application 到create，好，到这我们先做第一个参数 descriptor set。这个参数的名字叫什么？我看一下，嗯，叫这个名字 render 这个 TPR 我们直接让它 auto auto 叫做vpparam，等于这个东西，然后create。
+
+好，然后我们开始填写它的填写东西有多少呢？第一个是binding，我们把它 binding 到 0 号，然后第二个的话是它的count，我们当然等于一了，然后是它的 describe type 的话， wiki descriptordescriptortype uniform buffer，这是 uniform buffer 类型，我们看一下到底有多少种 type 呢？其实还是很多的，对吧？还是很多的。好，我们回去。
+
+OK，继续。它还有一个是它的 size 大小有多少？ size of 谁？ vpmatrices 这个结构体的大小，然后它的 stage 这个应该是在我 text shader 阶段传入的，对吧？叫VK。 shader shader stage Vertex 菲特，OK，那么这样的话我们就应该做完了，看看是不是还有没有别的。嗯，OK，没有别的参数了啊。然后我们用 mdescriptor set layout 给它推进去， push uniform Paron，然后把这个 VP Paron 给它推进去，我们目前就是这样一个结构体。
+
+另外的话我们还有东西，我们再封装一个，这个对于一个物体或者 n 个物体都是通用的，但是我们还有一个东西叫做model，叫做什么呢？叫做 object uniform，那么也就是 DRM Matfor。 m model Matrix，那么这边的话我们还可以填入其他东西，比如说我们再传其他东西进来都可以，所以我们封装这样一个结构体，OK，再回到application，我们再做第二个，就叫做 object param， object uniform param OK，那么它的 binding 我们把它设到了一上， count 是一descriptor，这没有问题， size 的话是 size of object uniform，然后 face 仍然是我 text 阶段，然后把descriptor。这个的话就是单个物体的 model 矩阵，对吧？给到 add uniform parameter 里面去， parameter object parameter。
+
+好，现在两个都搞定了，我们最终用它来build，OK，这样的话就 build 完毕了啊。我们运行一下看一看，还得把这个 grid 加到 maken 的 init 里面，在这里紧跟着它 create describe layout OK，然后清理生成。这边做下缓存。
+
+开始我们看错误，OK，这边报了一个什么错误，看一下，嗯， shader 没有拷过来，因为这个是给大家新建的一个项目，所以说得把 shader 先拷过去才可以。嗯，uniform，然后 shaders 到 out build 这个下面，嗯，OK，拷到这，然后继续。嗯，好，这跟上节课的结果是一样的，然后关闭没有问题。OK，那么这节课到这里。
+

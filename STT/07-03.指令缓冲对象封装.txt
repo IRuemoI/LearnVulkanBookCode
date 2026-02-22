@@ -1,0 +1,79 @@
+07-03.Vulkan-指令缓冲对象封装
+
+各位同学大家好，我们上节课呢，已经来到command这么创建，那么我们接下来呢，就开始利用这个command pro啊，对于command buffer进行分配了。
+那么还是同样我们需要在valk an大家看里面去写关于command buffer的这么一个包装类command buffer头文件。
+然后呢，再复制一个可执行文件。
+点cpp好，然后呢啊脑袋啊搞过来。
+那这边呢command buffer是依靠于command pool来进行分配，所以这边include command pool好，那么开始class command。
+打法public private。
+构造函数mount buffer。
+奇构函数。
+好，然后呢？
+我们把它加入application点h这样一个编译链条当中。
+welcome wrapper command buffer OK，然后清理一下。
+然后再往下c mic缓存好，我们去到这里面command buffer呢，那么也是一个啊，这个关于v lookup的这么一个句柄对象啊，叫做vk。
+command buffer这么个东西m command buffer初始v know handle。
+好，那么关于句柄对象的时候，我们要用谁了呀？
+device是吧？
+device。
+ptr m device这边，然后ptr。
+好，除此之外呢，是不是它还要记录一下啊？
+它是从哪个poor里面分配出来的啊？
+among the poor。
+ptr m command for.now一下啊，这样一个好处是什么呢？
+就是说它一定是啊，在吸垢的时候，它完全吸垢完了，释放了这个自释放相关的东西啊，它才会释放这个意思，因为它这有一个智能指针的存储。
+OK，然后我们还是加个帽子吧u=ptr=SD shared叫做command buffer。
+然后take HR create。
+没错。
+come on the buffer.OK，那么我们看一下它要求的参数会是什么呢？
+首先第一个参数是const device ptr对吧？
+这个是显而易见的device，那么第二个参数是什么呢？
+const command buff对吧？
+它所用的分配值。
+第二，command for那么还有一个参数是什么呢啊？
+还有一个参数就是说它分配的时候啊，到底是把它分配成我们之前讲过primary command buffer还是secondary command buffer，对吧？
+它是主的还是次的啊？
+我们这边给到一个变量吧，不玩儿。
+啊as secondary就是说你是否是次级啊？
+是否是二级啊？
+命令池等于啊，我们先给它默认为就好了，然后同样把这些参数放到create里。
+device，然后command pool，然后as secondary。
+好OK，那么我们就起活了啊，开始去到我们的ctp里面干活，在这里的command拔法。
+namespace ff wrapper.command发放构造函数。
+依然是把它拷过来。
+没删掉，然后是它的析构函数。
+OK，这里的话呢，就不需要为什么呢？
+因为会呃，随着commander。
+pull啊，这个吸垢r吸垢释放啊，这样好，那么我们着重看这个构造函数啊，在构造函数里面的话呢，我们是不是又要去构造一个啊的具体对象肯定有它的这些东西，对吧？
+又来了。
+我们首先呢，还是要先赋值啊，device=device。
+OK，我们再检查一下啊，看一下OK，都是now时常检查有好处啊，遇到问题人不慌come on破等于come on破。
+好，那么接下来我们就要开始做这个vk command buffer，allocate infer了啊，大家看到啊，这个叫allocate的大概率就是什么？
+就是在gpu端分配内存的一个操作啊。
+然后叫做I lock infer。
+然后这个l和info里面有什么呢？
+我们看一下啊嗯，好，它有个type有它的for啊，有它的指定的级别啊，有它的要分配多少个啊？
+我们回来继续看首先。
+它的类型type=vk 18个叉呃type command buff l肯尼法这个。
+然后好它的command buffer cons，我们肯定分配一个啊，一个位置一个，然后呢，给到command pool等于我们的这个m command pool。
+应该get是吧？
+把它get出来，所以我们去到command for里面补一个方法啊。
+no discard.auto get command for.count return m command pro.好，回来。
+get come out of来得了，继续。
+还要填写什么参数呢？
+那肯定要填写它的，是不是它是主还是副啊level那么这个level应该怎么写呢？
+我们是不是要判断一下它是不是主command buffer？
+还是说它是4 command buffer啊？
+如果它是4 command buffer的话，那么我们应该等于vk commander。
+buffer叫做saga level。
+secondary啊，这样子，否则的话就是vk command buffer level primary这个好，那么填写完毕，那么之后呢，我们就要开始构造了，如果vk。
+艾洛克。
+albit叫做command buffers。
+首先，存入device。
+get device，然后是它的alt in feral t infer，然后呢，就是command buffers啊，那么我们现在分配一个，那么就给它m command buffer。
+地址如果它不等于vk success的话。
+那么脚报错了。
+洛阳蚕来了。
+failed to create嗯command offer OK，那么我们这边就算是写完了啊，好那么写完这个东西之后呢，我们这个类还没有勾导完毕啊，我们还要在这里面啊，做很多的关于command的函数啊，就是做录制指令的这些函数。
+包装那么下节课来做。
+

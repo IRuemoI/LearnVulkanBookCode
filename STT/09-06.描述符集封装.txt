@@ -1,0 +1,40 @@
+OK，各位同学大家好，我们呢之前做好了 descriptor pool，它就是用来分配我们的 descriptor set，就是描述符集合这么一种东西，那么这节课我们就来实现一下描述符集合这么一个类。好，那么在这边我们先把它写上 descriptor set，点 h 把 CPP 做上 descriptor CPP 好，然后把帽子先摘过来， classdescriptor set，我们一会给大家详细的讲解这家伙是干什么用的？构造函数。析构函数，然后加上智能指针，然后 set PTR create return this d make share script set。好，然后把它加到链条当中，进去 b 更新一下缓存。
+
+好，写到这，我们把这个关于 descriptor set 的介绍写在这里，它是用于干嘛的呢？看一下。对于每一个模型的渲染都需要绑定一个 descriptor set，绑定的位置就是在 command buffer 这边，对吧？还记不记得之前讲理论的时候那张图，那么每一个 descriptor set 里面那么都对应着一个 VP 矩阵使用的buffer，一个 model 矩阵使用的 buffer 等等，对应着很多东西，对吧？那么也就是说，就是。
+
+对于纹理矩阵这个 buffer 的描述，以及对于这个 model 矩阵 buffer 的描述，那么其中也包括 binding size 等的描述信息都会在这个 set 里面进行一个大集合，所以这个家伙是很全面的。OK，那么接下来我们考虑一个问题，由于交换链的存在多有可能并行渲染，所以我们需要为每一个这个交换链的图片对应生成一个 descriptor set。是这样的，要为每一个生成一个，因为什么呢？因为这家伙里面是不是绑定的这个buffer，对吧？你把它绑上了，就相当于 VP 要从这个 buffer 读， model 要从这个 buffer 读了，那么如果说产生了一个读写冲突就麻烦了，所以说就为每一帧生成一个 descriptor set 这样。
+
+好，那我们接下来看一看在 Vulkan 里面 descriptor set 叫什么名字呢？叫做 descriptor set， VkDescriptorSet 这么个东西，那么这个 class 最终会作为一个在 model 类里面，就我们这个 model 类里面的一个对象，所以说一个 model 在绘制的时候，它是需要多个 descriptor set 的，每一帧需要一个，对吧？所以就给它做一个数组吧。
+
+对， descriptor States，OK，那么我们接下来研究一下作为一个 descriptor States 来讲，它的生成需要的参数是什么？首先它需要一个描述信息，描述说我对于这个任何一个 descriptor states 的话，对吧？它都包含哪些uniform，哪些 texture 这样一种描述的东西？那么我们描述东西之前在哪定义的？来的？是不是在这个descriptor， description 里面定义的，对吧？但是这一堆定义还不完全，它还缺少什么呢？缺少说这个 uniform 它所对应的 buffer 是谁？所以说我们得把 buffer 也搞过来，在这里因为对于每一帧生成一个同样的buffer，对吧？所以说这边是一个Vector。
+
+八分。buffers，OK，这样就有 buffer 了，只不过说我们在合适的时候需要生成这样一个结构去填写，目前是在 application 里面去生成的。好，那么我们再回到 descriptor set，那么第一个参数就很确定了， const SD vector uniform this a parameter PR 需要这样一个描述的数组params，其次它需要一个 layout 信息，就是我们之前绑到 pipeline 里面那个 descriptor set layout 这么个玩意。 descriptor set layout PR 然后layout。那么接下来我们还需要一个pool，对吧？需要一个pool，这个 pool 就我们之前做的那个 descriptors pool 这么个东西。
+
+cost descriptor pool，那么我们还需要一个什么呢？需要一个 int frame count 是吧？到底有多少个这个frame？多少个frame？OK，我们检查一下目前这些参数，应该就是大体上是足够的，我们把它拷贝到 Creator 里面，在这边我们把参数填上，第一个的话是params，第二个的话是，对。
+
+layout，然后是pool，然后是framecount，OK，那么作为生成这个东西，我们还缺了个参数，还缺一个device，看一下上面有没有包进来了device，OK，把它复制过来。好，那接下来我们就要去到这个构造函数里面了，把它先搞进搞过来，然后去到 descriptor set CPP， descriptor set 头文件namespace。来炮。好，OK，在这里我们就要开始准备了，怎么生成呢？首先我们先这个做一个描述信息， vkdescriptor set 叫做 allocate infer 这个东西， allocate infer，然后这个 allocate infer 的 s type 在 vkstructure type descriptor set allocate infer 这个接下来它的 descriptor pool 等于我们进来的这个pool。get，咦，这里面还没有写这个 get 接口，我们去补一个接口吧。有，这个是 layout 的，我们看一看 pull 这边加一个接口， no describe auto get pull return true，OK，这边 get pull 看一下还需要填写什么信息，它的 discript set count 有多少个呢？我们是由 frame 10 个，我们再看一下它有一个。
+
+key setlayouts 这个的话就是位，我们不是有这么多个 descriptset 吗？那么我们分配每一个 descriptset 时候是用的哪一个？所以说我们就需要提前先做一个数组 SPD y describe 叫 VK descript，那么 setlayouts 这样一个东西，然后这个东西叫layouts，然后我们来把它初始化一下，它的 size 的话是 frame count 个，那每一个的元素都是一个 layout 的对象，一个挖坑对象，OK，然后它就可以等于 layouts 的data，OK，那么我们就可以去生成了啊。生成的时候，我们先把 descriptor sets resize 一下和搞成 framecount 个，把这空间搞出来，然后我vkallocate，那么 descriptor sets 第一个参数是device，那么这个 device 我们也把它存到里面吧。这里。诶， device 好，回到刚才的地方。嗯，在这里，这边我们先把 device 先赋值上。
+
+这边 m device get device 第二个参数是 allocate infra，第三个就是要分配的，因为我们要分配的是 n 个，是吧？这么多个，而且分配到组里面，所以说我们直接用它作为开头就好了，这样那么不等于 wait success 的话，如果还不成功，那么我们得 throw new runtimeerror failed to allocate descriptor set 好，现在 descriptor set 已经弄出来了，弄出来之后我们要开始把这个描述信息，就是这里面关于这个东西的描述信息，就给它填写进去。
+
+那么怎么填写呢？首先我们一个一个的来，一个个来 for int i 等于 0 i 小于 rain count 加i。好，那么我们首先应该做一个什么呢？做一个对于描述符集的一个更新，这里我们用的一个东西叫做 VK write describe data 这么一个结构，这个结构你去填写它，填写完毕之后再后续更新就可以把这一堆，那这一堆 describe set 给更新出来了，这个道理，那么在填写它之前，我们先看一看，对于一个 buffer 来讲，我们刚才不是说在这里定义了这么一堆buffer，对不对？那么每一个 buffer 里面都应该存储着一个信息，就是它的 buffer info，这个 buffer info 就是一会我们要用 write 去写到这个 describe set 里面的东西现在还没有，所以说我们需要去到 buffer 点 h 里面把这个 buffer info 先弄进来，叫VK。 descriptor buffer infer。这个东西我们写在这里，然后在这里我们加个接口 get buffer infer。好，那么这个 buffer infer 怎么初始化呢？就是在 buffer 创建的时候直接填写就可以了，非常简单。
+
+buffer infer，它的 buffer 等于我们现在的这个buffer，你看这样的话，通过 buffer infer 是不是就能把这个 buffer 给绑到描述符集合里面了，对吧？然后 m buffer infer 的offset，那当然是 0 了，我不需要它移动多少个才去读range，就等于 size OK，回到 this group set 我们刚才做了一小插曲，升级了一下我们的buffer，加了个东西，对吧？加了个 buffer infer。
+
+好，下来我们再。要做更新了，在这个地方，对每个 descriptor set，我们需要把 params 里面的描述信息写入其中。好，那么我们现在是有多少个这个？我们需要，我们是有多少个 params 在这么，我们这么多，我们这么多，那么我们就把它一个一个来，一个一个来弄。那么在这里我们就要再做一个循环，循环是每一个params，是每个params，然后做一个每，对于每一个PA，对于每一个我们 uniform param，我们都要做一个write。所以说这个 write 我们就把它放到这叫做 VK write descriptor set 这么一个 write 的这么一个结构叫做rights。
+
+好，那么我们开始往里填东西 for 什么呢？ account auto param 在 params 里面，所以每一个我们都要搞一个这样的结构。好，这个结构write，但是不要 write 会容易冲突，叫做 descriptor set write，然后这个的话叫 descriptor set rights，这个加个s，OK，这样的结构，那么我们开始填写这个更新结构，首先它的 s type 等于 VK Vector。
+
+make static 的 type rootdescriptor set，然后它的 DST set 就是说我要写哪一个呢？我肯定要写 mdescriptor sets 里面的第 i 个，这个 i 就是外面这个i，第 i 个要写了，然后接下来有一个 array 元素，这个我们直接给它变成0，这个我们在高级别的课程里面再去涉及它。然后是 descriptor 的 type type 的话，我们什么 type 呢？是不是 pyramid 里面就有，对吧？ mdescriptor type。然后 descript 的count，那么等于 param descript a f count，接下来我们要填写的是 p buffer infer，那么就需要从 param 里面取出来这个 buffer infer 了。
+
+但是这个地方有个问题，大家先看一看 buffers 我肯定是第 i 个，对不对？里面有个 get buffer infer，哎？这个地方是不是就有题了啊？我们之前，哎，这边为什么会有错误呢？有错误啊。那么我们是不是应该加个这个，对吧？加个这个就是 p 了，但是问题我们之前这个它是返回的是一个 auto 类型，就是这个类型这个临时变量这个循环一过就没了，是吧？那就不行了啊。
+
+所以说我们在这边要把它修改一下，大家注意这个很重要，极容易产生这内存问题，我们返回它的引用就可以了，返回引用就可以了，那这边同样拿到，那么在这个循环完毕之后，就不会这个变量所对应的这个变量就不会消失，这个意思。好，我们继续在这边，我们的还有一个东西是叫做imageinfo，在这个地方你看pimageinfo，也就是说他其实现在并不知道你到底是个什么类型，因为这个类型我们还不清楚他是个 uniform 还是个 texture 或者imagecommandserver，不一定在这个地方怎么判定，我们得换一种方法来判定了，如果。
+
+parameter 的 type 是一个BYTE，叫做 byte descriptor type uniform buffer。它如果是这种类型，我们就大大方方的把 buffer 的信息写进去这样子，然后并且它。已经提前被置空了在这个地方，对吧？就不需要管它了，那么这边我们还得写一个什么呢？如果 param m descriptor type，如果等于了一个 AK descriptor type 叫 command remap，比如这个 type 的话，我们在这里 todo 一下，这个地方就是做纹理用的，这里先 todo 一下吧。好，这样这个矛盾我们也解，继续，那么接下来我们就没有什么可写的了，这边也没问题了。
+
+好，我们看一下，梳理一下，对于每一个 param 我们都给它生成了这么一堆write，是吧？那么这个 write 需要干什么呢？需要把它 push 到这个write，这个 set write 里面 push 进去，把这家伙 push 进去吧。好，部署完毕后我们要干什么呢？在外面我们就要去给它更新进去了，更新用的是 wiki Update。
+
+descriptor size 这个函数，那么第一个 device 第二个的话是一个 rise 的合集，第二个不，第二个是一个 right count static cast int32T，那么这个应该是这个数组的size，第三个才是它的data，第四个是一个copy，我们这没有copy。OK，好，这，哦不是，看一下这边参数是不是看错了？这边需要一个 descriptor copy count，没有 copy 就是0，然后再来个这个就没有问题了。好，这边我们就把它更新过去，那么更新完毕之后，这个 descriptor set，哎，就创建完毕了。好，那我们这节课就到这里，我们完成了 descriptor set 创建。
+

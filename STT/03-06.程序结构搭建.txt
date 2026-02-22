@@ -1,0 +1,104 @@
+03-06.Vulkan-程序结构搭建
+
+各位同学大家好，我们这节课呢，就开始进入我们的成本，首先啊，我们把我们的c mic修整一下啊c mic里面呢，我们应该引入的一个include direct啊，就是我们那些第三方库的头文件的路径。
+然后呢，我们要引入linked address，就是它们第三方库的lib库的路径。
+最后呢？
+我们要把这些库啊，我们需要的库的名字啊，填到topic link LA br aries里面啊，是这样一个过程，首先我们看一看啊。
+对我们lesson one里面的东西啊，看lesson one是我们的工程目录啊，然后third party是我们的库的目录啊，那么我们就需要从我们的工程目录里面先跳出来，对吧？
+然后进入到third party里面，然后呢，首先是glm啊，我们进glm进include进glm进include OK，这样glm的东西就被我们引进来了啊，它的include头文件我们先在这测试一下include。
+glm对看到没有glm已经进来了啊，没有问题，然后呢，我们再引入一下这个glfw的东西啊，同样这边是glfw，那我们看一下外面啊。
+third party GL fw include啊，这边没有问题，include好，我们再看一看啊glfw有没有进来大写的glfw呃已经进来了啊glfw 3 OK，这里没有问题了。
+随后呢，我们要把marken也搞进来啊，marken也搞进来第三个。
+welcome的话呢，在这儿我们third party welcome这个版本号，然后大写引路的啊，在这里面呢，然后我们把这个路径也给它拿进来啊，welcome。
+从这开始啊，进入，然后呢，把它的斜杠反过来。
+好像vulkan的这个头文件也被我们拿起来了啊，看一看。
+就拉OK拉OK好没有问题啊，这三个头文件都OK了，接下来呢，就把各自的库拿进来啊，使得路径还是可以用的，各自的库的路径，比如grm啊grm是不需要的，因为grm是一个头文件的库啊。
+glfw开始才有这个libraries啊，才需要lib库，然后把它的文件路径拷过来，然后我们看一下glfw它的lib是在这个lib里面啊，所以就lib我们引入的只是路径啊，但是我的名字还没有还没有引入啊。
+那边呢，也是这样一个道理啊，把它的库的路径拿过来balcony里面是一个我们可以看到它是一个大写的lib啊，大写的ll ib OK，我们现在把它的库也拿进来了啊，然后接下来我们要在最后把我们需要的库啊，从路径里面抽出来啊，第一个是什么？
+一个是welcome吧，welcome的这个库啊v克welcome杠一点lib，把它拿来练上啊，练到我们主程序上，然后呢，我们再去到GIF w lib里面，我们要把这个啊GIF w三把它也给列进来。
+好，这样的话呢，我们这个呃配置啊，算是没有问题了，没有问题了，随后呢，我们回来在全局啊，我们建一个东西啊，我们建一个第一个文件base呃base点h。
+那个这个base表一是干嘛用的啊？
+这个其实是用来我们将来所有的乱七八糟头文件都可以往里放啊，因为很多地方都需要，免得每次都要引录一大堆啊，就这样子，大家不要忘了这个那个网址。
+二四二重定义啊，然后include。
+l three这是第一个。
+include memory啊，这个有智能指针，然后呢，随后我们把常用的啊，这三个都给它搬过来啊，都搬到base点h里面OK？
+然后呢？
+在这个呃glfw这里啊，我们还是要把它开启一下locken的属性啊define呃glfw叫做include。
+welcome OK，那这样的话就是呃，它会开启对open的支持啊，很多API来讲就被打开了，就这个意思。
+好，那么我们做完这个，我们就要开始啊，编写我们的第一个类啊，叫application啊，点h，然后那么我们再来一个啊application。
+h application a.这个是点儿cpp啊。
+OK，我们进到dh里面，首先习惯的啊，打一个pragma once，然后呢，state space。
+f我们把base引入。
+好，然后之后我们就可以开始写这个类了啊，这个呢是我们的啊，入口类啊application入口类嗯，大主干功能啊，我们这个程序的小架构功能都会在里面进行实现啊，这个意思。
+然后它有public，还有private，那么我们在这个类里面规划几种啊？
+首先是它的private功能啊，它的private功能有什么呀？
+比如说avoid in a void啊innate。
+window啊，就是对于窗口的初始化。
+不等innate vulkan对于vulkan环境的初始化。
+out慢loop这样一个主循环void clean up啊，这样一个对资源的清理定义完这些之后呢，我们啊要看还要定义它的application。
+啊，把它的这个构造函数啊，定义成default，这是一个很好的习惯，对吧？
+我们在编码的时候啊，对于application的这个结构和构造啊，都要给它稍微明确一下。
+或者说留作以后我们还可以继续填写。
+然后啊，在public里面，我们给它暴露一个接口，对外面啊，叫void run啊，就是开始run这个application啊，这个意思，然后在private里，我们还有对于它变量的定义啊private。
+变量的定义，我们pride函数跟pride变量啊，是分开定义的啊，分开定义的OK，那接下来我们再定义一个什么呢？
+是窗口类啊，窗口类的一个变量是用作emitter window的时候去使用的啊叫glfw。
+呃大写glfw，然后小写的window。
+那么是window okay，然后我们要给它啊，初始化一下now。
+我看一下来没有问题啊，能索引到。
+好，这样的话，我们这个类的定义啊，就差不多了，最后的话呢，我们要去实现它啊，实现一下include application。
+然后呢，namespace。
+ff首先实现第一个函数是什么？
+in it window啊，那个in it window呢，就是调用了gfw的东西，然后在里面去啊，创建一个窗口，并且设置一下gfw的环境啊。
+application it window.那么第一步啊glfw innate。
+诶glf啊glf呃glfw然后innate。
+OK，看一下这个手环有没有问题？
+动态提示还是不太好啊，好在这里我们要做一件事啊，将glfw的环境设置一下，设置环境啊，就是说呢，关掉啊OpenGL。
+的API。
+API然后呢？
+并且啊，都是禁止端口改变大小啊，这是我们的两个设置，用哪个函数呢gflgiw的window hint？
+然后第一个是glfw的啊，叫client API。
+OK，那这里我们啊，做一件事啊，就是也提醒一下大家，如果觉得呃，这个团子很不爽，或者说很多东西引用不出来啊，在这边要对它生成一下缓存啊，右键这个make list see make list。
+生成缓存OK诶，这样的话就算了，对不对诶？
+这样就识别出来了，然后呢？
+我们继续刚才API我们说叫glfw叫no啊API就是我们不需要什么OpenGL啥的支持啊。
+glfw window.paint GL呃叫做ree啊ree，那么我们关掉它可以改变窗口大小的功能啊glfw。
+然后叫做fuss关掉它OK，这样就可以了，然后我们要生成这个窗口啊m window我们定义的这个家伙等于gi w create window。
+create window呢，需要有什么呢？
+需要有它的宽和高啊，宽和高我们就到这来给它定义出来吧int啊，叫with等于唉。
+int啊，hit啊，hhd=600啊，不是600这么一个窗口，但这样定义变量是对的吗？
+啊，这样定义变量是对的吗？
+各位啊，留作一个小问题啊，在这问题继续。
+第一个传入的是宽度啊。
+难度第二传入的是高度第三个，我们传入的是它的名字，叫做vulkan window。
+然后后面的话呢，就是不重要的东西了。
+null l null PR OK生成window之后，我们检查一下，如果window不行的话呢，我们就要把CD。
+啊zero。
+然后叫做error。
+to create window好，将我们这个unit window就搞定了，接下来void application in it welcome啊，welcome这边呢，我们先放在这好不好啊？
+void application。
+haitian wrong呃不叫做main loop啊，main loop里面呢？
+我们要做什么事啊？
+在main loop里面，我们是不是应该做一个循环一个while那while它结束的条件是什么呢？
+是不是窗口应该被关闭的时候就要结束对吧？
+比如说你点了完window的这个叉叉，比如说你去摁的什么esa等等啊。
+所以说呢，当点fw到window should close啊，就是它不应该close的时候，我才进行循环，应该close的时候，我就把它关闭掉了，对吧？
+这样子呃什么？
+哦参哦set window哦不对，这里叫做window should close啊，加w window should close啊，然后呢，如果它不需要close的话就gfwf or invent啊，就把这个什么鼠标键盘事件等等啊，又解析，然后分发对吧，这样就OK了。
+这个慢loop最后呢？
+application我们应该有个clean up啊，把资源进行回收，现阶段来讲需要回收的资源就是gfw叫做destroy window啊，就是这个window。
+我们也遵从API创建API释放的原则啊。
+这个是API创建的，所以说用这个API销毁啊，这个意思最后，然后反数字化这个GIF w的环境啊GIF w dominate退出好嘞，那么这一票啊就搞完了，最后我们在上方啊，要做一个函数里的i play。
+patient叫做run这个run的话呢，会依次调用啊，首先调用in it window。
+再次呢，去调用wal CON。
+随后进入main loop，那loop结束之后呢，需要对资源进行可以up回收OK，这样就是它整个过程啊，整个过程，然后我们进入main在这里，我们include。
+application，然后呢？
+我们咱们函数里面做一个application的实例，叫I叫ff application APP，然后把这个APP。
+可起来好，这样的话呢，我们应该能看到一个窗口了，对吧？
+再生成一下开始啊。
+好嘞，然后我们运行一下，看一下啊。
+啊，出问题了啊，那刚才这个它说了是重定义啊，重定义为什么重定义呢啊，在这边啊，就是说呢，这个变量已经被定义过一次了啊，定义过一次了，所以说这个内函数中对定义一次啊，在这儿又来了一次，其实呢，有这个啊，零能防护住，但这种这种做法啊，在C加加里面是不行的，所以说需要加一个cons的变量啊。
+加icons的变量，这样的话呢，才能够顺利的编译通过，我们把这个清理一下啊，把方向清理一下，然后再次运行。
+好看，这个窗口就出来了啊，并且它不能够什么re是吧？
+它这是灰掉的OK，这个窗口打出一个file啊，我们看一下，其实并没有file是吧啊，这边应该是有一个叹号，一个叹号。
+OK，再运行一下啊，就没有问题了啊，好，那么这节课就到这里。
+

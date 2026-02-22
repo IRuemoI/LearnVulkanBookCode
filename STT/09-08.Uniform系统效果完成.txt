@@ -1,0 +1,42 @@
+各位同学大家好，我们这节课继续来丰富这个 uniform manager，那么上节课我们把这两个东西，是吧？ pool 和 layout 都引进来了，那么接下来我们要生成 descriptor set，是吧？在这边我们要写一个 wrapperdescriptor set，点 descriptor set 好，同样我们去到 init 函数里面，在这边 descriptor set 等于我们看一下之前我们写的这个 descriptor set 类，它到底要传什么参数来的？先是 device 是吧？然后第二个要传params，那就是我们的 uniform params，这都是现成的参数啊。
+
+第三个是layout，那么我们就是 descriptor set layout 也给进去，然后是pooldescriptor， pool 也给进去，最后是 frame count，那么正好我们这边还是有 frame count，是吧？给进去，好，这样我们的 descript set 在这边就很容易的生成了，是吧？哎，好，那么 descriptor set 生成之后，我们要给到一个接口，让外界可以去拿到它，因为它是经常被用到的，它会绑定到我们的 command 里面 getdescriptor set，那么 get 这个 set 的话，外界需要告诉他你 get 这么一堆 set 里面的哪一个，所以把 framecount 也要给过来。OK，那么我们去到 descriptor set 里面补一个函数，我们看到这边是有 n 个，是吧？ descriptor set，那么我们就要写一个 get 函数，在这边同样 no descriptor，然后走 getdescriptor set，那么这边需要给到framecount。OK，那这边我们就 return mdescriptor set， descriptor sets 里面的 dataframe 诶， frame count 个，对吧？给它返回去就可以了。
+
+好，然后我们再回到 uniform manager 这边的对外暴露的这个 get 接口，我们就可以调用刚才我们写的那个 descriptor set 它的这个接口了，对吧？ getdescriptor set。传进去一个 frame count，OK，这边 add count 好，这样的话就比较完整了，我们就外就可以拿到这个 descriptor set 好，那么接下来我们再做一个更新函数，这个更新函数是干嘛的？每一次它都要更新这个 uniform parameters，这个这一堆 parameters 里面的buffer，对吧？更新它的buffer，OK，那么更新函数还写到上面， boy update uniform 直接 update 就好了，那么 update 来讲，我们就是为了出于教学的简便，我们这边就写的明确一点，因为我们只更新两种这个矩阵。
+
+我们来看一下，在这边我们更新的是vtraces，就是这个定义，它定义在哪里呢？现在这两个都是定义在了这个 base 点 h 里面，是吧？都是定义在 base 点 h 里面，所以说我们在这个 uniform 点 h 里面，在这里我们直接把这两个矩阵要过来cost，比如说VP，对，这边把 base 拿进来，OK，直接这样base，然后我们把缓存更一下啊。
+
+好，OK， cost VP 这里变量名字不对吗？看一下 vpmatrices 应该没有错，我们把它拷一下，拷过来vpmatrices，然后第二个的话应该是一个什么？看一看第二个要更新的是一个object，uniform，auniform，OK，objectuniform，对，然后我们去实现一下这个 update 函数，假如外面每一帧都给我们传进来这么一个这么一堆变量的话，我们怎么办？把帽子拿过来。
+
+那么在这边的话，我们知道第0个在这个数组里面第0个部分存的就是vpparam，对吧？然后第一个部分存的是objectparam，这个是为了我们教学的简便，所以才直接这么去做。OK，那么在这边我们还是要知道一点，就是说当前 update 到底是哪一个 frame 所对应的buffer，是吧？所以说还得有一个东西 framecount 好，把这个拿过去，这边 framecount 好，然后 m uniformparams 我们的第0个位置是不是放的 VP 啊？ update vpmatrices 它的 m buffers deframe count 各需要进行更新了，怎么更新呢？ update by map 直接通过 map 来更新就好了。
+
+by map 的话是不是直接就 coherent 跟这个 host visible 这种方式，对吧？就直接就跑进去了，那么它需要有一个data，那么这个 data 就是不是直接是vpmatrices，对吧？取个地址，然后 size of vpmatrices，OK，直接就给它登进去啊。嗯，这边要是 voice 新的类型，那么这边就需要再转一下。
+
+好，然后我们再去更新 update object uniform m uniform parameters，然后第一个，对吧？它是它的 m buffers 的第 frame 个，然后仍然是 update buffer by map。这边我们把参数抄一下，只不过这边变成了object，对吧？然后这边是 object uniform，OK，这样的话就非常容易就更新到我们对应的 buffer 里面去了。这个 update 我们也写好了，我们来看一下啊。
+
+好， Onepoint 接好了，那么我们回到我们的这个 application 里面，我们有一个 main loop，是吧？不停的在转，那么在这个 main loop 里面，我们除了去接收 window 的信息，在 render 之前我们还得把这个 uniform 给更新一下，对不对？在这个地方更新，因为我们要在这里去更新我们的这个uniform，对吧？所以说我们要知道需要用到的那两个变量，就是 Vpmatrix 跟 model 的Matrix，就是叫 object uniform，这两东西它到底存于何方？我们先复习一下，可能有的同学忘了 vpmatrices 咱们是放到了 application 这边，因为它是一个全局的，而对于这个 object uniuniform 我们是放到了 model 类里面，在这所以说这个需要对外暴露一个接口，就是 get uniform，所以说我们传回去这个uniform，大家看这边有是有这个 get uniform 这个东西的。好，那么我们再回来，这样的话我们心里就大概有数了，要去到 application 里面，在这个里面我们应该怎么做？ m Uniform manager，对吧？它要到一个update，第一个参数是vpmatrices，OK，那么 vpmatrices 的话就是 m vpmatrices 直接给过来就可以了。
+
+第二个的话是 object uniform，我们当前只有一个model，把这个 model 直接 get 就是uniform。OK，当前是第几帧？我们的变量里面有没有这样的变量呢？看一看在 render 这边是不是经常用到一个currentframe，对吧？它加 100 分之这个每天都这么干。好，我们就把它。搬运过来cardfree，这样的话它就实现了每一帧对于这个 uniform manager 的一个更新。
+
+然后除此之外，我们现在更新这步已经加进去了，加进去之后，在对 command buffer 的时候，我们经常看到刚才报了很多 validation layer 的错误，对吧？因为我们还没有去正式的使用这个uniform，那如何正式的使用都要在 command 里面，是不是要把这个 descriptor set 给它绑进来啊？那么我们就需要去写一个函数绑定 descriptor set 在这边 bind 这个，对吧？我们再绑这个东西。 binddescriptor set OK，然后具体传入什么样的参数我们现在还不知道。去到这里我们先把它写过来，然后我们看一下这个 vulkanapi 它到底需要我们用什么参数啊？它叫 vkcommandbinddescriptor sets，是这样一个函数。那这个函数的话我们看一看，首先 command 没问题， pipeline endpoint 就是 graphic 还是compute？然后有一个，诶，这边有一个 pipeline layout，还需要一个 pipeline layout，然后这边是一个 first set，就第一个这个你的第一个 descriptor set，然后这边是 descriptor set count，你要同时绑多少个这个描述符集啊？这边是描述符集的真正的数据，然后 Dynamic count offset，这个 offset 就可以，我们就可以不要了啊。
+
+需要它，OK，我们看一下，那么我们就一个一个的把这个参数填一下，首先 command buffer，然后第二个东西是 bind point，是吧？我们就用 wekepipeline 叫做 bind point，我们就是绘图所用的，我们用于绘图，然后三个参数什么layout、pipeline、layout，那么我们这里加个参数，wekepipeline，虽然没有提示这边再生成一下缓存，不行的话就直接写了 wekepipeline layout。OK，擦不亮了。
+
+接下来还需要什么呢？嗯， pipeline layout，然后 first set 肯定是定引号，然后 set descriptor set count 我们就直接填一，我们现在就绑一个，然后现在是 descriptor sets，OK，那么我们传进来 cost descriptor set，那么传进来的是 zkdescriptor set， descriptor set，OK，那么这个就是这个了，直接给你绑上，接下来 set 有了之后，那么后面两个 offset 就不需要了。now，好，那么就是这么点参数，那么把这个参数拷过来。
+
+好，那 bind descriptor set 这边我们就搞定了，然后搞定之后我们要去到这个 application 里面，我们看一看这边，我们在 bind text、 bind index 之前，在这边我们去 bind 这个 descript set buffer 第 i 一个 bind descript set，那么这边首先是个 layout pipeline get 有没有get？没有的话我们去到 pipeline 去补一个，这边 get layout return m pipeline m layout。这个 layout 怎么生成的大家还记得吗？这个 layout 是用这个 layout create infer 这边搞定的，是吧？这个layout。 state 这个东西它里面填的是什么呀？填的就是我们这个 descriptor set layout 这个意思。好，那我们回到这边，忘记的同学也可以多复习一下，因为 welcome 东西比较多。
+
+get layout 这边 descriptor set IM uniform manager 这边 getdescriptor set 诶这边，然后给到的是 IM current frame 好，这样的话就绑上去了，诶， word 类型，这什么意思？OK，这边还不够，在这边 getdescriptor set，看一下它的返回值，返回的是它的返回值啊。
+
+OK，我们先看下时间，没问题，我们再去看一看，这边应该是return，这边没有写return。OK，再回来这边就对了。bye，好，那么我们运行一下。诶，我们可以看到出一些问题，这边我们也清一下工程，先把工程清理一下，然后我们再调试一下bug，看一下写了那么多的东西之后到底会出现什么问题。好，清理成功。
+
+好，我们看一下 validationlayer 上面的内容啊。好，这边关掉，我们先一起来看一看，第一个问题，他在说什么？第一个问题说这边可能字体比较小，同学看不见，给大家念念，他说 describe set band 在第一个的位置上的，那么并没有被update，就没有被 wiki update describe set 就说我们这句话并没有去update，就是我们这个 describe set 当中 binding 位置的东西，为什么呢？因为我们这边没有填写 binding desk right，它有一个 desk describe set right，有一个 desk binding，这个 binding 应该等于 param 它的binding，这样才可以。你这样的话就是，否则的话它就会一直只写那个 0 号位，不写那个 1 号位，变成这样了。
+
+好，那么我们再运行一下，继续看一看还会有什么错误。 badmintonlayer 好像并没有报错，对吧？但是这边却没有画出什么东西来，原因我们看一看，这样查，我们去到application，去到Uniformmanager，在 update 这边，我们看一下对方到底传进来了什么矩阵，这里这个 matrixmatrix OK，传进来的是很乱的一些矩阵，乱七八糟的，看里面都是些奇怪的数字，都是些数字然后不停的更新，不停的更新，那么就会导致这里面传给 shader 的这些矩阵都乱七八糟的，那自然而然就肯定画不出来了，对吧？好，那么我们去看一看到底怎么办？OK，现在我们查一查这个问题，应该是在这里，我们去到它的定义的地方，大家看这边它的 VP 矩阵也好， model 矩阵也好，在生头还没有初始化，这里面的数据是很乱的，没有初始化，所以说我们这边直接给它非常非常明确的初始化上，在这边我们让view，我们的 view Matrix 等于 GLM Mat four，然后是 1.0 F 是一个单位矩阵，然后我们再让我们的 projection Matrix 是一个，诶， projection Matrix 是一个单位矩阵。同样这边 object uniform 这边我们也给它做这样的事， model Matrix 等于一个单位矩阵，这样的话我清一下缓存，再做一下缓存，然后生成全部清理。
+
+这种情况下，我们看一看是否是正确的数据，去到application，走到 main loop 这边的update，我们看一看，好，在这边 VP 取帧OK，都是已经是一了，是吧？问题了，这些数据感觉还是非常干净的啊。
+
+嗯，很好，那么走到这之后我们就把它放开，直接开跑这个三角形，然后我们熟悉的三角形回来了，是吧？因为现在传的是一个单位帧，所以并没有任何的变化，对吧？那么我们接下来玩一下，我们玩一玩，在这个 model 里面，我们看一看，在这个，诶， model 点 h 里面，这边我们加一个函数，对，外加一个 void update，哎，这样子，然后这个 update 里面我们干什么呢？我们操作一下这个里面的矩阵，咱们怎么做？想一下这样子我们在里边加一个很简单的好玩的变量，叫做 float angle，然后我们给他一开始0.0，好，然后在这边我们这样做，这个 TL math for 叫 rotate Matrix。等于 glmat 点 0F 做一个单位阵 matfour OK，然后这个 rotate 它等于glmrotate，那么这个 rotate 的话首先要把它自己搞进去这样子，然后 angleangle 的话就GLM，我们直接用这个radians，然后上这个angle，我们这 angle 加个 m 变成全变量，对吧？Mangle，OK，都变成弧度之后，下一个参数是它的旋转轴，我们要绕着 y 轴来旋转。GLMMAT30.01.0。然后最后 0.0 我们让它转起来。好，这样一个旋转矩阵就做好了，然后我们让它的 model Matrix 就等于这个旋转矩阵，其实这样也不明显，我们不要绕着 y 轴了，我们就绕着 z 轴这样子，绕着 z 轴来做，绕着 z 轴做旋转，然后这个 angle 就每一次都直接加上0.001，OK，让它加上0.001。
+
+好，然后我们再去到 application 里面，在这边我们在 uniform 更新之前，我们就把这个 model 给 update 一下，哎，这样子。好，仍然是要清理一下啊。好，我们看一看会有什么效果。可以看到这个三角形缓慢的开始旋转了，是不是我们这个 VP 矩，我们这个猫道矩阵奏效了啊？但是这个有点太慢了，我们再快一点， 10 倍，我们开 10 倍速，其实把这个 model 全写成点 h 里面不方便，放到点里面的话就是每次都需要清理，就很麻烦，但是先忍了，先用好，大家看这个旋转起来还是很不错的，是吧？这效果还是可以的。好，那么这节课就到这里。
+

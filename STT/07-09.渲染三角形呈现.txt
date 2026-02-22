@@ -1,0 +1,38 @@
+OK，各位同学大家好，我们现在已经封装了 semaphore 信号量，那么这节课我们就开始使用它，并且构建我们的绘制功能。好，与 command buffer 差不多，我们给每一个 swap chain 的每一张图片都配备一个 Semaphore rapper，那么叫semaphore，点 m 叫做。
+
+好，这边取名字，咱们暂停一下，这个取名字的话，我们有两种semaphore，对吧？一种是控制，只有在图片显示完毕之后才允许render，第二种是控制 render 完毕之后你才能够去显示，所以第一种叫做 image available semaphore。好，那么第二个叫做 render finish 赛赛美佛。 render finish 赛美佛。好，然后我们额外在这里再加一个参数，是int，叫做mcurrentframe，就是当前我们绘制的是这个 swapchain 里面的哪一个图片，我们在这里做记录啊。
+
+好，那么我们接下来去到 application 里面看一看，在这里面的话，在这个录制完 command buffers 之后，我们在这边就开始生成我们的 semaphore for int i 等于 0i 小于 m stop。 get 叫做 free get imagecount 好，我们生成一个 semaphore 叫做 image semaphore 等于 wrapper semaphore create，然后把它放到 m image available semaphore 里面创建出来 image semaphore。同样我们 render finish semaphore 也给它创建出来 m render finish semaphore。好，那么我们 semaphore 就创建完毕了，随后我们要开始做一个 render 函数，在这里 loop 下面。
+
+void render 这 render 函数里面就是一些具体的操作了，在这个 main loop 循环的时候，每循环一次，我们就执行一次render，执行一次渲染，那么把这个渲染函数我们写完render，OK，那么准备工作就绪，我们就要开始编写 render 了。
+
+第一步，首先获取下一帧，就是交换链当中的下一帧，那么下一帧的 index 我们记录在这里， in image index 好，通过调用 VK acquire acque 叫做 next image khr 这个函数，那么我们来获取下一帧。首先第一个传是 device get。yes，第二个传入的是 swap chain swap chain get swap chain OK，那么第三个要传入的是，我们看一下 timeout 就是一个获取的时间点，就从那等待的时间点就是一个叫超时的时间，我们把超时间设为最大 int 64，然后Max，然后后面是一个semaphore，就是说我们即将要获取的这张图片与哪一个 semaphore 进行绑定，叫做 image available semaphores。好，我把这个参数调整一下。这样写太挤了，那么第几个呢？那么一定是 m current frame 这一个，然后 get semaphore。
+
+那么接下来还有什么参数呢？是我们看一下叫 wiki fence，这个 fence 的话我们先给它置空，现在先不讲它最后是index， image index，好，那这个函数就调完了，这个函数调完之后我们就获取了当前的这个 image index，就是我们要画到哪一张上，对吧？然后 current frame 是记录了什么呢？记录了目前从一开始到现在这个不停的轮换了多少次这种感觉，就比如说从它是0，然后我们绘制一帧之后它变成一，然后2，随后由于我们只有三张图片，所以下一帧又变成了012012，它这样一个循环记录的数字啊。
+
+那么接下来我们就开始构建提交信息，叫做 VK submitinfo。好，那它的 type 等于 vkstructure type submitinfo，OK，那么在其在做这个 submitinfo 之前，在填写之前，我们还需要去构建 Semaphore 的数组同步信息。这个同步信息是什么呢？它是一个应该说渲染对于显示图像的依赖，显示完毕后才能输出颜色，对吧？好，那么在这边我们取名字叫vksemaphore。
+
+wait 应该叫 wait wait 没force，那么等于什么呢？等于imageavailable。对。好。好，那么它的 pipeline stage 什么呢？ wiki pipeline stage flags 叫做 wait stages，我们是哪个阶段在等待？它是 wiki pipeline stage color。
+
+color attachment output it。
+
+好，我看一下有没有水啊。有，对，没问题，那么我们是在这个绘制到这一步的时候，就颜色的那一步，我们就等待这个信号量，对吧？那么接下来我们把它真正的设置进去，下面只是收集了两个数组信息，现在设置进去它的 wait semaphore，看一下 semaphore count，它等待一个semaphore，然后它的 p wait semaphores 应该等于就 wait semaphores OK，然后它的 p wait dest stage mask。就等于 wait status，这样的话就把这两个信息就都填写到 submitinfo 里去了，就是提交的info。那么接下来 submit 还需要干嘛呢？指定提交哪些命令？那么我们要提交的命令是叫做 command buffer count 等于一，我们提交一个 command buffer，然后 p command buffers 等于什么呢？我们要提交的是 m command buffers 的 image index，因为我们给每一幅图配备了这么个东西，对吧？ok。
+
+OK，我们看到这有一个错误，这个我应该获取到他的这个 command 才可以这样子，我们 auto command buffer，等于这家伙他 get command buffer 没有，我们再补一个函数 command buffer，这边我们在这里 no discard auto get command buffer cost return m command buffer，把这个实体给它返回去。好，我们再回到 application 这里。 get command buffer，然后把它丢过来。
+
+好，那这样的话我们就这个提交了这个相关的命令，做好这个相应的提交，那么接下来就是说如果这个命令它执行完毕之后，我们应该点亮哪一个或者哪些个semaphore，叫做 VK semaphore，我们给它取名叫 signal semaphore，等于在你渲染完毕之后，你应该点亮什么样的 semaphore 呢？是不是那个 render finished semaphore，然后让 current frame 然后 get semaphore。
+
+OK，那么这个数组我们放在这，放这之后我们还是要给它去设置进去，对吧？它的 signal semaphore 的 count 有一个，然后在它渲染完之后，执行完之后点亮这个semaphore， signal semaphore，OK，好，这样的话相关的命令我们就构建完毕了，我们捋一遍，首先获取到我应该画的那一帧，下一帧是这个帧，是吧？那其实这个也是按 0123 等等这种顺序来排列的，这个东西其实主要是因为我们一开始没有获取到它的，所以说我们用它来额外记录semaphore，对吧？然后构建提交信息呢。我先确定一点，就是说我这个命令在这个阶段我要等待这个 semaphore 才行，然后把它设置进去，然后我要执行哪些命令呢？我要执行这个 command buffer 里面我们之前录制好的命令。然后到这来，我这个命令执行完毕之后，我点亮哪个semaphore，点亮是这个 render finished semaphore。
+
+好，那么我们接下来进行提交 vkqueue submit 要提交了，首先提交的第一个参数是什么呢？我们看一看。嗯，第一个是q，所以说我们要从这个 device 里面把 graphics queue get，这没有这个接口，再补接口去到 device 里面，我们看一看， device 里面我们有这个 vkqueue graphics queue，是吧？我们把这个也回去， no discard auto get graphics queue。 return MQ，然后我们把显示队列也返回去 auto get present q。 return m present queue 好，再回到这个 application 里边 get graphic queue 这是首先我们冲哪个队列提交这些命令，然后我们要提交的命令的这个 submitinfer 的个数是一个，然后提交哪个 submitinfer 是submitinfer，随后的话一个fence，这个 fence 的话我们还是说回头再讲解。那。OK，看到如果它不等于 make success 的话，同样 throw SCD runtimeerror。 error failed to submit render command 好到这。
+
+这一步就结束了，那么我们提交了这个渲染命令之后，我们还要提交这个显示命令， k present infer KH2，对， present infer 好，它的 type 等于位 key structure type present infer KH2 这家伙，那么我们 present infer 的话，它等待的信号量是谁啊？你想它一定是等你渲染完毕之后才能显示，对吧？所以说它的叫做 wait semaphore， count 也是一个，然后 p wait semaphore 就是谁，就是我上一步要点亮的那个semaphore，就这个。
+
+好，那么接下来有同学会问。这里为什么没有设置它显示完毕之后要点亮的 3 倍放呢？因为内部是在这里来设置的，这里面就会有告诉你说这一张图片在它被显示完毕之后，请点亮这个 3 倍放在这里设置的。好，那么接下来我们要去做 swap chain 相关的信息。 make swap chain KH2 有一个 swap chain swap chains 的一个数组，我们也要给它设置进去，等于 m swap chain get swap chain 好，然后还是 present Infra 要告诉大家在到哪一个交换链上去做显示，对吧？叫做 swap chain count 等于它的 p swap chains 等于 swap chain。
+
+好，这个我们也给它告诉完毕了，想想还有什么需要告诉它的呢？就是说用这一个 swap chain 的哪一帧去渲染，对吧？用它的哪一个图片去渲染 p image indices？等于imageindex。好，然后我们就可以将这个显示命令提交上去 wikiqpresentk 看一下参数。首先 QM device 肯定要提交到什么 presentq 上去，然后第二个是它的info，显示 info 就是presentinfo。好，然后我们最后将 currentframe 等于什么呢？ m currentframe 加 100 分比一个叫做 m swapchain get imagecount，让它在这个 imagecount 之内进行递增012301230123，这样子，对吧？好，那这样的话我们这个 render 函数就构建完毕了，我们跑一下看一看感觉如何。好，又发现异常，我们应该先干嘛？先把它清理一下，先保证一下它一定不是因为这个 Cmake 这个原始数据的问题。好，然后再生成一下，如果还有问题，刚好我们可以借这个机会去 debug 一下。哎，没有问题，但是有很多的 validation error，这个仔细查一查。
+
+好，OK，我们再重新跑一次，让大家看一看这个非常经典的错误，大家看这个其实已经三角形给渲染出来了，对不对？我们这个三角形不就是在 shader 里面写死的那个嘛？但这边出现了很多奇怪的错误，先关掉仔细看看。那上面写的说这个 attempt to destroy with keeping buffer， which is in use 是 in use。这个是最后的错误，看，我们看刚才的错误，这个啊。
+
+说这个 command buffer is already in use is not marked or 怎么着，对吧？什么意思？就说你看我们刚才这一堆提交用的 command buffer，假设第0帧的这个 command buffer 被提交上去了，对吧？然后第二个被提交了，我们看一看，提交一、提交二、提交三，然后这三提交都进去之后，我们假设 CPU 的速度超快，然后你这一个命令还没执行完，是不是又返回来又要去提交一了，对不对？你这边还没渲染完毕，说正在渲染，结果你又把这个一又提交上去了，再重复一遍，我们提交了一个命令，又在第二帧上提交了第二个命令，第三帧上提交第三个命令，然后提交上去的第一个命令还没有讲完毕的时候，我们又把又回来了，对吧？又要提交一了，你说一正在执行呢？那这肯定不行，对吧？那这就需要一个控制手段，那这个我们就后面给大家去讲。
+

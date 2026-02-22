@@ -1,0 +1,14 @@
+各位同学大家好，我们上节课已经给大家讲完了显示的整个流程，那么显示流程里面有一个很重要的控制因素叫semaphore，就是信号量，那么信号量在 Mutex 里面有一个专属的句柄对象，那么碰到专属句柄对象的时候，我们应该怎么做呢？就是应该做封装了，是吧？那么这节课我们就开始给大家把这个给封装一下写出来。好，那么仍然是先建一个文件 semaphore 点h，然后再来一个点CPP。好，仍然是把帽子弄过来。
+
+class semaphore 好 update private semaphore 构造函数 semaphore 析构函数OK，那么仍然是先把它加入到我们的编译序列当中，OK， wrapper semaphore 好，那么我们就去到 semaphore 里边，诶，在这里，然后首先更新一下缓存，首先我们做个包装， using PR 等于shared。信号， start prgret return M s b make sure，然后信号。
+
+好，然后我们看一看，在 Vulkan 里面对于一个信号的表示形式是这样的，它的句柄对象的类型叫做 VK 信号这么个东西很直白， m 信号初始化 VK now handle。然后同样的老套路，是不是我们要做一个这样一个 Vulkan 的句柄对象，就需要 device 作为参数，对吧？所以说把 device 存 now PRD，为什么存 device 呢？是因为析构数据就可以由智能指针进行保护，对吧？好。那么这边 create 里面我们也加上参数， const device PTR，然后device，对吧？然后我们把 device 这个同样的参数搞一下，进到这里， device 传进来。
+
+好，这样的话一个很简单的关于 semaphore 的小架子就搭起来了，对吧？然后我们在这里还要提前写一个东西， no discard。什么东西？ auto get semaphore，这个就是获取到 semaphore 的 TOKEN 类型， return m semaphore 就好，看一下。嗯，没有问题。然后我们去到 CPP 里面，还是 CPP 这里，然后include。
+
+Semaphore namespace FF rapper 构造函数 semaphore 参数， cost device PTR 好，device，我们直接让 device 等于这个，然后 Semaphore 析构函数，好，那么在这个地方我们要想一想， Semaphore 在析构的时候会不会要释放它的资源，对吧？我们看一下有没有如果 m Semaphore 它并不等于 we can now handle 的话。那我们需要释放这个资源，叫做 VK destroy semaphore，诶，在这里，然后第一个参数 device get device，第二个参数是 semaphore m semaphore。第三个默认分配器，好，然后我们就构建完了，在这个地方我们要开始去 semaphore 了。
+
+那么我们创建 semaphore 的话，首先肯定有要有一个 create infer，是吧？大家都很熟了，这是个套路， semaphoresemaphore create infer，那么 create infer 直空好，它的 s type 等于 wek struct typesemaphore create infer 好，那么就是这么简单，其实也不需要填什么其他东西了，我们来看一看这个结构，这里面其实就是 semaphore 的一些flags，包括说到它的信息这边其实我们是不需要填什么东西的，因为 semaphore 上来就属于一个非加态，那么接下来如果Wek。
+
+create semaphore 这边是 m device get device 第二个参数是 creating infer 第三个参数拿 PTR 默认分配器。然后就是我们要做的这个semaphore，这家伙如果不等于 VK success 的话， throw SD round error failed to create semaphore。好，那这样的话 semaphore 我们就创建完毕了，我们看一看，嗯，就很简单。好，这节课很短暂，但是也很必要，对吧？给大家把这个 semaphore 给创建出来，那么下节课我们就开始使用它。
+

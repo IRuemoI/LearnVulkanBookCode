@@ -1,0 +1,79 @@
+05-05.Vulkan-Pipeline对象封装
+
+上节课呢，我们已经封装了这样一个shared类啊OK，然后我们这节课的目标啊，就是封装一个pipeline类啊，开始封装这个管线了，那么管线呢，其实啊，它其中一个部分啊，我们讲过的就是就是这个shared是吧？
+啊，可能多个黑道构成一个黑道组，然后塞入这个管线的变量，里面描述里面啊，再给它生成这条管线，那么管线呢？
+在游戏引擎当中啊，其实日常都是放到哪里呢？
+放到这个material里面对吧，然后再变成渲染，就是说有一个back ET，有一个前端啊，前端是逻辑端，后端是渲染端的时候back ET里面啊，还会。
+有一个beckons的，这种material的一个代理类aroximate装入这样的一个pipeline OK，那么我们接下来就去封装这个pipeline的类型，首先我们啊，在这里做一个。
+新建文件啊，叫做pipeline点h，然后呢，我们把这个pipeline点h把它复制出来啊做一个pipeline点cpp。
+加cpt OK，然后还是把帽子先摘过来，给到pipeline。
+诶，在这里呢，写一个pipeline的类plus pipeline public private。
+通常啊，还是这些结构啊，pipeline的构造函数type line的析构函数啊，构造和析构，然后我们还要给到一个什么using HR啊等于。
+c12的。
+叫做pipeline。
+这样一个东西啊，然后static一点二plate啊，这种老生常谈的东西了啊c1 make share叫做pipeline。
+好在做完这些东西之后呢，我们要考虑一下pipeline到底有哪些成员变量啊，首先呢，肯定还是vk pipeline，对吧？
+把我搞成pipeline，在此之前好习惯是吧？
+加入到编译链条当中啊include。
+login wrapper下面的pipeline好，然后我们再回到pipeline啊，这边生成一下缓存好嘞，那这边的话呢，我们也可以拍一波line诶，这么个结构啊叫pipe。
+来这个就是vulkan的派克栏句柄。
+好，那么我们是不是还要存一下？
+对吧？
+就是device啊，又是这个device。
+now PR.随后啊，我们要看一下还有什么在pipeline里面，还有一个比较重要的结构啊，它是跟uniform全局变量相关的，这里呢，可能大家不知道它是个什么啊，我们先声明在这里啊pipeline layout。
+mla you to know hello啊，在上面在这后面我们会去讲解啊，详细讲解这个结构，那么除此之外呢，还需要一个什么，还需要一个对shader的存储，对吧？
+我们这里面还存了shader啊，所以应该录的shader。
+点h在这个地方要加上SD vector。
+塞打。
+t trm十一点四唉，这样的话呢，它就什么它是一个啊，我们把11点可能先生成，比如说我这个11点family十一点二GM十十一点二等等啊，我们把它生成一个十一二的组，然后呢什么十一二组啊，就是一个数组，对吧？
+把这个数组呢，再给它设置到这儿来啊，然后我们再设置其他的东西统一来。
+生这个管线啊，统一生成管线OK，那么我们接下来呢？
+首先啊，把其他的变量给它补齐什么，其他的变量呢，比如说我们把它写成public吧先啊，这样它简单一点啊好。
+在pipeline的设置当中，我们有很多的变量需要设置很多的阶段，对吧？
+我们之前讲过啊，像what tax input还有assembly组装呃viewport right呃，就是那个光圈化的ration啊等等，我们都在这给它先定义出来。
+首先，第一个vk h line，它的vertex input state create infer啊，这个是vertex create infer就描述这个模型顶点的啊m vertex。
+input呃叫做info吧叫input state，我们都用用state来描述吧，然后这样，然后呢，第二个叫做vk fly呃input assembly assembly。
+create infer啊，这个是组装的啊，就是那个图源叫做assembly嗯date。
+那接下来呢，是viewport，我也可以拍一部line viewport view port state，create infer，然后叫做viewport。
+啊，这个报子消息吧state。
+哦，对。
+接下来啊，还有什么呢？
+还有一个rest radiation，我们可以pipeline rasterracizationc这个m raster。
+state往上啊，还有一个什么呢vk pipeline multi sample可以定义法，就是都采样的都采样这边呢，可能我们还不用，但是写的是sample date。
+诶好呃，还有什么呢？
+还有一个叫做vk pipeline color blend呃attachment，就是说跟颜色混合相关的啊，一个touch ment state叫做blend。
+attachment state.OK，不能attachments。
+然后呢？
+我们接下来啊，有一个总括式的blend state vk pipeline color blend state。
+create infer啊，这样再做mlends take直接叫。
+OK呃，那么我看看还有什么呢？
+哦，还有我们还有一个这个vk pipeline。
+叫做depths stencil就是深度和模板测试，两个测试合在一起的一个state啊，叫做m depths stencil。
+state okay，那么最后一个啊，我们再写一个layout啊，咱们可以pipe a pip line呃wiki pipeline layout。
+create infer这个叫做m lay out state。
+好啊，可能会有落下的，我们到时候一边看到底会落下什么啊？
+目前呢，就是先把这些状态写在这啊，那么在这个接口函数里面的话呢，我们需要给它做一些定义啊，比如说。
+我们要定义一个void set shader group啊。
+就是说呢，把这个sheet group给它填充起来啊，叫做copy d vector shade。
+btr那么叫shadow group啊，这样一个set函数啊，然后我们还需要一个函数叫做build啊，void build就是说呢，当我们设置完这所有的这状态之后啊，我们一个build啊，把它给build出来。
+是这样子好，我们再看一看啊，做一个排除来来讲它的初始化需要什么呢啊，它需要一个device是吧？
+const device。
+tr device同样啊，这个device也会被放到create函数里面啊，去调用把这个device传取好，这样的话，这个架子看一下就打的差不多了，去做实现了。
+做这个实现的时候呢，首先仍然是把帽子先摘过来啊，把这个摘过去吧hip line啊好，然后上面我们放它的头文件include hip line点h，然后首先hip line它的构造函数是吧hip line？
+然后呢？
+里面应该有个const device啊ptr device。
+好，然后在这里我们让device=device检查一下啊，看一看这个device有没有指空啊？
+已经指空了，没问题好，然后呢，我们是它的析构函数pipeline。
+I.里面需要吸扣掉两样东西啊，如果m pipeline是吧？
+这个家伙它不等于v know函导的话，我们需要把它给vk destroy。
+呃，pipeline给它干掉啊，传入的是device m device。
+get device第二个是pipeline嗯，pipeline把这个家伙干掉，然后最后是默认的内存分析点，然后在此之前还有一个东西是什么呢？
+是layout如嗯pipe呃pipeline诶。
+m layout这家伙如果说它不等于v know hand out的话，我们在这里呢vk destroy啊，叫做pipeline layout，这个函数对，然后传入一个device m device。
+dead device第二个是layout pipeline LA you TM layout第三个是now撇。
+好啊，我们的习构也搭建完毕了，第三个是moi的set函数pipeline。
+set sheet group okay啊，函数的姓名抄过来这玩意儿。
+我们直接让m十一点四等于这个11点group就可以了啊，然后最后是build。
+white pipeline.build函数OK，关于build函数呢？
+我们啊，后面再讲，现在呢，我们就已经获得了一个关于pipeline的一个整体框架啊，那么后面我们就开始设置这一系列的信息，然后呢，把这个build也填充起来。
+

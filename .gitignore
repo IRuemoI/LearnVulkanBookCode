@@ -1,0 +1,25 @@
+ 常规过滤
+/.idea/
+**/.DS_Store
+/cmake-build-*/
+**/build/
+**/*.exe
+/.clang-format
+/.vs
+*.ilk
+*.pdb
+
+.claude
+
+# Git 子模块 - 由 Git 子模块管理，不直接追踪
+dependencies/
+include/
+
+# 项目资产
+/animations/
+/models/
+/textures/
+
+# 项目依赖和资产压缩包
+项目依赖以及资产.zip
+Vulkan开发实战详解.epub

@@ -1,0 +1,129 @@
+05-06.Vulkan-Pipeline参数设置（一）
+
+上节课呢，已经完成了关于pipeline的类的一个架构啊，那接下来呢，我们就需要对这个pipeline进行一下生成生成pipeline呢，外围需要准备一下挺多的资源啊，需要维修资源。
+所以在这里呢，我们首先一条一条的准备啊呃，在我们的application里面啊，这里我们要做一个函数啊，因为生成它，它来讲还是比较复杂的啊，咱们把它独立出来。
+我们把它做一个private time。
+void create pipeline.然后啊，在这里边，我们去到application里面啊，实现一下它嗯，我们把它放在这吧word application，然后叫create pipeline。
+这啊，关于排放量来讲，首先我们要准备好一个视口，对吧？
+因为一会要设置它，所以叫做vk啊viewport啊v的这个视口设置是通过这个结构啊port。
+那么，这个viewport呢？
+是一个描述的类型啊？
+viewport，它的x我们让它为零，然后它的y。
+我们也设为零。
+viewport还有什么呢？
+viewport还有它的宽度，我们的宽度是什么呀？
+是m啊，是我们这个之前在application的上方啊，定义过这样一个东西啊，宽度和它的高度啊，那么这边输入的宽高啊，其实是个float类型，我们转一下就好了啊。
+宽度viewport。
+高度。
+eight OK，然后呢？
+viewport还得设置它的一个远近距离啊，比如说它的mean depth，我们让它等于零点零f，就是说从纵向深度上来讲啊，深度上来讲呃，我最近呢显示零呃，深度为零的物体，我最远呢。
+显示深度为什么的物体呢？
+为一啊，因为在这个呃，我们的显示坐标啊，显示坐标系下就是屏幕空间之内啊，这个y呃，这个z深度啊，不是负一到一啊，不是纯ndc，而是把负一到一转化成了零到一，这样的节奏啊，转化成零到一。
+所以说我们相当于说在我们的可视范围之内啊，全把它给显示出来，然后设置剪裁vk racket啊，剪裁就是rret 2d啊cissy一个sensor。
+OK，我们接下来我们设置一下这个sensor剪裁和编号，之前都给大家讲过是吧？
+它们各自的含义啊，我们就不做赘述了，它的offset就是它的偏移啊，我们让它为。
+零零然后呢sensor。
+它的accident就是它的范围啊，我们给它设为呃设，为什么呢？
+设为宽。
+和高OK，这样啊，sensor啊，sensor这个剪裁也给它设置好了，然后呢，我们在application里面，我们要做一个pipeline啊，那这个shadow呢，就是一会我们要把它删掉啊，先放在这。
+wrapper pipeline tra trm pipeline.好，然后我们去到application啊，它的实现里面去看一看啊inter mo Ken这边我们要这么去用啊。
+首先，pipeline要把它生成出来wrapper。
+呃，pipeline。
+诶create传入的是什么？
+这个device是吧？
+m device。
+好，然后下面啊，我们要create pipeline。
+在这里啊，去给它真正的create出来，在这边啊，大家都可以改名字是吧，然后在这边呢，我们就开始对pipeline进行配置了啊，在配置之前我们首先要把身段进来啊，就是这句话。
+我们现在呢，把这个sita删掉啊，因为这个sita呢，不足以让它成为我们application的这样一个程序变量啊，它没有这个资格是吧？
+没有资格啊，我们这样子搞。
+我们在create pipeline的时候啊，我们在这边做一个临时的shadow auto shadow啊，它等于shadows这样一个啊，首先是我们text shadow，然后我们再做一个shadow啊，这叫这叫what tax？
+诶vertex，然后是shift fragment。
+那这边的话就是是哎，我看一下叫什么名字来着啊？
+叫什么名字叫fs啊？
+fss DV这边的话呢，就不是这个啊，10 vk shade stage fragment b，然后入口函数内函数啊，好查一下嗯，没有问题啊，没有问题。
+然后呢，接下来我们就开始要需要一个呃shader的描述符给到我们的pipeline啊shader描述符呢啊，是这样的，它需要用一个结构是vk pipeline shader stage infer啊，然后但是我们有两个shader是吧，我们两个shader，然后呢，我们就嗯，在这里啊，我们在这里的话做一个这个吧。
+啊c1 vector，然后shadow来c2。
+好，应该是wrapper。
+然后shade，然后ptr我们做一个数组啊，是group。
+然后我们把这两个加号给装进去啊。
+c的group。
+pullback shade vortex在这边呢！
+它的push back已经生成了顺序啊！
+它都可以随机啊！
+就是它是可以打乱顺序的啊！
+为什么可以打乱呢？
+啊！
+那是因为这个shade里面对吧？
+这个对象里面它啊，已经包含了它属于哪个stage了，所以我们在做戏的时候就可以把它做进去啊！
+那么，接下来我们要做它的信息啊for呃，在for之前的话呢，我们需要啊做还再做另外一个，这个letter啊，我为每一个shadow生成什么，为每一个shadow生成一个描述符啊，就叫做v，那么我们就给它做一个这个东西的。
+速度better呃，叫做vk pipeline shader stage呃，create infer啊什么玩意儿，然后叫做read r create infer啊色啊。
+好，然后接下来。
+我们要生成啊，所有的给这个生成，所有的描述符for什么什么呢？
+for auto啊const auto shader。
+那么，在啊shade group里面的每一个shade都要做一个操作，做一个什么操作呢？
+所谓可以拍谱。
+line呃cedar stage great infer这样，然后呢？
+这个叫cedar great cedar great infer okay，然后接下来我们填这个cedar great infer啊。
+它的s type。
+等于make a structure。
+诶，写错了vk structure type呃pipeline shade stage快捷键法这个。
+好，然后首先我点写的它的shade c啊，the stage=shade的诶，这个地方还封起来了是吧？
+我们给这个shade加点接口吧嗯，说到这啊，加点接口。
+然后discuss。
+呃，这边是auto get sheet stage。
+stage好第二个。
+auto gets he诶，get shed的entry point啊。
+啊，分到nc top用到呃，还有什么呢？
+呃OK还有get谁的model啊？
+auto get shadow module，get它本体啊，return msh ade module好，这边就OK了啊，这几个字母就不过了，我们继续回到application里啊，这里。
+好，现在的话呢，就是可以给它设置s head stage了啊，是点get CAD stage啊，就拿到了。
+然后我们接下来给它设置shadow，create infer啊。
+嗯p内。
+诶，看一下是不是p内码？
+嗯，没错啊，等于这个谁等的get entry point啊，就是它的入口函数点开始设置，然后设置great infer嗯，还要设置它的motif啊，motif等于呃，那么。
+sit 2 get。
+哎，get module。
+诶诶，这边有什么问题看一下嗯，好啊，那这边的话得用点c对。
+呃，但是这样的嗯，这样的话应该是不对的啊呃，因为它返回值需要变一下才行啊，返回值需要承接一下，那么给它承接一下吧auto啊，叫做entry lay。
+等于sita get对。
+嗯，考虑一下好啊，考虑一下嗯，这样的话，因为这样子如果总是get的话呢，它就会出一个string啊，这个string对象会它的c会被附进去，但是出这个作用域，这个就就已经死了，我看一下这样这样就可以没有问题。
+啊，应该没有问题吧，再思考一下啊，出了作用域之后啊，11代还在吗？
+11代还在啊，11代还在那么这样东西也就还在可以啊，这样是可以的，不会说出了作用域就虚构掉了，没问题。
+好，那这个sit down create infer呢，咱就给它做好了，做好之后啊，咱们把它塞进去啊塞呃set到sheet create infer里面啊pushback creater。
+great infer好诶，切掉great infer。
+好给它塞进去，这样的话呢，把CAD给包装完毕了啊，包装完毕CAD之后呢，我们需要啊，把它这个送到咱们的这个pipeline里面去啊，送到pipeline里面去。
+如果我们想把这个放呃设置到我们pipeline里面的话，就需要把它设置给我们pipeline中的那个create info里面啊，所以这一小段儿我们在这儿写完它之后啊，我们可以把它放哪儿呢？
+其实可以放到我们pipeline的build里面的，我们现在把它拷进去啊。
+剪切去到排布栏这里啊，把它先放到这在最终呢，我们统一来构建的时候啊，是可以这么构建的，那么这个shed a group我们就换成shed as啊shed as这样子啊。
+然后呢？
+在这边啊？
+嗯，在application里面，我们好好设计一下这个shared group是不是已经装好了，所以我们需要shield对吧？
+所以我们害怕这家伙就应该到它的什么set sheet d group，然后把我们的shaded group给它放进去诶，像我们shield d就设置好了，这样就很简单，对不对？
+然后接下来我们要开始设置啊，正式设置它的其他属性了，第一个属性是我text相关的就是顶点啊，第一个是顶点的嗯，排布模式啊，我现在不是说之前写我text的时候是直接在那个里面在的里面啊，定义了一些那个顶点嘛，对吧？
+所以那些零点呢，我们可以继续沿用啊，这边的话我们就直接给它设成空就好了啊，设成空那么pipeline。
+这边呃，应该叫m vortex哎，这个input state啊，首先它的s type我们给它直接好叫vk呃structure ture type。
+呃，叫做pipeline vertex input。
+嗯，state。
+客婷一份哎，这个。
+好，然后呢？
+我们再设置一下它，其他的属性啊，这家伙来下来它的vortex bending啊，大家知道vortex bending嘛，你有n个啊，怎么说position color normal等等啊，都生成了n个什么buffer是吧？
+阿尔法的描述信息在这儿，在这里呢，我们由于还没有加入这个顶点，所以说我们给它零就好了，先不输入，然后呢，我们再输入一下啊TV TeX binding descriptions啊，就是与它一一对应啊，有多少个下面都是谁啊，这里边也闹掉。
+然后我们再输入啊，叫做vertex attribute是吧？
+它也是零个，然后最后p vertex attribute descriptions仍然是ptr啊，那我ptr好，那么顶点排布模式我们完毕了，接下来要做什么？
+要做图源装配了是吧？
+嗯。
+k图源装配。
+然后m pipeline。
+它的呃叫做m assembly data，它的s type=vk structure。
+诶vk structure re hype呃input a pipeline pipeline input assembly create infer这个。
+然后我们继续给它设为烤一下。
+好，第一个设置的是topology啊，top topology这边我们给它默认一下，这line line啥的对不对？
+我们给它vk primitive图源，然后到拓扑logic。
+呃，topology的triangle，我们给它一个triangle list吧，就是不用做strip了，之前我们介绍过啊，这个地方呢，就是我们做完MVP变换之后投到一个平面上的，这堆点如何做解释，它是连成一个三角形啊，还是一个三角形带啊，直线啊，直线带啊，等等啊，就在这设置的，我们让它成为一堆离散的三角形啊。
+OK，然后我们再给出一个这个，它的primitive result=VP force。
+okay，那么这个什么意思呢？
+这个是一个这是一个呃，如果说将。
+好，刚才有点卡顿ok呃，那么如果把它设置处的话，那么我们做那个图源strip那种结尾的时候啊，就是比如现代啊，这个三角形带的时候啊呃，它会有一个特殊的索引值啊，我们在索引里面做一个零叉fff啊，那就达到了一个重启图源的目的，什么重启啊就是说。
+呃，这个从从这个啊，从这个索引开始呢，后面的索引就重新开始了，你不要说零延到一啊，就比如说零一二是一个三角形，二三四是个三角形，三四五那么诶，到了我后面出现了一个零叉fff对吧，那么这边就断开了，断开之后呢？
+就不会用这个四五六来做了，而是六七八来开始啊，从六七八开始就是它的strip，中间就断了这个意思啊，我们现在给它force掉啊，没有意义，对我们来说好，那我们先说到这里啊，好了，下节课我们继续来设置我们的pipeline。
+

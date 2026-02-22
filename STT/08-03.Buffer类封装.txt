@@ -1,0 +1,50 @@
+好，各位同学，大家好，看构造了这么一个 model 的类型，那么我们已经几乎完成了关于顶点输入的一个描述相关的东西，那么这个类我们先放在这里，接下来我们要开始构建什么呢？我们都知道顶点的输入有两个重要的东西，一个是这个描述信息的构建，对吧？那第二个就是在 GPU 端分配一个 buffer 这么件事了，那么在 buffer 相关的层面上，其实 Vulkan 也是有自己的句柄对象的，我们仍然是要对它在这个里面进行封装，新建一个文件buffer，好复制一个。
+
+CPP，OK，那这边我们仍然是先把帽子拷过来， buffer 去掉，这边好 class buffer，然后构造函数析构好，然后说我们仍然是要把它先放到这个 application 里面，先链进来 include OK rapper buffer，然后我们要更新一下缓存。再进去，好，然后这边我们先把帽子写上 using PTR 等于 SD share buffer。这边 static PTR create return SD make share buffer。好，然后我们接下来看，在 private 里面应该写上 Vulkan 里面这个 buffer 的一个句柄对象，对吧？它叫做 VK buffer 这样一个东西， buffer VK now handle，那么仍然是这样要做一个 handle 对象的话，我们少不了谁。device，是吧？
+
+device p t r m device now p t r。
+
+好，OK，那么我们先写这些啊。然后如果要构造一个的话，我们到底要给它传什么样的数据啊？首先第一个肯定是device，那么第二个的话这个 buffer 到底多大，对吧？有一个变量叫 Wayk device size，像这样来标识一个 buffer 的大小的是size，然后这个 buffer 还有什么东西我们一会再说，先写这两个东西。好，那么我们去到拷贝一下 CPP 里面 include buffer using namespace wrapper 好，拷贝进来， buffer 戴上帽子。
+
+然后析构，OK，那么在构造函数里面我们就要开始对 buffer 进行构造了，我们一边构造，我们一边看一看它到底是需要多少的参数，我们刚才的参数够不够？首先肯定是要有一个vkbuffercreateinfo，对吧？ createinfo s type 等于 VK structure type buffer createinfo。好，我们继续看，接下来它还有一个size，对吧？我们让它等于size，很简单，那么它的usage，诶？这个地方 usage 就很奇怪了，我们到底是个什么东西呢？我们先去到点 h 里面，把这个 usage 的参数给它写上 vkbuffer usage flags。 usage OK，跑过来让它等于usage。那么这个 usage 通常是用来描述这个 buffer 用于何方的，它有很多的不同的用法，VK，比如说 buffer usage 叫做Vertex，就比如说这个，我们进去看一看到底有多少种用法。
+
+看一个在 GPU 端的buffer，它有很多种用法，首先它可能是一个顶点属性的buffer，然后它也可能是一个 index 的buffer。啥是 index 来的？是不是就是描述 0123 是个顶点组织顺序的，那么它也可能是一个 uniform 的buffer。它也可能是一个 transfer 的，就是用来传输拷贝的。
+
+好，我们知道这边 buffer 肯定会对不同的参数来做不同的优化，对吧？接下来 sharing mode 等于 VK sharing mode exclusive 就是专属的，我们专属于显示队列，对吧？好，填完这些信息之后，我们开始构造它。 if VK create 叫做buffer。那么第一个参数我们这边需要的是device，然后这边 device 我们要给它赋值上device。第一个参数 get device，第二个参数是 create infer，第三个是默认分配器，第四个是buffer，本体 l buffer，如果它不成功的话，那么 throw SD runtimeerror fail to create buffer。好，那么做到这步就完事了吗？其实并没有，对不对？大家看这是一个 create 函数，大家可以这么去理，大概的理解就是如果是这种函数的话，一般都会在 CPU 端进行内存的创建。
+
+他其实创建的这个buffer，这个 m buffer，或者说 VK buffer 类型的对象是一个在 CPU 端的描述符，他创建的是一个描述对象，现在并没有去创建一个实实在在的在 GPU 端的这么一个buffer，那就没有，还没有在 GPU 端分配内存的，那么如何在 GPU 端分配内存呢？是要用另外一个东西，那么这另外一个东西的话，我们先回到点 h 里面，把它声明出来，叫做 VK device memory，这才是在 device 端分配的一个 memory m buffer memory，真正的空间在这 VK now handle OK，那么我们接下来的目标就是去创建这个buffer。好，那么回到。这里，回到这里我们要创建显存空间。怎么创建显存空间呢？首先是 VK memory，叫做requirement，就是说我如果想在 GPU 端创建，我就要填写我的需求信息。 MEM require 这个看一下，它是一个结构体，所以说我们这边给它置空。好，然后我们接下来要获取到我们创建这么一个 buffer 的话，所需要的内存的这么一个需求， VK get buffer。
+
+Memory requirements. 传入参数，首先 device get device，其次的话是一个buffer， m buffer，然后才是我们要填写的这个 MEM requirement 这样一个东西好，创建完了，这样的话就是这个里面并填写了我们的需求，已经被填写进去了。
+
+这边接下来我们把相关的分配信息叫做 VK memory allocate info，又要填一个 info 了， allocate info s type 等于 VK structure type allocate memory allocate info。好，然后它的 unlocksize 等于我们的 requirement 的size，然后它的 memory type index，这个 memory type index 怎么理解呢？这里就引出来一个概念，引出来一个新的参数，我们再回到点 h 里面，把这个新的参数给它补上，这个参数叫做 VK memory property flags properties。
+
+这边为什么叫properties？因为这种我们先不知道它是什么类型干用的，但是它是一个flags，这种 flags 它是都是可以互相之间做与操作，或者做或操作的啊。比如说它要需要三种特性，三种property，那么它把三种去做一下或操作，就得到了这么一个变量啊。我们需要这么一变量。好，我先把它搞过去，搞到这里来。好，搞到这里来之后我们仍然还不足够，我们现在先解析一下这个东西是什么啊？比如说它会有这么一种参数， AK memory property，比如说这个 local bit，你看这个 properties 里面有很多种的属性或者说特性，这些属性比如说这个，这个的意思是说我现在要做的这内存，它只有设备，也就是 GPU 能看得到，你的 CPU 端是不能看到的。这个的意思是说，哎，这块内存空间在 GPU 端不仅是说你的这个 GPU 看得到，那么 CPU 也读得到coherent，就是立即同步等等，这有很多种类型，我们不一一介绍了，然后我们回来。所以说其实它是有一定的访问权限的控制，也有很多的一些特性，特殊的挖矿操作一些这种类型都在里面放着。
+
+好，那么我们现在就要找到这个 type index。为什么说叫 type index？是因为在我们返回的这个家伙里面，我们看一下这家伙里面它有这个叫 type bits， type bits，这个 type bits 它是有，比如说从零开始01234，那么排的就很直白，就比如说现在这个显卡里面它能支持的怎么说呢？这种 buffer 的类型有五种，那就是这个会可能取值的会变成 01234501234 或者12345，对吧？就这种的特性。
+
+那么我就可以一个一个查，那我接下来想怎么干呢？我想这么干，是吧？我看一看我的这兆的这个内存的这种类型啊。这种类型里面有多少种是可以满足的？那么我就要从设备里面先取出来看一看我到底有多少种的 properties 的类型，然后我去看一看这个，凡是我要的这个是我要求的种类，是吧？我要求的种类只要能找到一个我要求的种类，并且能够符合我要求的 properties 即可。这个听起来比较绕，我们现在把它写成代码可能就清晰了很多，就到这我们再做一个工具函数，就到这个工具函数，我们把它放在一个 private 里面，这个函数它返回的是一个 u int 30。二就是我们刚才那个 type ID，对吧？然后是 find memory type 输入的是一个。 int 32T 叫做 high filter，这个 high filters 是什么东西啊？一会我们再看，然后第二个。
+
+Memory, property, facts on properties.
+
+好，把它拷过来，下面编写一下。好，然后在这边我们首先要做一个从设备里面取出所有的这种properties， VK physical device memory properties 这样的 a properties 这样一个东西 device VK Pro physical memory de physical。 device memory properties，对，那么叫 memory properties，然后我们要对它进行一个索取，就是从系统里面全部拿出来看一看。
+
+get physical memory properties 首先传入一个 physical device m device。EVSE。 get physical device，然后我们再传入这样一个它的索引，把它的别名好传完之后，我们现在就 get 到了这个 device 里面它所有的 properties 相关的描述，我们看一看它是什么东西。
+
+OK，它有多少个 memory type，就是我们的这个显存分配的时候，它的 buffer 的类型到底有多少种，是吧？然后它这边还有很多它的其他的特性，其他的属性啊。好，那么我们一个看，做一个循环 for int 32T I 等于 0 i 小于什么呢？小于它有多少种，对吧？小于它有多少种？这家伙你的这个 memory type 的count，然后再加i，那接下来我要做个什么操作呢？我们输入的这个 type filter 是什么东西呢？我们先看一看这边，我们让它等于 find memory type，输入的是一个 m memory requirement 的 type bits，还有一个输入properties。好，我们单从这个输入层面看，第一个参数是什么呢？是一个 type bits，嗯，也就是说符合我上述需求的在这边写啊。
+
+符合诶，符合我上述 buffer 需求的内存类型的什么 ID 们？就比如说它是它呢？也是一堆的 ID 进行了或操作，就比如有的 ID 是 0X 001，有的 ID 是 0X 010，类似于这种感觉，我们符合我们上述需求的这种 ID 的 type 们都互相或起来，然后传入我们需要的类型，也就是说它需要从。
+
+所有符合我们需求的这堆类型里面，每一个都要看一看它是否兼容我们需要的这些类型，兼容我们需要的这些properties，也就是说兼容我们需要的是客户端读还是机器读？还是什么东西啊？这个意思好，那么回来看一看，我们看，如果说我们先首先看一下当前这个i，其实就是这个上面所述的这种东西， i 就是这种东西，它是按 0123 来做的，本来就按 0123 来做的。
+
+所以说如果 type filter 就是我们输入的这个 filter 这一堆，那么它与上什么呢？一位移 i 个好，我们看这句话怎么理解，如果是0，我们需要的如果是 0X 001 与上 0X 01100。我们如果是需要这种类型，就 tablefilter 告诉我们需要这种类型的满足我们的需求，对吧？那么 i i 是从 10 开始，一直到多少呢？一直到这个 n 多少个？好？假设 i 等于0，那么我们就看一看它俩与起来等于什么呀？是不是 0 差一零一，对吧？ i 等于 0 的时候，这个一就不需要移位了，不需要移位的话，那么这个条件就成立了。
+
+所以说第 i 个这个 properties 里面的第 i 个元素，或者说第 i 个properties，第 i 个 property 就是满足了我们这种类型，就是满足了我们这种型，大家在这个地方要仔细理解一下，我需要的是这两种类型进行了或操作。
+
+然后这是i，那么我返回的这种所谓的i，第 i 个对应的类型，看一下第 i 个对应类型就是什么呢？就是这个类型，这个编号的类型，那比如说 i 等于 0 的时候，它不就是一吗？对不对？那么 i 如果等于一的时候，那么它是 0X 010，对吧？这样类型好，那么遍历一遍，我们发现第 i 个类型能不能与它相与得到一个。得到一个为真的，如果为真的话，说明是第 i 个还真是我们需要的类型。这个意思好，那光还不行，我们先把它括起来，光这样还不行，还得要求一个什么呢？还得要求。哎，看第二个条件， memory practice，就是我们刚才获取这个全局里面的这家伙的 memory types。好，它 types 的第 i 个 type 的 property flags，就是说刚才我说了这个第 i 个能够满足我们的内存方面的要求，但是它却不一定能满足我们的 property 的要求，它的 size 对不对？它的用途都满足了我们的要求。
+
+我们下面得看一看你这个里面它能不能把它做成一个 host visible 的，或成能做成一个只是让设备 device local 能够访问的，得看一看这个了。所以说它与上我们的properties，你必须等于我们的properties，就是你得全面满足我的需求才行。好，满足了这两种条件我们才说你满足 return i 是这个意思。那如果说我把所有的这个设备里面的对应的这个 GPU 的类型， GPU buffer 的类型我都报了一遍，都没法满足我的需求，那就完了，是吧？它就坏事了，就 SDD error 说 cannot find the property memory type，找不到这type。OK，好，那我们回去看一看。
+
+经过了上述操作，我们已经把它的这个描述符合描述的 ID 们也找着了，找这个 memory 的 type index 好，找着之后我们接下来就要开始创建了。如果 VK allocate memory 跟着开始分配 m device get device 第二个参数 allocate info 第三个参数默认分配器第四个参数是m，叫做 buffer memory 给它分配出来，如果它不等于 VK success。 Pro 叫做 STD runtime error failed to allocate memory。好，那么当这个 memory 也创建完毕之后，我们就要把这个在客户端就 host 端的这个 buffer 的这个句柄，或者说描述信息，或者是说代理人与我们真正的这个buffer，就是说这个给绑定在一起。
+
+makebound buffer memory，第一个参数device，第二个参数是buffer，第三个是 buffer memory。好，第四个参数是offset。 offset 什么意思啊？就是这个 buffer 所跟它绑定的时候，比如说它有 10 个 BYTE 什么的，我可不可以从它的第二个 BYTE 过去只绑定 8 个 BYTE 也是可以的啊。所以说这边有个offset，但是我们让它全面绑定，然后随后。我们就创成功了，对吧？绑定成功了，好，那么这个就是关于 g GPU 端这个 buffer 的创建，那么接下来还有一个 buffer 的关于它释放的问题，对吧？看一看 buffer 如何释放啊。如果 AM buffer 不等于 VK 这个 null handle 好，那么 VK destroy buffer 叫做 AM device。第二个是我们的buffer，三个是默认分配器释放掉。然后如果 AM buffer memory 也不等于 VK null handle。那么我们可以 free memory，我们用 allocate 做的，就用 free 来做device。第二个是 memory buffer memory，第三个默认分配好，这样的话我们的 buffer 这个类就写完了。OK，今天课就到这里。
+

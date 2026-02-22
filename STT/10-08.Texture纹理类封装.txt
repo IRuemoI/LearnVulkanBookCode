@@ -1,0 +1,152 @@
+10-08.Vulkan-Texture纹理类封装
+
+大家好，那么我们现在啊，已经完match这个类的书写以及呢，完成了我们三号栏这个类的设计啊，现在呀，我们要倒，回头来好好的审视一下啊，这个函数。
+我们这边不是做了一个create texture嘛，然后我们给这张edge命名为了texture啊，这样做呢，其实是啊，不太好的。
+为什么呢因为说呃一张纹理，它应该打包了两样东西，一个是image，一个是texture sampler啊，一个sampler，所以说呢，只有把这两个合在一起，我们才能称之为一个texture。
+OK，那么我们现在在我们的wrapper里面包装里面啊，我们来设计一个东西啊，但是设计这个东西的话呢，我们想设计一个texture类，把这两个弄进来啊，但是我们要好好的思考一下啊，就是对于我们的这样一个小小的wrapper来讲啊，那么它确实适合被放到这个wrapper底下呢？
+其实是不太适合的，对吧？
+因为它并不属于一个对于驱动层，或者说API层的封装，那么它我们就把它呀单独独立出来一个文件夹吧，在这边我们添加一个新建的文件夹啊，这个文件夹呢，我们就把它称之为texture文件夹啊。
+等这下我们再进行书写，我们新建一个文件叫texture点h。
+OK，然后呢？
+我们再做一个。
+点儿cpp啊，然后呢，我们先把这个text点儿点儿h把它放到我们的application里面，先放着啊。
+include texture下面的那么texture点h啊，然后更下一个。
+OK，我们现在去到这里面啊，这里面是空的，先program once。
+然后啊，我们在这边啊，缺include呃行了，include我们lock wrapper。
+呃，叫做open wwrapper，下面的base诶哦，应该在外面啊，在外面base点h，先把这个基础的搞进来，然后我们再去把这个open wwrapper，下面的东西搞进来啊open wwrapper，把image搞进来。
+啊，我们再把sampler啊也搞进来好，然后我们在这里就开始做了namespace ff OK？
+class.我们的目标就是把上面这两个东西啊，给它封装在这个texture里面，这样的话呢，可能是方便的，因为它们两个本来就是一对儿啊texture，这边七构texture。
+然后自动指针。
+这条等于这share。
+然后叫texture。
+呃，这边是static tr great，那么这边是SSD呃，make share。
+诶OK，没问题呃，然后这边我们也需要相应的把device搞进来。
+诶好三剑客是吧？
+第一个我们要对它做一个image。
+来跑下面的呃。
+an image now PR.第二个，我们要给wrapper下面的sampler。
+搞一个PR。
+m3。
+now okay，然后我们存一下device。
+好呃OK诶，这边好没问题。
+然后我们texture这边呢，我们就先把device设置进来啊device PR。
+然后诶，这个是wrapper。
+给到quit这边是device啊，首先第一个参数对吧，然后呢，我们再想想还需要什么呢，我们是不是还需要一个文件名啊，对吧，我们到底读取哪张图片呢，在这里啊。
+SD dream.呃file跟image file pass。
+好把这个也拿过来。
+这边image file pass搞进去啊好，那么我们现在要去实现一下这个text类啊。
+去到这边，一个论texture。
+呃，namespace。
+然后呢？
+在这边啊？
+texture构造诶texture。
+然后它的系统。
+好构造函数这边，我们把参数试过来。
+OK好，我们现在去到啊application里面，我们把这个creatch里边的逻辑给它搬过来啊，搬运过来把这一堆东西都搞这切掉。
+转为提过来，我们看看有什么问题啊，这边应该还需要一个什么呢？
+stb image对吧？
+呃，这边stb image，然后把它的这个红给它考虑过来。
+然后我们去到application上面好长的代码是吧？
+walk的特点就是代码好长啊，一块把它切掉吧切掉。
+去到t的cpp，把这边搞进来好，这样的话呢，我们的SD配置就可以执行了啊，我们继续查一下啊，首先这个上面应该是没什么问题的啊，这边就是跟name image。
+哎。
+OK啊，没问题，再往下走啊，这边的话device texture等等，这边device我们还没有给到值对吧？
+m device=device。
+OK，继续检查诶，这个地方是不是这个路径啊？
+需要给它替换进来OK，这样我读的路径也没有问题了啊，这个要仔细一点ripper image create。
+啊，然后下面的这一系列的参数啊，比较正常，然后呢，做一个region，然后呢，去set match layout OK，这边看到还有一个command poor是吧，command poor没有给进来啊。
+啊，这边里面你这边再要一个command for进来吧，找到声明，然后除了device之外，我还有command for。
+呃，去到vulkan wrapper command pool这个我们就不用存储了，我们就使用一下就好呃，叫做wrapper。
+command pool.可望的破。
+OK，然后把这段拷过来。
+command pro好command command pro，我们把它替换到这啊，然后这边也是啊image file，然后把command pro啊也放进去。
+呃tector仍然是变成image，然后把perl放进去好OK，然后把这个image给free掉呃，这个流程应该没问题啊，对有问题的时候我们编译的时候再看啊，然后sampler。
+等于wrapper诶，这边好像还没有更新啊一下。
+等于wrapper。
+呃，这边没有更新过来啊，我们直接写吧supplement great，然后这边是s。
+好，我们先跑一跑啊。
+好像没什么问题啊，然后这边的的话呢，我们看啊，我们把image device还有sampler啊，都做了记录，再去到定义。
+看看okay。
+哎，这边的问题，这个texture还没有感知到啊嗯，看一下。
+ff texture没有问题，这边texture好，我们先这样写啊，有什么问题再说，然后这边我们去获取一下no discuss。
+auto get image，那么这边const，然后return点image。
+然后这边no discard。
+auto get sampler.cons retard好呃，那么除此之外呢，我们还要再去思考一下，这里面还有一个什么东西呢？
+其实呢，我们接下来要把这个texture作为一个uniform，要传进去对吧？
+那么作为一个uniform来讲的话，我们很重要的东西就是它的描述符啊，那么对于这样一个东西，它的描述符是怎样定义的呢？
+叫vk descriptor。
+那么，叫做image infer啊，image image infer这个m，叫做image infer。
+OK那么我们直接在生成的时候啊，这边诶，在生成它的时候我们去做这件事。
+好看一下参数列表没有问题，然后这边的参数列表是有问题的，把这边拷过来哎。
+这样就没问题了啊，可以转过来了好，然后在这边呢，我们把这个生成的m image infer。
+还是没有倒过来。
+直接拷贝吧，把m image info给它填写一下，好image info呢，首先有一个image layout，这个layout呢，应该等于什么东西呢？
+它应该等于我们的m image。
+get你看一下这个接口有没有封装啊？
+image嗯，好像还没有进行封包对吧？
+这边我们统一把各种get函数写进去啊，然后第12个。
+首先get这个image。
+给超人杨米妹纸。
+其次，auto get layout。
+对超人来要。
+然后我们看还需要什么呢？
+还需要它的长杆是吧？
+我们也有可能用到啊，为了完善我们的体系呢，我们还要把它搞进去啊get长呃，它的dth。
+然后count return mvs。
+这边also get hit。
+hrm hit.好呃一下，应该是没有问题，对吧？
+好没有问题啊，我们走到这边好，就让它get layout就可以了。
+然后呢，这个info还有一个东西什么呢？
+是image呃layout，那么image view啊，它要get它的，它的image view，那么我们还需要在。
+这里面再把它里面是绿的，再给它搞出来啊。
+好。
+const retard image name这。
+好在这边用image get。
+get in to leave，然后呢？
+它还有什么信息呢？
+再给它继续填写啊，它的sampler我们再给它填进去，叫做m sampler OK？
+那么，这样的话呢？
+这个描述符我们也给它生成了是吧？
+描述符也做好了OK，那么我们现在去到啊application这边，我们把。
+这个开场要做进来啊。
+原来是这样的，图片与纹理是吧？
+这边这样子，那么我们现在变了啊，它不叫这个了，它叫tectoratr诶，这就真正的tector，然后再create tec TOR这边啊，create tec TOR这边。
+我们呢，有一个路径是吧，然后texture啊m texture texture great。
+首先，一个device，其次，一个command pro。
+然后呢？
+需要一个啊picture pass。
+OK OK，它是说呃OK，这边有一个问题啊，所以接下来我们应该是一条啊。
+同样，这边我们把ptr哦弄过来啊prr，然后呢，再去到这边，我们也把ptr加上啊，是一个手误。
+count poor嗯，okay那么一会儿我们看还有什么语法上的错误啊？
+好，那么我们运行一下a OK，数量错误了。
+有一个错误啊OK，他说没有重载两接受两个参数啊，是我们的参数搞错了，看一下呃，在这边啊，首先这边一个参数，两个参数，三个参数啊，这边一二三是吧？
+三个参数，然后去到这边诶，这边也是一二三个参数没问题啊，然后我们去到application这边一二三诶，我看一下。
+OK啊，我们的参数在这边错了，这边没有把那个旁括号搞进来。
+好，现在应该舒服了啊，没有报错是吧？
+然后生成全部清理，再生成一遍，我们再看看语法错误啊。
+啊，它现在有无法解析的外部符号啊？
+就是这家伙啊texture的西瓜解析外部函数看一看。
+test ye啊texture。
+OK啊，是刚才忘了一个东西啊，就忘了这个semi IC list给它拷进来了啊，进到这儿，然后在semi IC list里面呢，我们编一个叫texture啊lip。
+OK呃，然后这边。
+我们调add这个。
+然后把这个写成texture是吧啊，然后这个指令在这里啊，我们把它都搂进来啊，都搂进来，搂进来之后呢，我们要texture里边是吧，我们要去到c边，我们看一看啊，这个怎么连进来？
+as up directory，那么这边还要再add一个subdirectory是吧啊？
+这边的subdirectory叫做呃。
+然后呢？
+add executable，然后连接库啊，这边连接库要连一个te tr AH啊OK，再这样一下啊，然后我们生成。
+哎，无法打开，无法打开它点h那这边啊，是不是无法打开我们看一下啊？
+有问题好这个路径有问题啊，应该在外面对吧？
+外面进来。
+这有点卡顿，看一下好，刚才电脑卡顿了一下啊，卡顿了一下，然后这边我们是有一个问题在texture的。
+cpp里面啊，这边需要引入头文件啊。
+把它搞掉上一层的stb image啊，这样子OK，然后我们再编译。
+好，现在开始有问题了啊，这边啊sampler应该是infer一个是sampler的，that sampler对吧？
+所以没有这个函数呢sampler有啊，给到它呃，看还有什么？
+诶，现在出了一个问题啊get device。
+我这看一下灯这。
+啊，是个empty啊，这是个empty，那么是empty呢，那是因为这边并没有给它赋值进去，对吧？
+这边没有记录啊，所以这边的m device，它等于device。
+好，我们再重新来一遍。
+好啊，这样就没有问题了，我们先关掉，看一下泄露啊，没有泄露好，那么关于啊，这个开始类的写法就给大家讲到这里。
+

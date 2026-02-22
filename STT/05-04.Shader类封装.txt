@@ -1,0 +1,158 @@
+05-04.Vulkan-Shader类封装
+
+我我还是啊添加新建文件c点点h，然后呢，再给它出一个c点cpp实现文件。
+OK，然后我复制一个头过去啊，找一个头找一个头。
+这边OK，这没问题了，然后我们啊提前把这个文件把它录入到我们的application里面，这样我们加入到b1链条当中啊，这谁的诶？
+让老坑wrapper shad er。
+OK，然后我们再把它创建下，缓存就可以了，接下来呢，我们要开始写shade这个类型啊，我们把所有shade相关的词段都封装到这个shade里当中glass shade。
+private,private.然后shade。
+构造谁的机构。
+最后呢，我们包装一下using ptr=sesh are dp tr谁的？
+然后再以ttr great。
+lead make这样。
+cedar对。
+OK，这样包装就完毕了啊，随后呢，我们来看一看，作为一个shade来讲啊，它到底需要什么样的一个成员变量，首先呢，是在当中的shade的类型啊，叫shade module喂嘿shade module。
+呃，这么个东西，然后呢？
+它叫msh ader module，给它赋数值为k，然后还到这儿。
+好，然后第二个呢？
+我们那要构建一个身段，应该是需要一个device的是吧？
+所以我们要把device拿过来。
+device一点device。
+那我们加。
+这个呢，必须要加的啊，智能指针必须要初始化。
+第三个的话呢，是我们读取的之后啊，它要有一个entry point，什么entry point呢？
+我们知道的入口是men函数对吧？
+但是有的时候我想切换模式的时候，我可以让它不用men函数作为入口，比如说我在里写了两个函数men，1men2，我可以指定有哪个函数作为入口函数啊？
+就这么个意思。
+这个cr rain，我们给它一个叫做entry point。
+然后呢？
+就是规定一下shadow使用的这样一个阶段啊，是我tax谁的啊？
+还是说是吧fragment谁的啊？
+只要不是谁的啊？
+等等啊，就叫做谁的啊？
+叫vk谁的stage flag beat？
+m.好拥有这些变量之后就足够了啊，然后我们再设计一下它的这个构造函数啊，构造函数里面首先要传入的肯定是什么？
+是device是吧？
+啊，device。
+一点二device，然后呢？
+它第二个要传入的是什么呢？
+是它的啊？
+这样一个文件的名字是不是ctrl ftt？
+谁的啊？
+法案内从哪里读取这个谁的？
+然后呢？
+它要传入我们的stage是吧？
+到底是属于哪一个啊？
+流水线的阶段。
+age看一下，she does state。
+然后呢？
+我们还要传它的entry points e。
+呃，3 SD three。
+叫做entry point OK，有了这些信息之后，我想已经足够了啊，那我们接下来去到的这样一个cpp文件里面啊，去实现一下。
+谁谁的的h。
+再缓存一下，好在这里谁的谁的，它的构造函数。
+把它的参数拷过来。
+啊对妥好，然后我们把它的析构啊也写上吧。
+OK，然后呢？
+我们发现啊，就是说在c段里边呢，我们还缺一个东西啊，就是缺一个读取文件的，这么个函数啊呃，我得到这个file name，其实它是一个什么是一个s perv啊s perv的，这样一个格式输入。
+一个文件就是上级后面生成的那个东西，那个东西呢是二进制文件，所以说我要专门为它写一个辅助函数啊，读入二进制的。
+我返回的是什么呢？
+返回一个吧呃，叫做叉它一个字节数组哦，它的名字叫read呃，把写成个新的函数吧。
+RAY binary.binary okay函数counts d spring。
+啊name。
+读文件的话呢，我们需要用到一个头文件取到这里呃base，我们下到这吧。
+一个f three。
+然后我们回来。
+这里我们把fj拿出来rfj，然后file首先第一个参数是它的file的name啊，这个file路径。
+然后是读入这个file时候的一些权限以及操作啊s dios，一个是eight这个eight呢，就是说啊，你读完这个文件之后啊，你把这个呃文件呢走去到文件的末尾，那这样方便，我们统计它的长度啊。
+s ddls finally，我用二进制的方式读入啊，然后s dls啊a。
+好，我拿到这个法之后呢，我先看一下，如果啊呃它没打开成功啊，那么怎么办呢？
+我们就throw。
+FC d run on error.l field two open.这段file。
+诶，那如果我们打工的情况下啊，我们就开始读取，首先我要读取一个什么是file size啊，到底它有多大file还要记？
+因为此时我们已经到了文件的末尾了是吧？
+所以它直接告诉我当前位置就可以了啊，就是它的这个大小，然后呢，我们做一个city vector。
+呃叉就专门来存我们这个文件内容的啊，那么叫八它多大呢？
+是file size这么大啊，file size这么大。
+完了之后的话呢，file点see KO kay，我们到达零啊，开位置到达开头位置之后呢，file rate我们就开始读取，怎么个读法呢？
+读到巴菲尔的。
+data里面，然后呢？
+读file size这么大小，读完之后啊，我们就可以关闭这个文件了，叫做啊，叫做file。
+both哎关掉return buffer的呃，这是buffer你看啊buffer OK就可以了OK，然后我们现在就已经啊有了这么读取的东西啊，读取的东西。
+读到这个东西之后，我们接下来该怎么做呢？
+那这里呢？
+首先我们要创建的是个什么CW module对吧？
+我们知道创建任何的open的东西都要用一个什么描述器的描述信息结构文件啊，不描述信息结构啊，叫做auto。
+然后它叫zk呃shade module，叫create引法。
+OK cedar create 1份。
+OK，接下来我们要填啊，首先第一个填的内容是什么shader infer的？
+哎呀，它这个sit great infer。
+它的s type=vc da啊vk啊呃vk哦structure呃，想一下vk structure tye。
+呃time shade nodule create infer啊，这好长啊，每次感觉都好长，然后shade create infer它的code size啊，大小等于我们的。
+这个大度数的大小是吧？
+那么我们现在在这啊SD met a。
+叉叫做呃sit er是code buffer code buffer。
+等于read iron ry。
+传入的是file name。
+好，那么它就等于code buffer。
+那么这边应该是看一下它的类型啊，它是一个size t吗啊，是个size t可以啊，我们直接就给它了code offer size。
+然后啊slider。
+create infer.呃，它的data应该怎么办呢？
+嗯，它应该这样子。
+p code呃，我们看这个p code什么类型？
+它是一个可按int 32t啊，那么我们的这个内容是什么呢？
+我们的内容是叉。
+所以说它这两边啊，其实在指针上是怎么说怎么着不太相对的啊，不太相对的就是它的指针类型，不相对的那我们在这边呢，就是说把这块的内存给它强制解释一下，就是re呃，就是说叫reinterpret一下。
+这样写等于the interpret cast这个玩意什么意思呢？
+就是重新解释这段内存空间的意思啊，你这段不是一个叉吗？
+好，那么我需要的是一个什么？
+按int 32变成一个int行啊，那么你就去重新解释这段内存空间吧，把它解释成为这个意思。
+啊okay，它叫做const int在呃const叫int。
+诶，没有按int 32杠7 okay，有的新。
+好，就这样，然后code buffer theta。
+这样我们就给到它值了。
+选择值之后呢？
+我们最后啊，终于可以把它create出来了啊，就是如果vk create shade module。
+那么，传输的参数第一个是device，好device在这儿啊，我们现在看到了，前面写一个东西是吧，就是把需要的东西给它复制上啊m device。
+等于device m sheet呃stage=sheet stage。
+m叫做entry point啊，等于entry point。
+好okay，我们这里还缺一个信息，是不是还缺一个entry points eter create infer？
+发到flex看一下啊OK啊，这里有记错了，不是entry entry这个信息啊，它并不是在shadow创建的时候啊，shadow创建的时候是一个很单纯的创建过程啊，很单纯的创建过程，而entry point我们保留下来的话，用到接下来创建管线的。
+阶段高速管线啊，这样一个它到底是用的哪个阶段啊？
+哪根吹棒子OK device做好这些准备工作，我们就开始创建了啊。
+get device.第二个参数啊，是这个东西谁的？
+create infer.第三个啊，now ptr就可以了，第四个是seder module啊，我们把这个还有我们seder module传进去，把它创建出来，它不等于vk success的话。
+那么我们就。
+slows TD long time ever.error.OK，那么这样的话呢，这个shade就创建成功了，我们再看一看这个地方啊shade在析构的时候怎么做啊？
+如果shade，如果我们的shade module是有的话啊。
+它并不等于。
+v know handle那么我们就可以大大方方的destroy destroy。
+cedar module.传入的是一个device啊，device get device。
+然后呢，是CD morty啊，CD morty最后是一个null pdr，一个默认分配器啊，好，这样的话，这个CD就没啥问题了啊，我们现在用一下看一看啊。
+在这里呢，我们加一个shift w啊wrapper。
+sita btr.m谁打？
+no好，我们这个主要是测试一下啊，看一看读入一个文件盒子。
+在这个sw之后。
+再见MC的。
+那么，它等于诶，这样的话我又想起来，我们还有一个问题啊，先到这边呢，我们还得把这个。
+复制到grade函数里面。
+然后把参数给它填进去啊device。
+呃，file name这边是shadow stage，然后是entry point。
+OK，然后我们才能够在application里面去生成啊MC点等于ripper。
+shift，然后呢？
+create。
+我们首先传入device，然后是需要一个file name啊，这个file name的话，我们怎么填呢？
+我们看一看啊，在我们的项目里面之前给大家说啊，它真正的运行环境是什么？
+是不是out对吧？
+out build这个，然后从shades啊，同同级别在这啊。
+shades的里面就可以去取了，比如说我们先读入一个VS啊shades，下面有个VS点spv啊VS点spv OK，这就是我们读取路径。
+然后是啊，我们常用的是什么呢？
+是vk是呃，我这个是应该是我的text，我的text beat啊，然后我们最后entry point我们写men啊，写一个men就可以了，好这样的话，它应该就能被创建出来啊。
+然后在这边我们要让它先去试掉啊，让它先消失掉reset一下。
+好，我看一下，走下流程。
+嗯，语法错误。
+嗯呃呃，这个属于这。
+好又引发了一个异常啊，遇到这种异常的时候呢，我们要首先啊清理一下。
+缓存项目清理，然后重新生成一下，再看看这个异常啊，先排除环境的问题。
+啊，这没问题了啊，我们看一下来，这是链啊，有没有问题，先把它关掉OK，那也没有问题，没有问题好，那么这个谁的这个诶就可以先放到这里使用了啊，那么接下来呢，用的时候呢，我们肯定要组织一下这个谁的才可以啊。
+

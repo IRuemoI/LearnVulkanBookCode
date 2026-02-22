@@ -1,0 +1,579 @@
+D:\Code\CPP\vulkan-book-code\Chapter17-07\Chapter17-07.exe
+Layer的数量为 17
+----------------Layer 0----------------
+layer名称 VK_LAYER_AMD_switchable_graphics
+layer描述 AMD switchable graphics layer
+----------------Layer 1----------------
+layer名称 VK_LAYER_NV_optimus
+layer描述 NVIDIA Optimus layer
+----------------Layer 2----------------
+layer名称 VK_LAYER_NV_present
+layer描述 NVIDIA GR2608 layer
+----------------Layer 3----------------
+layer名称 VK_LAYER_OBS_HOOK
+layer描述 Open Broadcaster Software hook
+----------------Layer 4----------------
+layer名称 VK_LAYER_RENDERDOC_Capture
+layer描述 Debugging capture layer for RenderDoc
+  所需扩展:VK_EXT_debug_utils
+----------------Layer 5----------------
+layer名称 VK_LAYER_VALVE_steam_overlay
+layer描述 Steam Overlay Layer
+----------------Layer 6----------------
+layer名称 VK_LAYER_VALVE_steam_fossilize
+layer描述 Steam Pipeline Caching Layer
+----------------Layer 7----------------
+layer名称 VK_LAYER_LUNARG_override
+layer描述 LunarG Override Layer
+  所需扩展:VK_EXT_debug_report
+  所需扩展:VK_EXT_debug_utils
+  所需扩展:VK_EXT_layer_settings
+  所需扩展:VK_EXT_validation_features
+----------------Layer 8----------------
+layer名称 VK_LAYER_LUNARG_api_dump
+layer描述 LunarG API dump layer
+  所需扩展:VK_EXT_layer_settings
+----------------Layer 9----------------
+layer名称 VK_LAYER_LUNARG_crash_diagnostic
+layer描述 Crash Diagnostic Layer is a crash/hang debugging tool that helps determines GPU progress in a Vulkan applicati
+on.
+  所需扩展:VK_EXT_debug_report
+  所需扩展:VK_EXT_debug_utils
+  所需扩展:VK_EXT_layer_settings
+----------------Layer 10----------------
+layer名称 VK_LAYER_LUNARG_gfxreconstruct
+layer描述 GFXReconstruct Capture Layer Version 1.0.5
+----------------Layer 11----------------
+layer名称 VK_LAYER_KHRONOS_profiles
+layer描述 Khronos Profiles layer
+  所需扩展:VK_EXT_layer_settings
+----------------Layer 12----------------
+layer名称 VK_LAYER_KHRONOS_shader_object
+layer描述 Khronos Shader object layer
+  所需扩展:VK_EXT_layer_settings
+----------------Layer 13----------------
+layer名称 VK_LAYER_KHRONOS_synchronization2
+layer描述 Khronos Synchronization2 layer
+  所需扩展:VK_EXT_layer_settings
+----------------Layer 14----------------
+layer名称 VK_LAYER_KHRONOS_validation
+layer描述 Khronos Validation Layer
+  所需扩展:VK_EXT_debug_report
+  所需扩展:VK_EXT_debug_utils
+  所需扩展:VK_EXT_layer_settings
+  所需扩展:VK_EXT_validation_features
+----------------Layer 15----------------
+layer名称 VK_LAYER_LUNARG_monitor
+layer描述 Execution Monitoring Layer
+  所需扩展:VK_EXT_layer_settings
+----------------Layer 16----------------
+layer名称 VK_LAYER_LUNARG_screenshot
+layer描述 LunarG image capture layer
+  所需扩展:VK_EXT_layer_settings
+Vulkan实例创建成功!
+[Vulkan硬件设备数量为4个]
+[Vulkan硬件设备"AMD Radeon(TM) Graphics"支持的队列族数量为3]
+[成功获取Vulkan硬件设备支持的队列族属性列表]
+[支持GRAPHICS作业的一个队列族的索引为0]
+[此家族中的实际队列数量是1]
+----------------Layer 0----------------
+layer名称 VK_LAYER_AMD_switchable_graphics
+layer描述 AMD switchable graphics layer
+----------------Layer 1----------------
+layer名称 VK_LAYER_NV_optimus
+layer描述 NVIDIA Optimus layer
+----------------Layer 2----------------
+layer名称 VK_LAYER_NV_present
+layer描述 NVIDIA GR2608 layer
+----------------Layer 3----------------
+layer名称 VK_LAYER_OBS_HOOK
+layer描述 Open Broadcaster Software hook
+----------------Layer 4----------------
+layer名称 VK_LAYER_RENDERDOC_Capture
+layer描述 Debugging capture layer for RenderDoc
+  所需设备扩展:VK_EXT_debug_marker
+  所需设备扩展:VK_EXT_tooling_info
+----------------Layer 5----------------
+layer名称 VK_LAYER_VALVE_steam_overlay
+layer描述 Steam Overlay Layer
+----------------Layer 6----------------
+layer名称 VK_LAYER_VALVE_steam_fossilize
+layer描述 Steam Pipeline Caching Layer
+----------------Layer 7----------------
+layer名称 VK_LAYER_LUNARG_override
+layer描述 LunarG Override Layer
+  所需设备扩展:VK_EXT_debug_marker
+  所需设备扩展:VK_EXT_validation_cache
+  所需设备扩展:VK_EXT_tooling_info
+----------------Layer 8----------------
+layer名称 VK_LAYER_LUNARG_api_dump
+layer描述 LunarG API dump layer
+  所需设备扩展:VK_EXT_tooling_info
+----------------Layer 9----------------
+layer名称 VK_LAYER_LUNARG_crash_diagnostic
+layer描述 Crash Diagnostic Layer is a crash/hang debugging tool that helps determines GPU progress in a Vulkan applicati
+on.
+  所需设备扩展:VK_EXT_debug_marker
+  所需设备扩展:VK_EXT_debug_report
+  所需设备扩展:VK_EXT_tooling_info
+----------------Layer 10----------------
+layer名称 VK_LAYER_LUNARG_gfxreconstruct
+layer描述 GFXReconstruct Capture Layer Version 1.0.5
+  所需设备扩展:VK_EXT_tooling_info
+----------------Layer 11----------------
+layer名称 VK_LAYER_KHRONOS_profiles
+layer描述 Khronos Profiles layer
+  所需设备扩展:VK_EXT_tooling_info
+----------------Layer 12----------------
+layer名称 VK_LAYER_KHRONOS_shader_object
+layer描述 Khronos Shader object layer
+  所需设备扩展:VK_EXT_shader_object
+----------------Layer 13----------------
+layer名称 VK_LAYER_KHRONOS_synchronization2
+layer描述 Khronos Synchronization2 layer
+  所需设备扩展:VK_KHR_synchronization2
+----------------Layer 14----------------
+layer名称 VK_LAYER_KHRONOS_validation
+layer描述 Khronos Validation Layer
+  所需设备扩展:VK_EXT_validation_cache
+  所需设备扩展:VK_EXT_debug_marker
+  所需设备扩展:VK_EXT_tooling_info
+----------------Layer 15----------------
+layer名称 VK_LAYER_LUNARG_monitor
+layer描述 Execution Monitoring Layer
+  所需设备扩展:VK_EXT_tooling_info
+----------------Layer 16----------------
+layer名称 VK_LAYER_LUNARG_screenshot
+layer描述 LunarG image capture layer
+  所需设备扩展:VK_EXT_tooling_info
+队列族索引=0 支持呈现
+队列族索引=1 支持呈现
+队列族索引=2 支持呈现
+队列族索引=0同时支持Graphics（图形）和Present（呈现）作业
+支持的格式数量为 25
+[0]支持的格式为44
+[1]支持的格式为50
+[2]支持的格式为58
+[3]支持的格式为97
+[4]支持的格式为44
+[5]支持的格式为50
+[6]支持的格式为58
+[7]支持的格式为97
+[8]支持的格式为97
+[9]支持的格式为2
+[10]支持的格式为3
+[11]支持的格式为4
+[12]支持的格式为5
+[13]支持的格式为8
+[14]支持的格式为37
+[15]支持的格式为38
+[16]支持的格式为43
+[17]支持的格式为45
+[18]支持的格式为51
+[19]支持的格式为52
+[20]支持的格式为57
+[21]支持的格式为64
+[22]支持的格式为91
+[23]支持的格式为92
+[24]支持的格式为122
+呈现模式数量为3
+呈现模式[0]编号为0
+呈现模式[1]编号为2
+呈现模式[2]编号为3
+使用获取到的窗口表面能力中的 宽度 800 高度 600
+[SwapChain中的Image数量为2]
+tiling为VK_IMAGE_TILING_OPTIMAL！
+确定内存类型成功 类型索引为0
+[创建帧缓冲0成功！]
+[创建帧缓冲1成功！]
+TextureManager 能使用线性瓦片纹理TextureManager 能使用线性瓦片纹理TextureManager 能使用线性瓦片纹理TextureManager 能使用
+线性瓦片纹理TextureManager 能使用线性瓦片纹理TextureManager 能使用线性瓦片纹理TextureManager 能使用线性瓦片纹理../textur
+es/1707_cube.bntexcube w 512 h 512 c 6291456VUID-vkCmdPipelineBarrier-pImageMemoryBarriers-02820(ERROR / SPEC): msgNum:
+-1349691875 - Validation Error: [ VUID-vkCmdPipelineBarrier-pImageMemoryBarriers-02820 ] Object 0: handle = 0x2a717a8161
+0, type = VK_OBJECT_TYPE_COMMAND_BUFFER; | MessageID = 0xaf8d561d | vkCmdPipelineBarrier(): pImageMemoryBarriers[0].dstA
+ccessMask (VK_ACCESS_TRANSFER_WRITE_BIT) is not supported by stage mask (VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT). The Vulkan
+spec states: For any element of pImageMemoryBarriers, if its srcQueueFamilyIndex and dstQueueFamilyIndex members are equ
+al, or if its dstQueueFamilyIndex is the queue family index that was used to create the command pool that commandBuffer
+was allocated from, then its dstAccessMask member must only contain access flags that are supported by one or more of th
+e pipeline stages in dstStageMask, as specified in the table of supported access types (https://vulkan.lunarg.com/doc/vi
+ew/1.3.290.0/windows/1.3-extensions/vkspec.html#VUID-vkCmdPipelineBarrier-pImageMemoryBarriers-02820)
+    Objects: 1
+        [0] 0x2a717a81610, type: 6, name: NULL
+VUID-vkCmdPipelineBarrier-pImageMemoryBarriers-02819(ERROR / SPEC): msgNum: -608309547 - Validation Error: [ VUID-vkCmdP
+ipelineBarrier-pImageMemoryBarriers-02819 ] Object 0: handle = 0x2a717a81610, type = VK_OBJECT_TYPE_COMMAND_BUFFER; | Me
+ssageID = 0xdbbdeed5 | vkCmdPipelineBarrier(): pImageMemoryBarriers[0].srcAccessMask (VK_ACCESS_TRANSFER_WRITE_BIT) is n
+ot supported by stage mask (VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT). The Vulkan spec states: For any element of pImageMemoryB
+arriers, if its srcQueueFamilyIndex and dstQueueFamilyIndex members are equal, or if its srcQueueFamilyIndex is the queu
+e family index that was used to create the command pool that commandBuffer was allocated from, then its srcAccessMask me
+mber must only contain access flags that are supported by one or more of the pipeline stages in srcStageMask, as specifi
+ed in the table of supported access types (https://vulkan.lunarg.com/doc/view/1.3.290.0/windows/1.3-extensions/vkspec.ht
+ml#VUID-vkCmdPipelineBarrier-pImageMemoryBarriers-02819)
+    Objects: 1
+        [0] 0x2a717a81610, type: 6, name: NULL
+VUID-vkCmdPipelineBarrier-pImageMemoryBarriers-02819(ERROR / SPEC): msgNum: -608309547 - Validation Error: [ VUID-vkCmdP
+ipelineBarrier-pImageMemoryBarriers-02819 ] Object 0: handle = 0x2a717a81610, type = VK_OBJECT_TYPE_COMMAND_BUFFER; | Me
+ssageID = 0xdbbdeed5 | vkCmdPipelineBarrier(): pImageMemoryBarriers[0].srcAccessMask (VK_ACCESS_HOST_WRITE_BIT) is not s
+upported by stage mask (VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT). The Vulkan spec states: For any element of pImageMemoryBarri
+ers, if its srcQueueFamilyIndex and dstQueueFamilyIndex members are equal, or if its srcQueueFamilyIndex is the queue fa
+mily index that was used to create the command pool that commandBuffer was allocated from, then its srcAccessMask member
+ must only contain access flags that are supported by one or more of the pipeline stages in srcStageMask, as specified i
+n the table of supported access types (https://vulkan.lunarg.com/doc/view/1.3.290.0/windows/1.3-extensions/vkspec.html#V
+UID-vkCmdPipelineBarrier-pImageMemoryBarriers-02819)
+    Objects: 1
+        [0] 0x2a717a81610, type: 6, name: NULL
+VUID-vkCmdPipelineBarrier-pImageMemoryBarriers-02820(ERROR / SPEC): msgNum: -1349691875 - Validation Error: [ VUID-vkCmd
+PipelineBarrier-pImageMemoryBarriers-02820 ] Object 0: handle = 0x2a717a81610, type = VK_OBJECT_TYPE_COMMAND_BUFFER; | M
+essageID = 0xaf8d561d | vkCmdPipelineBarrier(): pImageMemoryBarriers[0].dstAccessMask (VK_ACCESS_SHADER_READ_BIT) is not
+ supported by stage mask (VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT). The Vulkan spec states: For any element of pImageMemoryBar
+riers, if its srcQueueFamilyIndex and dstQueueFamilyIndex members are equal, or if its dstQueueFamilyIndex is the queue
+family index that was used to create the command pool that commandBuffer was allocated from, then its dstAccessMask memb
+er must only contain access flags that are supported by one or more of the pipeline stages in dstStageMask, as specified
+ in the table of supported access types (https://vulkan.lunarg.com/doc/view/1.3.290.0/windows/1.3-extensions/vkspec.html
+#VUID-vkCmdPipelineBarrier-pImageMemoryBarriers-02820)
+    Objects: 1
+        [0] 0x2a717a81610, type: 6, name: NULL
+VUID-VkImageViewCreateInfo-image-01003(ERROR / SPEC): msgNum: 331947040 - Validation Error: [ VUID-VkImageViewCreateInfo
+-image-01003 ] Object 0: handle = 0xb097c90000000027, type = VK_OBJECT_TYPE_IMAGE; | MessageID = 0x13c91c20 | vkCreateIm
+ageView(): pCreateInfo->viewType (VK_IMAGE_VIEW_TYPE_CUBE) is not compatible with image type VK_IMAGE_TYPE_2D. The Vulka
+n spec states: If image was not created with VK_IMAGE_CREATE_CUBE_COMPATIBLE_BIT then viewType must not be VK_IMAGE_VIEW
+_TYPE_CUBE or VK_IMAGE_VIEW_TYPE_CUBE_ARRAY (https://vulkan.lunarg.com/doc/view/1.3.290.0/windows/1.3-extensions/vkspec.
+html#VUID-VkImageViewCreateInfo-image-01003)
+    Objects: 1
+        [0] 0xb097c90000000027, type: 10, name: NULL
+确定内存类型成功 类型索引为1
+确定内存类型成功 类型索引为1
+确定内存类型成功 类型索引为0
+确定内存类型成功 类型索引为1
+w-w 1560600 1560600
+fname>../models/1707_poolnew.obj
+确定内存类型成功 类型索引为1
+确定内存类型成功 类型索引为1
+正在读取文件./shaders/SingleTexLight.vert.spv，大小为:6056
+正在读取文件./shaders/SingleTexLight.frag.spv，大小为:2900
+确定内存类型成功 类型索引为1
+正在读取文件./shaders/computeBD.comp.spv，大小为:5772
+正在读取文件./shaders/computeNormal.comp.spv，大小为:5104
+确定内存类型成功 类型索引为1
+正在读取文件./shaders/commonTex.vert.spv，大小为:1140
+正在读取文件./shaders/commonTex.frag.spv，大小为:628
+确定内存类型成功 类型索引为1
+正在读取文件./shaders/commonTexLoad.vert.spv，大小为:5072
+正在读取文件./shaders/commonTexLoad.frag.spv，大小为:700
+VUID-VkWriteDescriptorSet-descriptorType-00331(ERROR / SPEC): msgNum: -561209641 - Validation Error: [ VUID-VkWriteDescr
+iptorSet-descriptorType-00331 ] Object 0: handle = 0xa43473000000002d, type = VK_OBJECT_TYPE_BUFFER; | MessageID = 0xde8
+c9ed7 | vkUpdateDescriptorSets(): pDescriptorWrites[0].pBufferInfo[0].buffer was created with VK_BUFFER_USAGE_2_VERTEX_B
+UFFER_BIT_KHR, but descriptorType is VK_DESCRIPTOR_TYPE_STORAGE_BUFFER. The Vulkan spec states: If descriptorType is VK_
+DESCRIPTOR_TYPE_STORAGE_BUFFER or VK_DESCRIPTOR_TYPE_STORAGE_BUFFER_DYNAMIC, the buffer member of each element of pBuffe
+rInfo must have been created with VK_BUFFER_USAGE_STORAGE_BUFFER_BIT set (https://vulkan.lunarg.com/doc/view/1.3.290.0/w
+indows/1.3-extensions/vkspec.html#VUID-VkWriteDescriptorSet-descriptorType-00331)
+    Objects: 1
+        [0] 0xa43473000000002d, type: 9, name: NULL
+VUID-VkSubmitInfo-sType-sType(ERROR / SPEC): msgNum: 500432409 - Validation Error: [ VUID-VkSubmitInfo-sType-sType ] | M
+essageID = 0x1dd3fe19 | vkQueueSubmit(): pSubmits[0].sType must be VK_STRUCTURE_TYPE_SUBMIT_INFO. The Vulkan spec states
+: sType must be VK_STRUCTURE_TYPE_SUBMIT_INFO (https://vulkan.lunarg.com/doc/view/1.3.290.0/windows/1.3-extensions/vkspe
+c.html#VUID-VkSubmitInfo-sType-sType)
+    Objects: 0
+VUID-VkSubmitInfo-sType-sType(ERROR / SPEC): msgNum: 500432409 - Validation Error: [ VUID-VkSubmitInfo-sType-sType ] | M
+essageID = 0x1dd3fe19 | vkQueueSubmit(): pSubmits[0].sType must be VK_STRUCTURE_TYPE_SUBMIT_INFO. The Vulkan spec states
+: sType must be VK_STRUCTURE_TYPE_SUBMIT_INFO (https://vulkan.lunarg.com/doc/view/1.3.290.0/windows/1.3-extensions/vkspe
+c.html#VUID-VkSubmitInfo-sType-sType)
+    Objects: 0
+UNASSIGNED-CoreValidation-DrawState-InvalidImageLayout(ERROR / SPEC): msgNum: 1303270965 - Validation Error: [ UNASSIGNE
+D-CoreValidation-DrawState-InvalidImageLayout ] Object 0: handle = 0x2a717a81610, type = VK_OBJECT_TYPE_COMMAND_BUFFER;
+Object 1: handle = 0xd175b40000000013, type = VK_OBJECT_TYPE_IMAGE; | MessageID = 0x4dae5635 | vkQueueSubmit(): pSubmits
+[0].pCommandBuffers[0] command buffer VkCommandBuffer 0x2a717a81610[] expects VkImage 0xd175b40000000013[] (subresource:
+ aspectMask 0x1 array layer 0, mip level 0) to be in layout VK_IMAGE_LAYOUT_GENERAL--instead, current layout is VK_IMAGE
+_LAYOUT_PREINITIALIZED.
+    Objects: 2
+        [0] 0x2a717a81610, type: 6, name: NULL
+        [1] 0xd175b40000000013, type: 10, name: NULL
+UNASSIGNED-CoreValidation-DrawState-InvalidImageLayout(ERROR / SPEC): msgNum: 1303270965 - Validation Error: [ UNASSIGNE
+D-CoreValidation-DrawState-InvalidImageLayout ] Object 0: handle = 0x2a717a81610, type = VK_OBJECT_TYPE_COMMAND_BUFFER;
+Object 1: handle = 0x2cfba2000000001c, type = VK_OBJECT_TYPE_IMAGE; | MessageID = 0x4dae5635 | vkQueueSubmit(): pSubmits
+[0].pCommandBuffers[0] command buffer VkCommandBuffer 0x2a717a81610[] expects VkImage 0x2cfba2000000001c[] (subresource:
+ aspectMask 0x1 array layer 0, mip level 0) to be in layout VK_IMAGE_LAYOUT_GENERAL--instead, current layout is VK_IMAGE
+_LAYOUT_PREINITIALIZED.
+    Objects: 2
+        [0] 0x2a717a81610, type: 6, name: NULL
+        [1] 0x2cfba2000000001c, type: 10, name: NULL
+UNASSIGNED-CoreValidation-DrawState-InvalidImageLayout(ERROR / SPEC): msgNum: 1303270965 - Validation Error: [ UNASSIGNE
+D-CoreValidation-DrawState-InvalidImageLayout ] Object 0: handle = 0x2a717a81610, type = VK_OBJECT_TYPE_COMMAND_BUFFER;
+Object 1: handle = 0x27d60e0000000019, type = VK_OBJECT_TYPE_IMAGE; | MessageID = 0x4dae5635 | vkQueueSubmit(): pSubmits
+[0].pCommandBuffers[0] command buffer VkCommandBuffer 0x2a717a81610[] expects VkImage 0x27d60e0000000019[] (subresource:
+ aspectMask 0x1 array layer 0, mip level 0) to be in layout VK_IMAGE_LAYOUT_GENERAL--instead, current layout is VK_IMAGE
+_LAYOUT_PREINITIALIZED.
+    Objects: 2
+        [0] 0x2a717a81610, type: 6, name: NULL
+        [1] 0x27d60e0000000019, type: 10, name: NULL
+UNASSIGNED-CoreValidation-DrawState-InvalidImageLayout(ERROR / SPEC): msgNum: 1303270965 - Validation Error: [ UNASSIGNE
+D-CoreValidation-DrawState-InvalidImageLayout ] Object 0: handle = 0x2a717a81610, type = VK_OBJECT_TYPE_COMMAND_BUFFER;
+Object 1: handle = 0xd5b26f0000000010, type = VK_OBJECT_TYPE_IMAGE; | MessageID = 0x4dae5635 | vkQueueSubmit(): pSubmits
+[0].pCommandBuffers[0] command buffer VkCommandBuffer 0x2a717a81610[] expects VkImage 0xd5b26f0000000010[] (subresource:
+ aspectMask 0x1 array layer 0, mip level 0) to be in layout VK_IMAGE_LAYOUT_GENERAL--instead, current layout is VK_IMAGE
+_LAYOUT_PREINITIALIZED.
+    Objects: 2
+        [0] 0x2a717a81610, type: 6, name: NULL
+        [1] 0xd5b26f0000000010, type: 10, name: NULL
+UNASSIGNED-CoreValidation-DrawState-InvalidImageLayout(ERROR / SPEC): msgNum: 1303270965 - Validation Error: [ UNASSIGNE
+D-CoreValidation-DrawState-InvalidImageLayout ] Object 0: handle = 0x2a717a81610, type = VK_OBJECT_TYPE_COMMAND_BUFFER;
+Object 1: handle = 0x301e6c0000000022, type = VK_OBJECT_TYPE_IMAGE; | MessageID = 0x4dae5635 | vkQueueSubmit(): pSubmits
+[0].pCommandBuffers[0] command buffer VkCommandBuffer 0x2a717a81610[] expects VkImage 0x301e6c0000000022[] (subresource:
+ aspectMask 0x1 array layer 0, mip level 0) to be in layout VK_IMAGE_LAYOUT_GENERAL--instead, current layout is VK_IMAGE
+_LAYOUT_PREINITIALIZED.
+    Objects: 2
+        [0] 0x2a717a81610, type: 6, name: NULL
+        [1] 0x301e6c0000000022, type: 10, name: NULL
+UNASSIGNED-CoreValidation-DrawState-InvalidImageLayout(ERROR / SPEC): msgNum: 1303270965 - Validation Error: [ UNASSIGNE
+D-CoreValidation-DrawState-InvalidImageLayout ] Object 0: handle = 0x2a717a81610, type = VK_OBJECT_TYPE_COMMAND_BUFFER;
+Object 1: handle = 0x2e2941000000001f, type = VK_OBJECT_TYPE_IMAGE; | MessageID = 0x4dae5635 | vkQueueSubmit(): pSubmits
+[0].pCommandBuffers[0] command buffer VkCommandBuffer 0x2a717a81610[] expects VkImage 0x2e2941000000001f[] (subresource:
+ aspectMask 0x1 array layer 0, mip level 0) to be in layout VK_IMAGE_LAYOUT_GENERAL--instead, current layout is VK_IMAGE
+_LAYOUT_PREINITIALIZED.
+    Objects: 2
+        [0] 0x2a717a81610, type: 6, name: NULL
+        [1] 0x2e2941000000001f, type: 10, name: NULL
+UNASSIGNED-CoreValidation-DrawState-InvalidImageLayout(ERROR / SPEC): msgNum: 1303270965 - Validation Error: [ UNASSIGNE
+D-CoreValidation-DrawState-InvalidImageLayout ] Object 0: handle = 0x2a717a81610, type = VK_OBJECT_TYPE_COMMAND_BUFFER;
+Object 1: handle = 0xd897d90000000016, type = VK_OBJECT_TYPE_IMAGE; | MessageID = 0x4dae5635 | vkQueueSubmit(): pSubmits
+[0].pCommandBuffers[0] command buffer VkCommandBuffer 0x2a717a81610[] expects VkImage 0xd897d90000000016[] (subresource:
+ aspectMask 0x1 array layer 0, mip level 0) to be in layout VK_IMAGE_LAYOUT_GENERAL--instead, current layout is VK_IMAGE
+_LAYOUT_PREINITIALIZED.
+    Objects: 2
+        [0] 0x2a717a81610, type: 6, name: NULL
+        [1] 0xd897d90000000016, type: 10, name: NULL
+UNASSIGNED-CoreValidation-DrawState-InvalidImageLayout(ERROR / SPEC): msgNum: 1303270965 - Validation Error: [ UNASSIGNE
+D-CoreValidation-DrawState-InvalidImageLayout ] Object 0: handle = 0x2a717a81610, type = VK_OBJECT_TYPE_COMMAND_BUFFER;
+Object 1: handle = 0xb097c90000000027, type = VK_OBJECT_TYPE_IMAGE; | MessageID = 0x4dae5635 | vkQueueSubmit(): pSubmits
+[0].pCommandBuffers[0] command buffer VkCommandBuffer 0x2a717a81610[] expects VkImage 0xb097c90000000027[] (subresource:
+ aspectMask 0x1 array layer 0, mip level 0) to be in layout VK_IMAGE_LAYOUT_GENERAL--instead, current layout is VK_IMAGE
+_LAYOUT_SHADER_READ_ONLY_OPTIMAL.
+    Objects: 2
+        [0] 0x2a717a81610, type: 6, name: NULL
+        [1] 0xb097c90000000027, type: 10, name: NULL
+UNASSIGNED-CoreValidation-DrawState-InvalidImageLayout(ERROR / SPEC): msgNum: 1303270965 - Validation Error: [ UNASSIGNE
+D-CoreValidation-DrawState-InvalidImageLayout ] Object 0: handle = 0x2a717a81610, type = VK_OBJECT_TYPE_COMMAND_BUFFER;
+Object 1: handle = 0xb097c90000000027, type = VK_OBJECT_TYPE_IMAGE; | MessageID = 0x4dae5635 | vkQueueSubmit(): pSubmits
+[0].pCommandBuffers[0] command buffer VkCommandBuffer 0x2a717a81610[] expects VkImage 0xb097c90000000027[] (subresource:
+ aspectMask 0x1 array layer 1, mip level 0) to be in layout VK_IMAGE_LAYOUT_GENERAL--instead, current layout is VK_IMAGE
+_LAYOUT_SHADER_READ_ONLY_OPTIMAL.
+    Objects: 2
+        [0] 0x2a717a81610, type: 6, name: NULL
+        [1] 0xb097c90000000027, type: 10, name: NULL
+UNASSIGNED-CoreValidation-DrawState-InvalidImageLayout(ERROR / SPEC): msgNum: 1303270965 - Validation Error: [ UNASSIGNE
+D-CoreValidation-DrawState-InvalidImageLayout ] Object 0: handle = 0x2a717a81610, type = VK_OBJECT_TYPE_COMMAND_BUFFER;
+Object 1: handle = 0xb097c90000000027, type = VK_OBJECT_TYPE_IMAGE; | MessageID = 0x4dae5635 | vkQueueSubmit(): pSubmits
+[0].pCommandBuffers[0] command buffer VkCommandBuffer 0x2a717a81610[] expects VkImage 0xb097c90000000027[] (subresource:
+ aspectMask 0x1 array layer 2, mip level 0) to be in layout VK_IMAGE_LAYOUT_GENERAL--instead, current layout is VK_IMAGE
+_LAYOUT_SHADER_READ_ONLY_OPTIMAL.
+    Objects: 2
+        [0] 0x2a717a81610, type: 6, name: NULL
+        [1] 0xb097c90000000027, type: 10, name: NULL
+VUID-VkWriteDescriptorSet-descriptorType-00331(ERROR / SPEC): msgNum: -561209641 - Validation Error: [ VUID-VkWriteDescr
+iptorSet-descriptorType-00331 ] Object 0: handle = 0xa43473000000002d, type = VK_OBJECT_TYPE_BUFFER; | MessageID = 0xde8
+c9ed7 | vkUpdateDescriptorSets(): pDescriptorWrites[0].pBufferInfo[0].buffer was created with VK_BUFFER_USAGE_2_VERTEX_B
+UFFER_BIT_KHR, but descriptorType is VK_DESCRIPTOR_TYPE_STORAGE_BUFFER. The Vulkan spec states: If descriptorType is VK_
+DESCRIPTOR_TYPE_STORAGE_BUFFER or VK_DESCRIPTOR_TYPE_STORAGE_BUFFER_DYNAMIC, the buffer member of each element of pBuffe
+rInfo must have been created with VK_BUFFER_USAGE_STORAGE_BUFFER_BIT set (https://vulkan.lunarg.com/doc/view/1.3.290.0/w
+indows/1.3-extensions/vkspec.html#VUID-VkWriteDescriptorSet-descriptorType-00331)
+    Objects: 1
+        [0] 0xa43473000000002d, type: 9, name: NULL
+VUID-VkSubmitInfo-sType-sType(ERROR / SPEC): msgNum: 500432409 - Validation Error: [ VUID-VkSubmitInfo-sType-sType ] | M
+essageID = 0x1dd3fe19 | vkQueueSubmit(): pSubmits[0].sType must be VK_STRUCTURE_TYPE_SUBMIT_INFO. The Vulkan spec states
+: sType must be VK_STRUCTURE_TYPE_SUBMIT_INFO (https://vulkan.lunarg.com/doc/view/1.3.290.0/windows/1.3-extensions/vkspe
+c.html#VUID-VkSubmitInfo-sType-sType)
+    Objects: 0
+VUID-VkSubmitInfo-sType-sType(ERROR / SPEC): msgNum: 500432409 - Validation Error: [ VUID-VkSubmitInfo-sType-sType ] | M
+essageID = 0x1dd3fe19 | vkQueueSubmit(): pSubmits[0].sType must be VK_STRUCTURE_TYPE_SUBMIT_INFO. The Vulkan spec states
+: sType must be VK_STRUCTURE_TYPE_SUBMIT_INFO (https://vulkan.lunarg.com/doc/view/1.3.290.0/windows/1.3-extensions/vkspe
+c.html#VUID-VkSubmitInfo-sType-sType)
+    Objects: 0
+VUID-VkWriteDescriptorSet-descriptorType-00331(ERROR / SPEC): msgNum: -561209641 - Validation Error: [ VUID-VkWriteDescr
+iptorSet-descriptorType-00331 ] Object 0: handle = 0xa43473000000002d, type = VK_OBJECT_TYPE_BUFFER; | MessageID = 0xde8
+c9ed7 | vkUpdateDescriptorSets(): pDescriptorWrites[0].pBufferInfo[0].buffer was created with VK_BUFFER_USAGE_2_VERTEX_B
+UFFER_BIT_KHR, but descriptorType is VK_DESCRIPTOR_TYPE_STORAGE_BUFFER. The Vulkan spec states: If descriptorType is VK_
+DESCRIPTOR_TYPE_STORAGE_BUFFER or VK_DESCRIPTOR_TYPE_STORAGE_BUFFER_DYNAMIC, the buffer member of each element of pBuffe
+rInfo must have been created with VK_BUFFER_USAGE_STORAGE_BUFFER_BIT set (https://vulkan.lunarg.com/doc/view/1.3.290.0/w
+indows/1.3-extensions/vkspec.html#VUID-VkWriteDescriptorSet-descriptorType-00331)
+    Objects: 1
+        [0] 0xa43473000000002d, type: 9, name: NULL
+VUID-VkSubmitInfo-sType-sType(ERROR / SPEC): msgNum: 500432409 - Validation Error: [ VUID-VkSubmitInfo-sType-sType ] | M
+essageID = 0x1dd3fe19 | vkQueueSubmit(): pSubmits[0].sType must be VK_STRUCTURE_TYPE_SUBMIT_INFO. The Vulkan spec states
+: sType must be VK_STRUCTURE_TYPE_SUBMIT_INFO (https://vulkan.lunarg.com/doc/view/1.3.290.0/windows/1.3-extensions/vkspe
+c.html#VUID-VkSubmitInfo-sType-sType)
+    Objects: 0
+VUID-VkSubmitInfo-sType-sType(ERROR / SPEC): msgNum: 500432409 - Validation Error: [ VUID-VkSubmitInfo-sType-sType ] | M
+essageID = 0x1dd3fe19 | vkQueueSubmit(): pSubmits[0].sType must be VK_STRUCTURE_TYPE_SUBMIT_INFO. The Vulkan spec states
+: sType must be VK_STRUCTURE_TYPE_SUBMIT_INFO (https://vulkan.lunarg.com/doc/view/1.3.290.0/windows/1.3-extensions/vkspe
+c.html#VUID-VkSubmitInfo-sType-sType)
+    Objects: 0
+VUID-VkWriteDescriptorSet-descriptorType-00331(ERROR / SPEC): msgNum: -561209641 - Validation Error: [ VUID-VkWriteDescr
+iptorSet-descriptorType-00331 ] Object 0: handle = 0xa43473000000002d, type = VK_OBJECT_TYPE_BUFFER; | MessageID = 0xde8
+c9ed7 | vkUpdateDescriptorSets(): pDescriptorWrites[0].pBufferInfo[0].buffer was created with VK_BUFFER_USAGE_2_VERTEX_B
+UFFER_BIT_KHR, but descriptorType is VK_DESCRIPTOR_TYPE_STORAGE_BUFFER. The Vulkan spec states: If descriptorType is VK_
+DESCRIPTOR_TYPE_STORAGE_BUFFER or VK_DESCRIPTOR_TYPE_STORAGE_BUFFER_DYNAMIC, the buffer member of each element of pBuffe
+rInfo must have been created with VK_BUFFER_USAGE_STORAGE_BUFFER_BIT set (https://vulkan.lunarg.com/doc/view/1.3.290.0/w
+indows/1.3-extensions/vkspec.html#VUID-VkWriteDescriptorSet-descriptorType-00331)
+    Objects: 1
+        [0] 0xa43473000000002d, type: 9, name: NULL
+VUID-VkSubmitInfo-sType-sType(ERROR / SPEC): msgNum: 500432409 - Validation Error: [ VUID-VkSubmitInfo-sType-sType ] | M
+essageID = 0x1dd3fe19 | vkQueueSubmit(): pSubmits[0].sType must be VK_STRUCTURE_TYPE_SUBMIT_INFO. The Vulkan spec states
+: sType must be VK_STRUCTURE_TYPE_SUBMIT_INFO (https://vulkan.lunarg.com/doc/view/1.3.290.0/windows/1.3-extensions/vkspe
+c.html#VUID-VkSubmitInfo-sType-sType)
+    Objects: 0
+VUID-VkSubmitInfo-sType-sType(ERROR / SPEC): msgNum: 500432409 - Validation Error: [ VUID-VkSubmitInfo-sType-sType ] | M
+essageID = 0x1dd3fe19 | vkQueueSubmit(): pSubmits[0].sType must be VK_STRUCTURE_TYPE_SUBMIT_INFO. The Vulkan spec states
+: sType must be VK_STRUCTURE_TYPE_SUBMIT_INFO (https://vulkan.lunarg.com/doc/view/1.3.290.0/windows/1.3-extensions/vkspe
+c.html#VUID-VkSubmitInfo-sType-sType)
+    Objects: 0
+VUID-VkWriteDescriptorSet-descriptorType-00331(ERROR / SPEC): msgNum: -561209641 - Validation Error: [ VUID-VkWriteDescr
+iptorSet-descriptorType-00331 ] Object 0: handle = 0xa43473000000002d, type = VK_OBJECT_TYPE_BUFFER; | MessageID = 0xde8
+c9ed7 | vkUpdateDescriptorSets(): pDescriptorWrites[0].pBufferInfo[0].buffer was created with VK_BUFFER_USAGE_2_VERTEX_B
+UFFER_BIT_KHR, but descriptorType is VK_DESCRIPTOR_TYPE_STORAGE_BUFFER. The Vulkan spec states: If descriptorType is VK_
+DESCRIPTOR_TYPE_STORAGE_BUFFER or VK_DESCRIPTOR_TYPE_STORAGE_BUFFER_DYNAMIC, the buffer member of each element of pBuffe
+rInfo must have been created with VK_BUFFER_USAGE_STORAGE_BUFFER_BIT set (https://vulkan.lunarg.com/doc/view/1.3.290.0/w
+indows/1.3-extensions/vkspec.html#VUID-VkWriteDescriptorSet-descriptorType-00331)
+    Objects: 1
+        [0] 0xa43473000000002d, type: 9, name: NULL
+VUID-VkSubmitInfo-sType-sType(ERROR / SPEC): msgNum: 500432409 - Validation Error: [ VUID-VkSubmitInfo-sType-sType ] | M
+essageID = 0x1dd3fe19 | vkQueueSubmit(): pSubmits[0].sType must be VK_STRUCTURE_TYPE_SUBMIT_INFO. The Vulkan spec states
+: sType must be VK_STRUCTURE_TYPE_SUBMIT_INFO (https://vulkan.lunarg.com/doc/view/1.3.290.0/windows/1.3-extensions/vkspe
+c.html#VUID-VkSubmitInfo-sType-sType)
+    Objects: 0
+VUID-VkSubmitInfo-sType-sType(ERROR / SPEC): msgNum: 500432409 - Validation Error: [ VUID-VkSubmitInfo-sType-sType ] | M
+essageID = 0x1dd3fe19 | vkQueueSubmit(): pSubmits[0].sType must be VK_STRUCTURE_TYPE_SUBMIT_INFO. The Vulkan spec states
+: sType must be VK_STRUCTURE_TYPE_SUBMIT_INFO (https://vulkan.lunarg.com/doc/view/1.3.290.0/windows/1.3-extensions/vkspe
+c.html#VUID-VkSubmitInfo-sType-sType)
+    Objects: 0
+VUID-VkWriteDescriptorSet-descriptorType-00331(ERROR / SPEC): msgNum: -561209641 - Validation Error: [ VUID-VkWriteDescr
+iptorSet-descriptorType-00331 ] Object 0: handle = 0xa43473000000002d, type = VK_OBJECT_TYPE_BUFFER; | MessageID = 0xde8
+c9ed7 | vkUpdateDescriptorSets(): pDescriptorWrites[0].pBufferInfo[0].buffer was created with VK_BUFFER_USAGE_2_VERTEX_B
+UFFER_BIT_KHR, but descriptorType is VK_DESCRIPTOR_TYPE_STORAGE_BUFFER. The Vulkan spec states: If descriptorType is VK_
+DESCRIPTOR_TYPE_STORAGE_BUFFER or VK_DESCRIPTOR_TYPE_STORAGE_BUFFER_DYNAMIC, the buffer member of each element of pBuffe
+rInfo must have been created with VK_BUFFER_USAGE_STORAGE_BUFFER_BIT set (https://vulkan.lunarg.com/doc/view/1.3.290.0/w
+indows/1.3-extensions/vkspec.html#VUID-VkWriteDescriptorSet-descriptorType-00331)
+    Objects: 1
+        [0] 0xa43473000000002d, type: 9, name: NULL
+VUID-VkWriteDescriptorSet-descriptorType-00331(ERROR / SPEC): msgNum: -561209641 - Validation Error: [ VUID-VkWriteDescr
+iptorSet-descriptorType-00331 ] Object 0: handle = 0xa43473000000002d, type = VK_OBJECT_TYPE_BUFFER; | MessageID = 0xde8
+c9ed7 | vkUpdateDescriptorSets(): pDescriptorWrites[0].pBufferInfo[0].buffer was created with VK_BUFFER_USAGE_2_VERTEX_B
+UFFER_BIT_KHR, but descriptorType is VK_DESCRIPTOR_TYPE_STORAGE_BUFFER. The Vulkan spec states: If descriptorType is VK_
+DESCRIPTOR_TYPE_STORAGE_BUFFER or VK_DESCRIPTOR_TYPE_STORAGE_BUFFER_DYNAMIC, the buffer member of each element of pBuffe
+rInfo must have been created with VK_BUFFER_USAGE_STORAGE_BUFFER_BIT set (https://vulkan.lunarg.com/doc/view/1.3.290.0/w
+indows/1.3-extensions/vkspec.html#VUID-VkWriteDescriptorSet-descriptorType-00331)
+    Objects: 1
+        [0] 0xa43473000000002d, type: 9, name: NULL
+VUID-VkWriteDescriptorSet-descriptorType-00331(ERROR / SPEC): msgNum: -561209641 - Validation Error: [ VUID-VkWriteDescr
+iptorSet-descriptorType-00331 ] Object 0: handle = 0xa43473000000002d, type = VK_OBJECT_TYPE_BUFFER; | MessageID = 0xde8
+c9ed7 | vkUpdateDescriptorSets(): pDescriptorWrites[0].pBufferInfo[0].buffer was created with VK_BUFFER_USAGE_2_VERTEX_B
+UFFER_BIT_KHR, but descriptorType is VK_DESCRIPTOR_TYPE_STORAGE_BUFFER. The Vulkan spec states: If descriptorType is VK_
+DESCRIPTOR_TYPE_STORAGE_BUFFER or VK_DESCRIPTOR_TYPE_STORAGE_BUFFER_DYNAMIC, the buffer member of each element of pBuffe
+rInfo must have been created with VK_BUFFER_USAGE_STORAGE_BUFFER_BIT set (https://vulkan.lunarg.com/doc/view/1.3.290.0/w
+indows/1.3-extensions/vkspec.html#VUID-VkWriteDescriptorSet-descriptorType-00331)
+    Objects: 1
+        [0] 0xa43473000000002d, type: 9, name: NULL
+VUID-VkWriteDescriptorSet-descriptorType-00331(ERROR / SPEC): msgNum: -561209641 - Validation Error: [ VUID-VkWriteDescr
+iptorSet-descriptorType-00331 ] Object 0: handle = 0xa43473000000002d, type = VK_OBJECT_TYPE_BUFFER; | MessageID = 0xde8
+c9ed7 | vkUpdateDescriptorSets(): pDescriptorWrites[0].pBufferInfo[0].buffer was created with VK_BUFFER_USAGE_2_VERTEX_B
+UFFER_BIT_KHR, but descriptorType is VK_DESCRIPTOR_TYPE_STORAGE_BUFFER. The Vulkan spec states: If descriptorType is VK_
+DESCRIPTOR_TYPE_STORAGE_BUFFER or VK_DESCRIPTOR_TYPE_STORAGE_BUFFER_DYNAMIC, the buffer member of each element of pBuffe
+rInfo must have been created with VK_BUFFER_USAGE_STORAGE_BUFFER_BIT set (https://vulkan.lunarg.com/doc/view/1.3.290.0/w
+indows/1.3-extensions/vkspec.html#VUID-VkWriteDescriptorSet-descriptorType-00331)
+    Objects: 1
+        [0] 0xa43473000000002d, type: 9, name: NULL
+VUID-VkWriteDescriptorSet-descriptorType-00331(ERROR / SPEC): msgNum: -561209641 - Validation Error: [ VUID-VkWriteDescr
+iptorSet-descriptorType-00331 ] Object 0: handle = 0xa43473000000002d, type = VK_OBJECT_TYPE_BUFFER; | MessageID = 0xde8
+c9ed7 | vkUpdateDescriptorSets(): pDescriptorWrites[0].pBufferInfo[0].buffer was created with VK_BUFFER_USAGE_2_VERTEX_B
+UFFER_BIT_KHR, but descriptorType is VK_DESCRIPTOR_TYPE_STORAGE_BUFFER. The Vulkan spec states: If descriptorType is VK_
+DESCRIPTOR_TYPE_STORAGE_BUFFER or VK_DESCRIPTOR_TYPE_STORAGE_BUFFER_DYNAMIC, the buffer member of each element of pBuffe
+rInfo must have been created with VK_BUFFER_USAGE_STORAGE_BUFFER_BIT set (https://vulkan.lunarg.com/doc/view/1.3.290.0/w
+indows/1.3-extensions/vkspec.html#VUID-VkWriteDescriptorSet-descriptorType-00331)
+    Objects: 1
+        [0] 0xa43473000000002d, type: 9, name: NULL
+销毁帧缓冲成功！
+销毁深度缓冲相关成功!
+[销毁交换链图像视图[0]成功]
+[销毁交换链图像视图[1]成功]
+销毁交换链成功!
+VUID-vkDestroyDevice-device-05137(ERROR / SPEC): msgNum: 1215490720 - Validation Error: [ VUID-vkDestroyDevice-device-05
+137 ] Object 0: handle = 0xbd60bd0000000076, type = VK_OBJECT_TYPE_FENCE; | MessageID = 0x4872eaa0 | vkDestroyDevice():
+ OBJ ERROR : For VkDevice 0x2a717938010[], VkFence 0xbd60bd0000000076[] has not been destroyed. The Vulkan spec states:
+All child objects created on device must have been destroyed prior to destroying device (https://vulkan.lunarg.com/doc/v
+iew/1.3.290.0/windows/1.3-extensions/vkspec.html#VUID-vkDestroyDevice-device-05137)
+    Objects: 1
+        [0] 0xbd60bd0000000076, type: 7, name: NULL
+VUID-vkDestroyDevice-device-05137(ERROR / SPEC): msgNum: 1215490720 - Validation Error: [ VUID-vkDestroyDevice-device-05
+137 ] Object 0: handle = 0x40b43c0000000049, type = VK_OBJECT_TYPE_DESCRIPTOR_SET_LAYOUT; | MessageID = 0x4872eaa0 | vkD
+estroyDevice():  OBJ ERROR : For VkDevice 0x2a717938010[], VkDescriptorSetLayout 0x40b43c0000000049[] has not been destr
+oyed. The Vulkan spec states: All child objects created on device must have been destroyed prior to destroying device (h
+ttps://vulkan.lunarg.com/doc/view/1.3.290.0/windows/1.3-extensions/vkspec.html#VUID-vkDestroyDevice-device-05137)
+    Objects: 1
+        [0] 0x40b43c0000000049, type: 20, name: NULL
+VUID-vkDestroyDevice-device-05137(ERROR / SPEC): msgNum: 1215490720 - Validation Error: [ VUID-vkDestroyDevice-device-05
+137 ] Object 0: handle = 0x7f79ad0000000050, type = VK_OBJECT_TYPE_DESCRIPTOR_SET_LAYOUT; | MessageID = 0x4872eaa0 | vkD
+estroyDevice():  OBJ ERROR : For VkDevice 0x2a717938010[], VkDescriptorSetLayout 0x7f79ad0000000050[] has not been destr
+oyed. The Vulkan spec states: All child objects created on device must have been destroyed prior to destroying device (h
+ttps://vulkan.lunarg.com/doc/view/1.3.290.0/windows/1.3-extensions/vkspec.html#VUID-vkDestroyDevice-device-05137)
+    Objects: 1
+        [0] 0x7f79ad0000000050, type: 20, name: NULL
+VUID-vkDestroyDevice-device-05137(ERROR / SPEC): msgNum: 1215490720 - Validation Error: [ VUID-vkDestroyDevice-device-05
+137 ] Object 0: handle = 0x59ffe0000000003d, type = VK_OBJECT_TYPE_DESCRIPTOR_SET; | MessageID = 0x4872eaa0 | vkDestroyD
+evice():  OBJ ERROR : For VkDevice 0x2a717938010[], VkDescriptorSet 0x59ffe0000000003d[] has not been destroyed. The Vul
+kan spec states: All child objects created on device must have been destroyed prior to destroying device (https://vulkan
+.lunarg.com/doc/view/1.3.290.0/windows/1.3-extensions/vkspec.html#VUID-vkDestroyDevice-device-05137)
+    Objects: 1
+        [0] 0x59ffe0000000003d, type: 23, name: NULL
+VUID-vkDestroyDevice-device-05137(ERROR / SPEC): msgNum: 1215490720 - Validation Error: [ VUID-vkDestroyDevice-device-05
+137 ] Object 0: handle = 0x5eb05e000000003b, type = VK_OBJECT_TYPE_DESCRIPTOR_SET; | MessageID = 0x4872eaa0 | vkDestroyD
+evice():  OBJ ERROR : For VkDevice 0x2a717938010[], VkDescriptorSet 0x5eb05e000000003b[] has not been destroyed. The Vul
+kan spec states: All child objects created on device must have been destroyed prior to destroying device (https://vulkan
+.lunarg.com/doc/view/1.3.290.0/windows/1.3-extensions/vkspec.html#VUID-vkDestroyDevice-device-05137)
+    Objects: 1
+        [0] 0x5eb05e000000003b, type: 23, name: NULL
+VUID-vkDestroyDevice-device-05137(ERROR / SPEC): msgNum: 1215490720 - Validation Error: [ VUID-vkDestroyDevice-device-05
+137 ] Object 0: handle = 0x130160000000005c, type = VK_OBJECT_TYPE_DESCRIPTOR_SET; | MessageID = 0x4872eaa0 | vkDestroyD
+evice():  OBJ ERROR : For VkDevice 0x2a717938010[], VkDescriptorSet 0x130160000000005c[] has not been destroyed. The Vul
+kan spec states: All child objects created on device must have been destroyed prior to destroying device (https://vulkan
+.lunarg.com/doc/view/1.3.290.0/windows/1.3-extensions/vkspec.html#VUID-vkDestroyDevice-device-05137)
+    Objects: 1
+        [0] 0x130160000000005c, type: 23, name: NULL
+VUID-vkDestroyDevice-device-05137(ERROR / SPEC): msgNum: 1215490720 - Validation Error: [ VUID-vkDestroyDevice-device-05
+137 ] Object 0: handle = 0x4e4775000000006e, type = VK_OBJECT_TYPE_DESCRIPTOR_SET; | MessageID = 0x4872eaa0 | vkDestroyD
+evice():  OBJ ERROR : For VkDevice 0x2a717938010[], VkDescriptorSet 0x4e4775000000006e[] has not been destroyed. The Vul
+kan spec states: All child objects created on device must have been destroyed prior to destroying device (https://vulkan
+.lunarg.com/doc/view/1.3.290.0/windows/1.3-extensions/vkspec.html#VUID-vkDestroyDevice-device-05137)
+    Objects: 1
+        [0] 0x4e4775000000006e, type: 23, name: NULL
+VUID-vkDestroyDevice-device-05137(ERROR / SPEC): msgNum: 1215490720 - Validation Error: [ VUID-vkDestroyDevice-device-05
+137 ] Object 0: handle = 0x9f9b41000000003c, type = VK_OBJECT_TYPE_DESCRIPTOR_SET; | MessageID = 0x4872eaa0 | vkDestroyD
+evice():  OBJ ERROR : For VkDevice 0x2a717938010[], VkDescriptorSet 0x9f9b41000000003c[] has not been destroyed. The Vul
+kan spec states: All child objects created on device must have been destroyed prior to destroying device (https://vulkan
+.lunarg.com/doc/view/1.3.290.0/windows/1.3-extensions/vkspec.html#VUID-vkDestroyDevice-device-05137)
+    Objects: 1
+        [0] 0x9f9b41000000003c, type: 23, name: NULL
+VUID-vkDestroyDevice-device-05137(ERROR / SPEC): msgNum: 1215490720 - Validation Error: [ VUID-vkDestroyDevice-device-05
+137 ] Object 0: handle = 0x44695a0000000071, type = VK_OBJECT_TYPE_DESCRIPTOR_SET; | MessageID = 0x4872eaa0 | vkDestroyD
+evice():  OBJ ERROR : For VkDevice 0x2a717938010[], VkDescriptorSet 0x44695a0000000071[] has not been destroyed. The Vul
+kan spec states: All child objects created on device must have been destroyed prior to destroying device (https://vulkan
+.lunarg.com/doc/view/1.3.290.0/windows/1.3-extensions/vkspec.html#VUID-vkDestroyDevice-device-05137)
+    Objects: 1
+        [0] 0x44695a0000000071, type: 23, name: NULL
+VUID-vkDestroyDevice-device-05137(ERROR / SPEC): msgNum: 1215490720 - Validation Error: [ VUID-vkDestroyDevice-device-05
+137 ] Object 0: handle = 0x44349c0000000060, type = VK_OBJECT_TYPE_DESCRIPTOR_SET; | MessageID = 0x4872eaa0 | vkDestroyD
+evice():  OBJ ERROR : For VkDevice 0x2a717938010[], VkDescriptorSet 0x44349c0000000060[] has not been destroyed. The Vul
+kan spec states: All child objects created on device must have been destroyed prior to destroying device (https://vulkan
+.lunarg.com/doc/view/1.3.290.0/windows/1.3-extensions/vkspec.html#VUID-vkDestroyDevice-device-05137)
+    Objects: 1
+        [0] 0x44349c0000000060, type: 23, name: NULL
+逻辑设备销毁完毕！
+VUID-vkDestroyInstance-instance-00629(ERROR / SPEC): msgNum: -1958900200 - Validation Error: [ VUID-vkDestroyInstance-in
+stance-00629 ] Object 0: handle = 0x2a7077e6000, type = VK_OBJECT_TYPE_INSTANCE; Object 1: handle = 0xfab64d0000000002,
+type = VK_OBJECT_TYPE_SURFACE_KHR; | MessageID = 0x8b3d8e18 | vkDestroyInstance():  OBJ ERROR : For VkInstance 0x2a7077e
+6000[], VkSurfaceKHR 0xfab64d0000000002[] has not been destroyed. The Vulkan spec states: All child objects created usin
+g instance must have been destroyed prior to destroying instance (https://vulkan.lunarg.com/doc/view/1.3.290.0/windows/1
+.3-extensions/vkspec.html#VUID-vkDestroyInstance-instance-00629)
+    Objects: 2
+        [0] 0x2a7077e6000, type: 1, name: NULL
+        [1] 0xfab64d0000000002, type: 1000000000, name: NULL
+Vulkan实例销毁完毕!
+
+进程已结束，退出代码为 0

@@ -1,0 +1,28 @@
+cmake_minimum_required(VERSION 3.10)
+set(CMAKE_C_COMPILER "/usr/bin/clang")
+set(CMAKE_CXX_COMPILER "/usr/bin/clang++")
+project(vulkan_vs)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-autolink")
+
+include_directories(/opt/homebrew/include ./include)
+# glfw的库目录路径
+link_directories(/opt/homebrew/Cellar/glfw/3.4/lib)
+# Vulkan的库目录
+include_directories(/users/yinjianxin/IDE/VulkanSDK/1.3.290.0/macos/include/)
+link_directories(/users/yinjianxin/IDE/VulkanSDK/1.3.290.0/macos/lib)
+
+set(librariesList
+    GLFW
+    vulkan
+)
+
+add_executable(app main.cpp)
+target_link_libraries(app ${librariesList})
+
+# 构建完成后执行脚本并复制文件
+add_custom_command(TARGET app POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/shaders
+    COMMAND ${CMAKE_COMMAND} -E chdir ${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/mac_compile_shaders.sh
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${PROJECT_SOURCE_DIR}/shaders ${CMAKE_BINARY_DIR}/shaders
+)

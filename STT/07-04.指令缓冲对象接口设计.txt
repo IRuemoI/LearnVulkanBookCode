@@ -1,0 +1,28 @@
+各位同学大家好，我们上节课呢，构建了 command buffer 这个类，那我们这节课开始使用这个类，给它添加很多的这样一个命令函数，这些命令函数是干嘛的呢？其实就是帮助这个 command buffer 来录制命令的函数，通常我们发送一个 draw call 出去的时候，前面就需要构建这么一个 command buffer，那么构建一个 command buffer 会有如下过程，这个过程是这样的，首先你要 begin 这个命令，让它开始进入一个被录制的状态，然后如果说你有一些其他的指令可以写在这里，有一些其他指令，那执行完毕之后你可以开始什么呢？做 render pass，就是 begin render pass，这样就会进入到录制 render pass 命令的这么一个状态之内。然后在这里面你可以做 render pass pipeline 绑定顶点，就是说实际数据的这样一个设置，就是绑定各类实际数据。
+
+好，你绑定完，设置完了这个 render pass 之后，你就要做一个事，就是 render pass，OK，那么从这到这就是 render pass 整个 render 命令的一个录制的一个时间段，或者是一个过程。然后在这里我们可以做叫做end，那么 end 就是闭了整个指令，整个 command buffer 的这样一个录制过程，由这来关闭完毕之后，那么中间你录制的这一堆的命令就会按照次序被摆放在 command buffer 这么所指向的那块内存当中，都是已经被序列化好了的。然后我们再把这个 command buffer 去提交给submit，就提交给这个渲染管线，或者说提交给 open 系统，然后他就会去执行这些指令了。
+
+好，那么我们的目的就是先一个一个的去实现一些我们这节课所必要的函数。第一个我们要肯定实现的就是begin，对吧？ word begin，那作为一个 begin 命令来讲，这个需要给他传入怎样的参数？首先就是叫做 wiki command buffer usage Flex，我们先让它默认是0，我们一会来讲解这个参数啊。第二个我们要传给他的就是一个继承的信息，那么先写在这里，一会给大家解释这个 wiki command。
+
+这边说默认实参负载行参列表的结尾，也就是说我们还没有写完，写完这个函数的话，后面如果都有默认值，这就没了。好，第二个我们要传入的参数叫这个 weak command buffer，叫做 inheritance infer，这个一会给大家解释一下 inherit tense，那么我们先让它等于这个，先等于一个这个空的结构体。好，然后这个是干嘛用的啊？这个是这样的，首先 weak command buffer usage flags。我们先解释这个参数，它有如下几个可能性的值，第一个给大家直接 call 过来， weak command buffer usage one time submit，它其实就规定了，说说这个命令。只会被使用提交一次，那么我告诉他这个之后， Vulkan 就可以针对这样的类型优化了。那么第二个类型是这样的， usage render pass continue bit。这个 render pass continue bit 什么意思呢？就是说这个命令缓冲是一个二级缓冲，就是 secondary command buffer，那么它是位于一个 render pass 当中。什么意思呢？就是说我们说了，你看 begin render pass， end render pass，对吧？这个是由主命令来发起的，那里面绑定各式各样的数据，就可以用子命令了。
+
+什么意思呢？我只要 begin 这段 pass 之后我可以开一个 while 循环，这边可以这样做，大家再写一写。OK，我们把它写成这种线性的。好，这边好，我们写成线性的，我们可以看到说从 begin 开始做了一些指令，然后这边又录制了 render pass，那么在这里面就会变成这个样子，我们可以写个while，比如说 while n 小于 object number。那么里面每一个 object 词第 i 个，然后叫做，比如说 record command，在这录制 command 好把它封起来。
+
+那么像这一段就是在给每一个 object 它的二级子命令，在录制命令，那么也就是说你看我们位于这一个 render pass 什么之间，对吧？然后给这一堆命令，给这一堆 object 它的一堆二级 command buffer 给它填充命令了，就是这意思啊。所以说这是个命令缓冲是二级的，那么位于一个 render pass 当中，这样子在中间他们可以绑定各种数据。也可以调每一个object，可以调自己的 do 命令，这样子。
+
+好，第三个命令，第三个参数，这个叫做 simultaneous use bit。什么意思呢？这个是说命令已经被提交了，那么执行期间可以再次提交，也就是说我们这个 command buffer 被录制完了之后，已经被什么 submit 出去了，被提交出去了就 work 开始执行了。理论上讲的这个命令没有执行完之前是不能被二次提交的，但是如果你加上这个给到这个 flag 上，就说明它是可以被再次提交的。
+
+好，那么我们看一看下一个参数，这个家伙是干嘛的？应该这么说，如果本命令缓冲是二级子命令二级缓冲。那么这个结构体记录了它所属的主命令这个信息，或者说主命令的继承信息，就是说它可以从主命令那继承一些东西过来，可以继承什么呢？你看比如说它继承一下renderpass，继承一下shaderpass，对吧？继承一下 Freepass 等等都可以从上面继承下来这个意思。
+
+所以说我们构建一个主命令队列，主命令缓冲，比如说 begin 一个主命令，然后这里面的每一个子命令我们都可以给它传入这么一个结构体，因为我们当前这个类它是既兼容主命令又兼容子命令一种方式，所以说我们写成这样子，OK，那么这是begin，那么接下来我们要写一个函数，这个begin。
+
+render pass。OK，给它传入怎样的参数呢？首先肯定要有一个 we k render pass， render pass 叫 begin infer render pass， begin infer。好，那么这个 begin infer，嗯，等一下，ok，这个 i 要大写。好，那么这个 begin infer 是干嘛的？它其实就是我们在开启这个 render pass 之前要设置很多的信息来告知队列设置什么信息，就是我要用哪个 render pass 做到哪个 frame buffer 上它 render 的 area 是多少等等这些信息吧。它要给它填充好，然后给过来。
+
+那么还有一个参数是什么呢？叫做vksubpasscontent，这个东西我们叫const，叫做subpasscontent，那么我们给它一个默认参数叫vksubpass，看一下 vksubpass 这点， vksubpass 叫做 contentsinline 这样子的参数。
+
+OK，那么我们解释一下在 rendepass 这到底这个参数有什么用处啊？其实刚才那个 rendepassinfer 已经给大家说清楚了，就是在设置一些 rendepass 相关的内容，对吧？那这个 rendepasscontent 它有几种可能？它有如下可能。
+
+第一种可能就是我们刚才填的默认参数 contents in line，这种 in line 的话它是什么意思啊？就说渲染指令会被记录在主指令，冲统一下就叫命令缓冲吧。命令缓冲？那么什么意思呢？就是本命令缓冲肯定就是命令缓冲了，诶，主，OK，第二种可能是什么呢？第二种可能叫做这个 secondary command buffers，也就是说渲染指令放在了二级指令缓冲当中这么个意思。OK，那么适用于什么呢？主命令缓冲调用换行调用 begin render pass 的时候，且就这个，且使用了二级这个命令缓冲情况下使用。也就是说我们现在这个对象如果是一个什么，如果是一个主命令队列，就是这家伙主命令队列，这个主命令队列它调用了 begin render pass，然后在这个 while 循环当中会有很多的子命令被记录，对吧？然后在最后这个子命令会被记录，会被还给谁写入到这个主命令队列当中，主命令缓冲当中，那么如果是这种情况，且渲染都是每一个子命令缓冲自己去记录的。
+
+就这种情况下我们就要用这种了，就是 secondary command buffers，就是这个渲染的内容是在 secondary command buffer 里面，不在我这个主 buffer 里面的，就告诉这个 work 这种情况，OK，好，那么这两个比较麻烦的函数，我们解释完了就解释点轻松的，对不对？就是在这个 begin render pass 当中不是还做了一些指令，对吧？各种实际的数据绑定等等。我们现在就做一个 void add graphic pipeline，那么里面的参数就是 const VK pipeline，这个很简单，就是为本次render，就这两个之间，对吧？为本次渲染绑定一个，绑定什么呢？绑定一个pipeline，一种渲染方式的模板，对吧？后我们还要定义一个函数，就是说这个 draw 的话，我们肯定要给它一个参数。什么呢？ TD size t 叫什么？叫做诶？把这个 TD 去掉。OK，叫做vertexcount，就是我们要画多少个顶点，然后进去这是我们定的，都会在里面进行实现。OK，那么最后我们还可以写一个 end render pass，这个比较简单了。然后最后是 void end，整个指令的 end 结束啊。好，那么这就是我们关于指令的一个函数布局，那我们接下来要去实现它。
+

@@ -1,0 +1,90 @@
+04-06.Vulkan-交换链对象封装
+
+我们这节课呢，就开始先把swot ching框架搭起来，那么之前呢，我们讲到它的表面格式啊，关于swot ching还有很多信息啊，没有讲很多信息，没有讲那么我们会在做的过程当中啊，遇到哪块儿的设置，我们就讲那块儿的理论啊，首先。
+在这里，我们先添加一个文件，叫stop sheet点h。
+然后呢我们再为它做一个cpt实验。
+点cdp，然后呢，我们要把这个头啊拷贝过来。
+哎，这边然后glass swoop chain。
+public private.随后呢，我们要去到啊这里写它的构造函数。
+看它的机构swot键。
+然后呢？
+在这里啊，我们要加一个它的变量，但是在此之前，我们要把它给引入进来啊，这边引入进来。
+零下之后呢啊，这边我再重新写吧。
+include vulkan draper下的缩水啊，引进来，然后呢，在我们的synthetic list里面啊，我们要生成一下缓存。
+最后就到这儿，我们再试一下，那么关于stop chain里边儿呢？
+我们最终要生成的那个目标为vk swop chain HR，这个MS wop chain。
+给它初始化一下v可以拿OP撇啊，拿这个handle啊。
+随后啊，关羽生成，我们可能还需要一系列的变量，我们都需要哪些变量呢？
+第一个是需要。
+device，然后呢？
+我们还需要window，最后呢？
+我们还需要一个window surface啊，我们需要这个变量的参与才能把它给构建出来。
+这边儿我们把它记录下来吧，把我们一会儿要传入的变量啊，都以t点儿的形式记录下来device，然后是啊window。
+点儿呃window。
+然后window surface。
+surface这三者，我们都需要给它变空啊，防止自动指针错误。
+好，那么接下来呢，就需要把它们放到构造函数里面，那第一个是device。
+第二个是文斗。
+第三个是window surface。
+好，然后呢？
+我们要给它写一个对外的定义啊，这条定义。
+tr然后呃等于TD share ttr呃叫做sw chin。
+然后呢，一个生成函数啊sk撇r great。
+s dx share.for option，哎，put chain。
+在构造的时候呢，也需要把这几个变量啊给到它。
+然后把这个几个变量啊点进来device window和surface。
+好，随后呢，我们要去到。
+s option cpt里面。
+好的，实现name。
+来space好。
+wrapper第一个呢，是它的构造函数。
+然后我们要把它请参搞过来。
+好赋值。
+这都是很常规的操作啊。
+window surface.好OK，然后再把它的析构函数啊拿过来。
+ctrl，o kay，o kay，然后呢？
+我们在这里啊，就要把这个stop chain啊给干掉，先把它写上去啊，就是干掉这家伙啊，把它的资源释放掉。
+AK destroy tr destroys wot chin ghr这个它需要传输一个device啊，我们再按device。
+的get。
+OK，这个地方需要get一下device啊，然后看一下这个device这边有没有get接口？
+啊，我们这边并没有去写get的接口啊get接口补上。
+首先这二。
+所有get函数的话，我们经常会写一个这个东西啊，这东西是干嘛的？
+就是说你获取我的这个变量啊，调这个函数后面要写这个函数的话，它的返回值你不能把它忽略掉，那么返回一个什么呢？
+返回一个week device对吧？
+就是这俩逻辑设备啊，我们可以写成auto看device。
+const return还有device。
+我们顺便也把其他的写了吧，我们也把关于这个physical device也写了啊on discard。
+auto get a zip device.count record and physical device好，然后我们继续去到s里面啊，把它吸过掉啊，这个地方。
+device get device.第二个参数是slop chin啊m slop chin就要吸掉的那个，最后只能改用默认的适配器啊，然后呢，我们也把device等等给在这里啊，释放掉window。
+reset window surface.哎surface。
+reset好OK，这样的话stop chain啊，这个的架子我们就打好了啊，架子打好了，那么接下来我们要去到device里面啊，在这里面的话呢，我们要为啊这个stop chain来打开我们需要的这个扩展。
+啊，这个扩展的话，放到一个数组里面叫const。
+看样子还行。
+叫做device require extensions。
+关于啊，这个串列的扩展名字叫vk k HR诶，我们现在找这个呃分号注上啊，叫vk k HR swap chain extension name是这个东西。
+这个东西OK，那么我们再去到device里面啊，device里面我们在这儿生成这个逻辑device的时候呢，原来我们是把这个变变成零的啊，现在我们不能是零了，是那个数组。
+到这个。
+32t。
+然后呢？
+这边是叫做device required extensions size这么多个扩展，然后呢？
+device create infer的p。
+t啊，enable extensions这个等于device required extensions the data好，这样打开这个扩展啊。
+好嘞，那么接下来我们再看一看，在application里面啊，在这里啊，我们还要去把它加上，把sop chin加上啊l pars wo pch in。
+ptr.ptr m swap chain啊，然后now ptr好，然后呢，再回到innate lock里面啊，在这里呢，我们要把swap shane给innate出来怎么办呢？
+m swap shane。
+等于等于wrapper，然后swot chain create常用参数第一个device m device第二个window m第三个是surface m surface。
+好，这样的话swotch就生成了，最终在clean up里面，我们要把swotch啊，怎么也要放进去，对吧？
+swotch它的消亡一定要在d max的前面，对吧？
+一定要在d max前面，所以swotch。
+比赛。
+为什么呀？
+因为supp ion是由device来生成的啊，好，那么这边的话，关于supp ion再看一下，应该没问题了啊，supp ion这边呢，因为我们还没有生成啊，所以说这个东西是空啊，我们这边最好也做一件事啊。
+这样子，如果I'm so chain是不等于vk null函导的情况下啊，我们才会把它给干掉。
+好好。
+哎，出现了异常，看一下okay啊，我们看一看，把它清理一下啊，与我们之前的问题很像啊，清理。
+然后再生成。
+啊OK，那没问题了啊，可能之前这套代码又被我写过几次啊，老师原来遗留的一些编译的选项还没还还存在编译的，你没有被智能选项存在OK，现在没有了啊，那我关掉好没问题。
+那么，从下节课开始呢？
+我们就开始要去啊，搜狐视频来做设置了。
+

@@ -1,0 +1,179 @@
+04-03.Vulkan-Surface概念与封装
+
+叫做window点h啊好。
+然后呢？
+我们再添加一个。
+window点CP。
+OK，然后我们还是把这个命名空间啊，跟这个头给拿过来一下。
+OK，这样的话呢，我们把专门把window啊独立成我们一个包装类啊，对于我们这样的一个表的一个record项目来讲还是非常健康的啊，这样的话在外面饮用就非常方便，也比较统一风格啊class。
+window public private.这边应该有个window的构造，有个window的呃虚构。
+OK，同样啊，这边我们也写上using ptr=STD 12。
+然后window。
+诶，然后。
+thirty ttr,great.这看呃scd make shared。
+window,okay.然后呢，像这个window里面我们要存哪些东西呢？
+首先要存的它的宽度对吧？
+然后乘它的长度给这两个家伙呢，分别初始化一下。
+好，然后我们还需要存一个什么呀，我们就要把application里面的这个这个打法给它存到这里面去啊window放到这OK？
+然后呢？
+我们把先把window这个头文件啊，先引到application里面啊，这样的话呢，就是能够让它提前加入到这个c mic编译链条。
+okay,mapper window.然后呢？
+我们重新啊分享simic。
+好之后的话呢，我们要开始想想啊，我们这家伙的话，他到底有多少种接口啊？
+我们看一下ENT py到底做了什么？
+这里面有这一堆ENT的相关的东西啊，然后呢，这边还有它的一个门loop也用到了这个。
+呃，clean up的时候，这边也用到了这个window啊，也用到了window好，那我们在这里面啊，也做几个接口吧，第一个接口应该是enate呃，叫做也不用enate了啊。
+我们直接把盈利法装到这个window的构造函数里面，然后像window的构造函数啊，它应该拿到什么呢？
+我们看一下这边是不是应该有它的长和宽对吧，所以说在window构造的时候，这边我们要加上。
+长宽。
+啊，好，那么这样的话呢？
+同样的参数啊，我们要把它放到这里面。
+也给到这个pre函数。
+好，这样的话，这边就完毕了嗯，接下来呢，我们还需要给那个窗口构建啊，构建什么呢？
+它的循环时候的一个强函数啊，就是在这里。
+这里的窗口做乱的时候，进入门路啊，门路里面呢，会不停的去检查它是否竖的close是吧，那并且它也做这么一件事啊，如果不用close，那么就需要破尔因子。
+它这边void啊，应该是布尔should close。
+然后呢，包一点破。
+啊，一个pro就可以了，或者我们明确一点吧pro event。
+OK，那么我们先实现一下这个啊类的东西啊，然后同样把它call一下，去到CP ding lu de window诶。
+运行空间首先是它的构造函数window。
+把它的签名抄过来。
+诶，然后我们去到application里面啊，把这个in it window里面的东西都拿过来。
+哦，所以好，我们在这里去做int啊，然后在这里呢，又给它设置啊，但是这里就不一样了啊，这就不一样了，那我们先在这里啊，做一下它的接纳window的位置。
+宽度等于它的hate，等于它的hate。
+好拿到之后呢，我们直接用啊，已经拿到的这个值来给它做初始化。
+OK，那么这个含这个window的初始化就没问题了啊，那接下来我们实现一下它的机构。
+在WINDOWS死亡的时候会会怎么做呀？
+会这样做对吧啊？
+会跳出循环之后啊，就去就去destroy了啊，就去destroy了，所以说呢呃，我们在这边把这两个啊拿过来。
+用一下很抖。
+好，我们也考察一下啊，思考一看这个变量没问题吧？
+没问题啊okay？
+那我们也思考一下，到底是不是某个事？
+进到application。
+在clean up的时候呢，肯定我们在这边啊，也要做一个实例，对吧？
+也要做一个window的实例，比如说在这啊，我们也是在wrapper。
+然后window ptr对吧？
+m window。
+now点。
+好，那么在这做了这个实例之后呢？
+我们要看一看啊，这边是否是啊合理的诶，这边为什么？
+哦OK，那名字重复了啊，没办法，先重复着吧。
+我们在这边呢，肯定是先做reset，再做这个reset啊，最后我们再做window的reset，对吧？
+应该没有问题好。
+那么，再回到我们window编写，我们做好创建，做好它的结构，我们再继续布尔数。
+等等，should close。
+诶，我们返回什么呀？
+是不是直接返回这样一个函数对吧？
+诶，拷贝过来，这个温度。
+OK，直接返回啊，这个竖的，然后呢？
+还有一个end of or events。
+同样啊，把它抛过来。
+这边有一个。
+在循环当中啊，这里。
+window OK power events啊，那这样的话，这个window就累了，就暂时先生成了，对吧啊，以后需要什么接口，我们早上补。
+呃，那么接下来呢？
+我们就去application里面去生成它啊？
+application里面呢？
+上面有个innit window，有个innit welcome啊，那么innit window里面我们就直接把它生成吧。
+这里mn。
+等于SD啊，等于wrapper。
+window create传进去，它的宽度高度。
+好，然后这样一个window就可以生成了，什么时候呢？
+我们再去到这个啊well。
+这里就不用这么写了。
+有改动。
+window，然后should close是吧？
+只有不close的时候才会去做事件分发和window。
+for events OK，最后呢？
+这两步啊，我们就最后一步去把它window给reset。
+OK，都是三。
+检查一下，再把多余的这家伙给干掉。
+呃，干掉好应该就没有什么问题了啊，我们还是清理一下。
+唉，可以啊，然后最关键的我们关闭啊，看一下唉，也没有问题了啊，说明我们这个window啊成功的剥离出来了，大家看这样是不是很整齐啊，非常整齐好那么呃，这节课呢，我们在第二个目标啊，我们第二个目标，第二个目标就是做我们那个windows face啊，什么是windows surface各位？
+啊window surface呢，其实就是与这个vulkan的instance，啊vulkan的instance就这家伙啊，与我们的窗口window啊之间的一个桥梁，对吧？
+你从vulkan里渲染出来东西呢，然后你要放到是不是要放到这个window啊？
+放到window上去显示。
+那这个过程就是由WINDOWS surface来做的，WINDOWS surface的创建啊，其实非常的简单，那其实非常的简单，所以在这里呢，就给大家直接把它分成一个类啊，但是我们还是要把它封装出来的，在这边我们写一个。
+叫window surface。
+它点h。
+那我们再做一个window surface点cpp啊，然后同样把它该拷过来的东西拷过来。
+OK，那么这个a叫什么名？
+叫glass window？
+surface高德函数。
+对虚构。
+然后我们要装上我们的智能指针，对吧？
+using。
+等于c12。
+okay，没有提示啊，还是要把它纳入到我们编译链条啊application。
+open vapor呃叫window surface，先把它纳进来，纳进来之后呢，我们还是要把缓存开始出来啊。
+好，回来。
+到这using ptr=sdd shared诶。
+share我们出不来提示啊。
+编译一下啊，编译也没有问题啊，看来还是没有给我识别到啊window surface OK？
+然后呢？
+这边就是window surface great。
+然后这边我们先去掉啊，参数我们一会再考虑make shared window surface。
+OK啊，把这个形式先把它架起来啊，咱们看一下要添加一个什么样的变量啊，我们都知道在这里面呢，我们要加一个surface对吧，它是年纪了啊，再重复一遍年纪跟窗口之间的这么个东西啊，就这么去理解就可以了，它叫vk。
+surface v surface叫呃k HR，我们用这个扩展到k HR那m surface。
+o的东西到底怎么样呢？
+稍微可以拿哦走。
+好看一下啊，好能能引用过来啊，没问题，好那么我们接下来的目标啊，就是要生成这么个东西，对吧？
+所以说呢no surface的构造函数里面，我们就去做啊no surface的构造函数，那么它这样一个东西create它的话呢，需要哪些东西呢啊？
+一个是需要啊，一个instance啊。
+所以我们把insert也拿过来。
+instance.然后第二个需要window。
+好，那么在这边传入两个参数啊，一个是instance ptr instance第二个的话是window ptr window。
+然后呢？
+同样啊，这个参数啊，因为我们毕竟是连接这两家伙嘛，对吧？
+所以说呢，创建这个service，我只要把这两家伙都拿进来啊great好instance放过来。
+豌豆翻过来好嘞OK吗？
+OK好，我们接下来知道实线啊到这。
+看过来include呃叫做window surface哎，window surface。
+ho kay进进去它的这个构造函数window。
+surface window surface，把签名复制过来。
+好，然后它的window surface。
+window surface.好，基本上就这点东西啊，然后在这边啊，我们直接去生成就好了啊，如然后在这边直接调啊glfw的这样一个库函数去生成这样一个surface，因为surface呢，它是需要跨平台调用的啊，也就是说它是平台相关呃，如果你是linux，你有一套API，如果你是WINDOWS，有一套API。
+但是glfw好在哪儿呢？
+就是在于啊，帮我们统一了这两边儿啊，所以说呢，直接调一个函数就可以了glfw呃create。
+window surface第一个参数什么是instance啊？
+instance get instance OK？
+第二个参数window啊window我们要get这个window，但是我们封装的这个window类还没有写什么，还没有写window函数对吧？
+OK，那么我们直接auto at window。
+return点window。
+auto自动推断就可以了，然后no discard。
+好，那么我们再去到啊window surface把这边啊文本也直接调啊改文本。
+然后第三个参数allocator，那我PR用它的默认的内存分配器，最后一个是surface m surface OK？
+但是这个需要传一个什么引用啊，长指针就说白了，然后呢，让它当它不等于vk success的话，那么我们就要哎跑异常了。
+throw.一个SD runtime l。
+叫做failed to surface好嘞，那surface直接就能构就能就能构造出来了，那么在它析构的时候啊，这个地方也需要注意啊，这个地方呢，需要用gsw。
+destroy window，哎。
+这个叫叫做我看一下啊，它叫做什么来着？
+就是归它叫做v kd is周一呃Roy叫win。
+surface surface k12这个函数啊，它的第一个参数in sense啊呦，第一个参数是in sense怎么办啊？
+我们还要把它缓存下来啊，把把它缓存。
+就是说在这边呃instance的p trm instance。
+now皮条。
+然后换一下，我们看一下它有没有别的参数需求啊？
+需要一个instance，需要一个surface啊，就可以了。
+好，那我们只需要缓存instance下来就可以了啊，所以min stance。
+等于instance智能指针啊，用起来非常复杂，然后在这边我们直接啊instance。
+get in s第二个呢，就是surface啊m surface第三个就是分配器默认的好，那么这个surface我们也完成了啊surface也完成了好嘞。
+然后我们去到application里面啊，这边把surface给申请出来啊wrapper。
+surface ptr m surface now.然后呢，在in it talk en的时候啊，在in it talk en应该是说在它的device之前，我们插一下它的正叫做m surface。
+等于wrapper instance great。
+需要传入一个啊，因为错说写错了，应该是wrapper window surface。
+create这边的参数是am instance和window啊am window。
+OK，这样的话surface也能够成型了啊，但是在它这个反向去做delete的时候啊，在instance之前就要把surface干掉啊。
+set啊，为了养成良好的对称习惯啊，我们也去到surface的这样一个机构里面啊，surface的机构里面顺道把这个instance。
+来set一下，虽然它自己吸够的时候就能去是吧，但是这样写比较严谨。
+okay那么我们。
+到这里就做完了surface啊，我们现在总共有这么多变量了啊，把我们的生成全部清理。
+折腾好都生成了啊，关掉诶关掉的时候呢？
+在这里啊，你发了异常，我们也检查一下。
+啊OK，错误在这里啊，错误在这里呃，应该是先去啊，应该是先去把它做delete再去啊，再去做这个OK，再去做这个。
+这边啊，应该把这两句反过来，先这样再这样是吧，那否则的话，这个它自己存的in s智能指针都已经被reset掉了，就没有了OK再来一遍。
+然后关闭啊，这流程就比较顺畅好，那么这节课的东西呢，我们主要做两点事啊，第一个的话就是把window给封装成了这么一个window的类啊，同学们拿到代码也可以看一下，然后呢，我们把这个window surface给做出来了，也封装成了一个surface类啊。
+那么，统一的这两个东西都会被丢到这个application里面，丢到application里面OK？
+那这节课先到这里。
+

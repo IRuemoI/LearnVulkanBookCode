@@ -1,0 +1,167 @@
+10-06.Vulkan-Image对象构建测试
+
+好经历了万水千山，我们终于把image这个类给它写了，那我们就要去读入一张图片了，那么在读入图片的时候呢，我们要考虑啊，用哪个读入图片的库，我们现在选择的是叫做stp image，就是这个文件啊，这个文件。
+那么这边的话呢，可能大家看不清楚啊，其实是这样的啊，在这个welcome learning里面呢，这边啊，我们有这个工程项目是吧？
+lesson是里面展的三个人，然后在这里面呢，我们呃做了这么一个FTP image。
+FB妹纸啊，它是在这个比较好用的，一个非常轻量级的一个图录图图片读入库啊，它只有一个头文件，所以说很好用，我们把它的头文件给它放这就好了，大家可以去下载。
+当然也可以拿到源代码之后直接使用啊，然后呢，我们在这儿建了个文件夹access，就是我们的资源，然后这边呢，我们放了一张图片，就是盖伦包啊，这个小悟空啊，那么我们一会儿就要读入这张图片，然后来生成文理了，好OK背景给大家介绍完毕啊，我们现在要去到这个application里面。
+那这里面的话，我们首先要干嘛呀？
+生成一张图片对吧？
+图片与纹理啊，我们写到这里好，我们看一下呃，有进来吗？
+呃image已经进来了啊，好image ptr那么image叫做culture。
+那么这边我们给它挠一下。
+啊，这边应该是wrapper。
+好，那么接下来我们要做一个函数啊，就是去create这个actual。
+在这边呢，void create texture。
+好，我们就给它表现出来。
+word application free tector.首先呢，我们规定一下text的路径啊。
+d pass那这边呢？
+我们写的在application这个比较随意啊，没有做任何的架构啊，这边如果大家写引擎的话呢，要设计一下啊，不是这么难对吧？
+好，那么它的路径是这样的access。
+下面的呃dragon ball是吧？
+叫什么名字啊？
+我看看啊，叫dragon ball啊，日语叫达拉宫啊，达拉宫暴露点j pack。
+好，然后呢？
+我们就要对它进行读入了，此时我们调用的就是这个stp image的东西，所以我们要把它给引用进来。
+sdb image好导进来。
+回到这里，那么它读入的时候呢？
+其实API非常简单啊，叫s tbi，然后呢UC啊，这是它的数据力啊，那么星pixel。
+等于ststibi哎，稍等OK啊，在这个地方呢，还有一个问题啊，突然想到啊，在include这个头文件后啊，其实还不行啊，我们要加一个宏。
+这个红呢，就是让它的这个实现能够顺利的进行啊sdb叫做image implementation啊，只有有这个之后，那我们的函数啊，才能够正式的再到了这个函数的啊，这个表里面啊。
+好，那么我们继续啊。
+di x el=ST bas tbi，然后呢？
+叫做load。
+这里面有什么参数呢？
+我们看一看啊，它里面的参数有很多。
+filename xy还有这些东西啊，我们这样子，我们先在前面把它定义出来啊in texture的宽度，然后呢texture的高度以及texture的channels。
+啊China什么rgb a嘛，对吧？
+然后load load的话呢，先传入它的text AR pass。
+点c string，它的差声拿出来，然后是它的括呃，是它的我看一下宽度texture。
+宽，然后t高度。
+然后是它的text channels啊，text channels。
+随后的话呢，就是啊，我们要以咱的格式去读呢，我们这样s tbi rgb，然后阿尔法我们读GBA的数据出来了，好这个大家比较深究啊，因为这个只是一个小工具啊，想要喜欢去研究这个的同学可以去看一看啊。
+这个就不做对数了，这个API pixels如果说呃有问题的话，叫STD，我们叫throws TD run time error。
+error failed to read image data.好，然后如果我们呃运行成功的情况下，那么我们就需要把这个数据是不是要拷贝到什么呀？
+是要拷贝到我们的呃这个。
+二二里面的啊，可能二二里面的，那么在此之前我们就需要去建立一张图片，对吧？
+那么图片就是m texture诶，你这个图片声明的是什么名字来着？
+嗯，这个地方啊，我们应该写成m text。
+OK m cache应该等于啊，叫做image wwrapper。
+image create好，首先是device m，device安排上，然后是它的宽度啊，宽度就是tacker宽度，然后tacker高度。
+然后我们就format啊，这个format我们用什么format来做呢？
+我们叫vk format叫image format r哎，image format image format。
+嗯，全称名字叫什么来着？
+叫做vk format对format二八grg。
+BA，然后我们是要做一个什么呢？
+我们做一个s number，因为我们读的是一个普通图片嘛，就是它的这个这个我们要把它变成一个呃s rgb啊，然后呢接下来的参数，我们把它再归整一下。
+加的参数可不少啊，对吧？
+对，等一下吧。
+诶，没错。
+接下来的参数是它的image的type啊，这image type是什么来着？
+大家复习一下啊，看看image的type是用于啊，用于干嘛的呢？
+image type诶，是给这来填写的对吧？
+它是一个2b啊，是一个2b，所以说叫做。
+vk image type 2d是吧？
+是一个普通大力学文理啊，2d平面文理，然后是它的tiling啊，这个tiling的话呢，我们给它什么呢？
+因为这张图片是不是啊？
+它毕竟是被那点读取的啊，并不是说用于在我们客户端去做，就是local端去做各种操作的啊CPU，不需要管它OK，那么我们就需要把它定成vk image howling的。
+optimal啊，优化格式的tiling，那tiling是什么来着？
+是一行一行的刷过去，这样去存储还是按块儿存储对吧？
+OK，接下来我们看一下是它的usage，那么这张图片有什么用处呢？
+首先它是一个vk image usage。
+transfer the desk是不是它是一个要被复制上去的图片？
+为什么我们是一个sting buffer？
+对吧？
+sting buffer肯定是要向这个dest去复制的啊，所以说它作为一个接收点，需要是dest。
+那么还有一个就是vk image usage什么东西呢？
+叫做sample fit，就是说它要作为一个纹理被采样器去采样啊好。
+接下来我们再看properties啊，这个properties就很明显了嘛，对吧？
+那是因为可以memory property叫做device local bit啊，这写错了啊。
+算谁写吧device local bit，它是只在gpu端被使用啊，而并不是说在CPU端去访问它诶，我们看一下是不是出错了？
+啊vk image property哎，proper vk image哦，vk memory。
+property.叫做device local bit啊，okay，这样子没问题啊。
+property memory，然后接下来就是说啊，它的参数看一下啊，除了这个之外，那么usage，然后是它的三炮vk 3炮。
+呃count我们是一个bit啊好。
+我们来看一下这边出问题了哦，它说与flex啊这边的问题是什么呀？
+嗯okay，这边可能写反了，我们看一下啊。
+声明呃，它要首先它要领usage啊，然后先是sample再是property啊，先是sample再是property，所以说我们写反了啊，这样子写就可以了，好那么在。
+这个。
+看一下在property之后是什么aspect fact是吧？
+用于做image view的，那么在这边vk image aspect，我们是colour be at好第二个这个image就创建完毕了，创建完毕之后呢，我们要对它进行什么？
+是不是先进行一次格式的转换是吧？
+进行格式转换啊texture叫做set image layout OK，那么我们的最新的layout应该是一个vk image。
+layout呃transfer它是一个desk optimal是吧transfer desk optimal啊这么一个量就是说我接下来要向这张图片传入数据了所以说你是一个desk optimal。
+然后呢，接下来我们要看一看啊，这个source stage mask啊，那么source stage的话就是vk pipeline stage，那么transfer bit。
+那么，desk stage mask呢？
+我们仍然是一个这个啊，仍然是一个这个好，我们来把这个规整一下啊，字体太大，为了方便同学能够看得清啊，这个规整一下吧。
+好，下一个参数啊vk image subrange啊sub range subrange okay，那么我们这个写这啊vk vk哎vk image。
+sub resource OK，加一个sub resource origin啊，这个sub resource呢，我们怎么写看一下？
+它的aspect=vk image，car image aspect，color bit。
+它的呃every layer那么every layer应该是什么呢？
+呃okay，我这不应该是every layer every layer的话是指定的一个应该说它的。
+诶，这里啊，这里不对啊，这里不对，这里我们这边声明是错啊，不是这样一个东西，是不是也可以image呃resource range这个东西啊？
+然后regent OK，这就没问题了base=0 regent。
+layer count那是一。
+okay，然后呢？
+它的。
+base mip level是零。
+我们看一下需要填写什么东西啊？
+level OK，那么它还有一个level count啊，等于一这两个互为一组对吧？
+这个是layer的描述，这个是用描述啊。
+好，这个region的话，我们看一下需要填写什么？
+不需要填写什么了啊？
+这个region直接传进去。
+还有什么东西，还有一个command poor啊，I'm command poor直接传就好了OK这样的话呢image layout就被转换成了一个transfer desk这么一个格式啊，转换为之后呢，我们接下来干什么texture？
+要做的是非要里面这地方的。
+fill image data，然后这边是size，size怎么算呀？
+我们提前算好吧，在这边啊。
+加一个变量叫做呃text size。
+然后我们在这边啊，把它放上去text size它等于我们读出来的text宽度乘以text高度。
+好再乘以个四四字节码啊，32位啊，这样子，然后呢，我们把size给它搞进去，然后是需要什么呀，是需要一个data data的话呢，就是我们上面的这个对吧，它这边我们把我的形强转一下。
+然后呢？
+data是pixels。
+接下来是哪是come on d poor啊？
+一个come on d poor的要求，come on d poor搞进去好，这样的话呢，这个data已经被放进去了啊，file image data通过stage buffer作为桥接，然后存texture上面啊好，然后呢，我们把它的格式给它转回来啊，转成什么呢，转成一个用的格式啊。
+set image layout.OK，那么new layout，new layout。
+应该是可以可以。
+image layout叫做shared readonly optimal啊，这样一个格式，这样一个layout啊，第二个的话呢，是它的这个。
+stage啊，这个stage的话，我们仍然使用transfer stage就好诶，错transfer stage呃，大家问啊，就是说呃，你这边为什么是transfer stage？
+为什么不是那个color attachment output那边啊？
+是这样子啊，我们现在啊，这个指令它根本就没有去be gainer pass是吧？
+那所以说呢，我们是直接走的这个transfer，当然在之前讲理论的时候啊，我们画了一张图啊，关于stage的一张图，各种阶段，那么我们走的呢，就是说它的这种transfer state的阶段啊。
+好，接下来我们再看还需要什么呢？
+还又需要一个range啊we can re original region的话，我们这边延用点就好了。
+然后come on the pool。
+好，这样的话呢，这张图片就完成了啊，这样text我们就做出来了，然后我们把pre texter把它放到哪呢？
+放到我们的这个呃，放到我们的innate broken里面啊。
+这边great texture。
+好，我们先跑起来看一下有没有什么办法把它更改一下？
+诶，不对是吧，非要to read image data啊，原因很简单，我们去到。
+我先压这边啊，我们把这个access给它拷到out viewed，然后这个执行目录下面把它拷进来，好拷进来之后呢，才这个out下面才能够读取啊，就跟我们那个文件是一样的。
+重新回家。
+好看到v报了个错误OK，这个错误大家可能看不清啊，我跟大家说一下啊，很有意思，一个错误啊，我们边做边学啊，你看他说呀，这个image barrier它有一个desk assess啊，就是那个目标的那个依赖操作啊，他说它不能作为transfer beat这么一个stage的一个。
+呃，一个操作啊，为什么呢？
+我们看一看，这是一个呃，我们犯了一个错误啊，这老师犯了一个错误啊，这边。
+看呃，我们是这么做的啊。
+我们在做cricket的时候。
+我们写了一个地方啊，是呃，这个这个是什么set image layout我们说呀，咱把它转换成一个shared readonly optimal对吧？
+变成一个shared readonly optimal，但是我们的目标依赖啊是。
+是transfer bit，我们看一下会发什么哈，大家记得这个参数啊。
+你看如果说你的目标是把它转换成shield on read，only的话呢，它就会说呀，你如果想把它转换成这个layout，那么请在你的目标state这个操作等待。
+但是我们的目标stage是transfer bit transfer这一个操作stage啊，它其中是没有shift read bit这个操作的啊，所以说就错了，那么我们应该做出什么呢？
+我们先把它停一下啊。
+我们应该把它做成啊。
+这边应该变成了vk pipeline stage叫做。
+诶，这边小小vk应该叫做vk pipeline stage啊，这边是叫做fragment。
+啊fragment shader bit你这样的话，这个阶段才含有才含有啊，这个read bit这么操作，它还有读取的这么一个操作。
+那么有同学就问啊，你现在这个肩没有begin和end，那么你你看你为什么会有这个呢啊？
+我们虽然没有begin和end render pass啊，没有begin和end render pass，但是呢，它这个管线哈会流过这个虚拟的阶段啊，会流过这个阶段的。
+并不是说它只留过transport这个阶段啊，它会把这一系列阶段都留过去，但是呢啊，它不会产生任何的错误而已。
+OK，那么我们再看一看啊，执行一下还有什么错误？
+诶，又来了个新的错误啊，我们看一下诶，还是这么说啊，这么说的话，我们呃，我们来把它我们看一还还是该该比它我们我们再把它清理一下，看一看啊。
+全部清理，如果还有一个错误，还有一个错误的话呢，那就说明是一个逻辑问题了，我们看一下。
+诶，还有这个错误啊，那看来就是一个逻辑问题了，好，我查一查OK啊，各位同学啊，刚才看了一下啊，呃，犯了一个很愚蠢的错误，这边啊，我们这边buff command buffer transfer应该是layout啊，在这个。
+在里面这两个函数里面啊，我们去之前不小心手动把这个呃stage给它填写了，这边儿的话呢，我们应该用传进来的so stage mask，这边儿是传进来的，看一下是不是啊source和stage OK和desk stage mask，这样子才对啊，把参数要传到里面去啊。
+这里大家重点注意，之前写错了啊，老师写错了OK，我们再跑一下，再寻找一下bug。
+好，看来没有问题了啊，关闭掉哎，也没有问题了，好，那么我们这节课就到这里啊，关于image呢，这个操作呀，有很多细节，经常会犯很多错误，大家在debug的时候也会增长相关的经验。
+

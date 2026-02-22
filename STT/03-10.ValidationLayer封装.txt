@@ -1,0 +1,180 @@
+03-10.Vulkan-ValidationLayer封装
+
+那么，这节课开始，我们继续来编辑validation链儿啊，那么关于这个的话呢？
+我们首先开启一下validation链儿所需要的扩展就是在get required extension里面啊，我们要加进去，对于validation链儿的支持叫做extensions。
+push back.这个v的叫什么名字呢？
+叫做vk debug嗯vk ext debug utuls extension name OK？
+这样的话呢，我们就可以把validation layer给开启了啊，那么接下来呢，我们要做一件事啊，就是要编写一下validation layer所需要的什么，所需要的回调函数啊，结合我们前节课啊，前节课所讲的这个validation layer的知识啊，都会在这个回到函数里面进行展示。
+呃，里面啊，首先我们打个标啊，回调叫做validation layer回调函数啊，在这里面的话呢，它的书写格式上啊，与我们平常函数有所区别，是这样的啊，大家先看start take。
+叫做位根API。
+attr，然后呢？
+vk布尔32，这是返回值，然后vk hi call，然后我们的名字叫做debug。
+call back.OK呃，那么在写参数之前先给大家解释一下这个东西啊，这个就是函数的这样一个呃，函数的属性啊，函数属性C加加里面经常用到的东西啊，那么但是呢，我们不经常用啊，因为我们不是写库的人啊，因为像这种函数属性来讲啊，往往它会规定很多的一个函数调用站的上面的一些细节啊。
+啊，包括说参数压占还是优压占啊等等OK呃，感兴趣的同学可以自己查一下啊，那接下来我看一下它这里面包含的参数啊，第一个叫做vk debug utos message message message。
+severity flags啊，severity flag beats在这。
+那么，叫做message severity，这什么意思呢？
+severity这个就是给大家之前讲的那个东西啊，就是说呢，我们的消息是分为级别的，它有的是普数类消息，有的是infer，有的是warning，有的是error，对吧？
+其实都是等级，就是由它来划归它来代表的。
+第二个是vk。
+等于bug details message type flag sext。
+OK，这个叫做message type，这个的话呢，顾名思义啊，消失类型，我们之前给大家讲过啊，这次不多赘述了，不熟悉的同学可以翻到上一节课啊，去看一下好。
+OK，接下来我们要传的是const vk debug utos messenger call back dat aexxt。
+p message data OK，那么这个结构里面啊，看一下vk消息，然后debug u tools啊message。
+OK，那么大家看这个vulkan的命名确实很长啊，但是也避免了歧义啊。
+最后一个属性啊是。
+星p user对。
+OK，我们看这个参数什么意思啊？
+这个参数其实呢，它就是我们这个回调函数里面所拿到的消息体本体啊，就是那个本体这里面有很多东西啊，我们都可以去用，包括说这个message啊，就这里面打印的这个message还有呢，就是它这个message啊，就本个error或者啊，它到底涉及到多少个object，每告知的是谁啊，都会放在这里面。
+OK，那我们接下来在这里做一下打印啊CD sell。
+那叫什么雷雷ation layer？
+然后呢？
+打印的是。
+p message data的这个p message。
+OK，最后我们看。
+force这个意思就是说不要去，就是说出现了这个回调之后啊，不要去中断掉这个函数的调用，不要去中断掉这个API的执行和调用。
+好哎，这个总感觉对不对啊？
+vk FALSE啊，没问题吧？
+没有被掉色，好奇怪好，那么接下来呢，我们就要去生成debug的这样一个主体的憨豆啊，主体的憨豆也就是主体的句柄。
+这个主体的句柄呢？
+我们把它声明到这样一个instance类的下方啊，放到这吧。
+我们去掉这个啊。
+这个主体名字叫做vk debug utils mason呃，这这儿，然后EX条，天呐，真的好长啊，然后m debug。
+对八个唉md八个好OK，那么接下来呢，我们就要去生成这家伙啊，就是跟大家讲过，首先呢，开启扩展，然后呢，写好这个回调函数，然后要把这一堆东西啊，都设置到这个第八个的身上啊，都设置到它里面去。
+然后呢？
+debug呢？
+且debug用inference去生成啊，它俩就挂钩了啊，它俩就挂钩了，是这么个意思，然后呢？
+它有一个函数啊，叫做void setup debugger。
+好，那我们接下来的目标。
+就是去实现这个set up第八个啊，然后并且去实现一下这个生成一下这个这个messenger好写到后面这里boy incense。
+再到第八个在这里呢，首先那我们要检查一下啊，做一下双重保险，如果amenable layer如果不行的话呢，就return它，对吧？
+诶，好。
+然后大家都知道，生成任何一个句柄，都要有一个与这个句柄相关的消息体，对吧？
+那这个消息体叫什么名字呢？
+叫vklebugutills messenger sender create create infer。
+ext这里啊，然后叫create infer。
+然后我们开始填充它啊，这个create infer，首先我们填充type就是告诉它，它是一个什么样的类型啊，就是说这一个create infer几的类型啊，这是我们的老规矩了啊vk。
+structure呃ure type呃叫做debug utils mya mason哎呀。
+没有提示了啊，真讨厌，我们也可以structure。
+type a bug.utills.没整。
+对create in foerc哇打完这一串真的是很不容易啊，感觉啊，你到西天取经了都然后create info看到呃message separating啊，就是说我到底要监听哪一些啊？
+什么warning也好，error也好呃，还是说监听info监听这个verbals啊都可能我们想。
+现在把它全系列都监听上，那也可以debug。
+notos message severity，你看这样就列出来很多吧，这边啊，这边都是你监听的内容啊，那我们从哪开始监听呢？
+比如说啊，我们从verbals开始verbals。
+然后呢？
+由于它们是未运算啊，我们接接下来把自己想监听的放在不停的大家和起来就行了啊，大家和起来，然后啊，同样vk第八个。
+utl s message severity，然后我们第二个要提供的是它的morning信息啊，morning信息。
+然后我们要进的就是error vk debug utils message severity and r，然后叫做error这个。
+好，那么接下来呢，我们就规定我们要监听的消息的类型啊，这个是消息级别对不对？
+大家都知道消息级别下面还有什么消息类型啊？
+create。
+infer呃，这叫message type，这家伙等于我们把它混合在这叫输出格啊，等于v kd bug。
+utils manage type genera啊就普通的然后呢，我们还有今天可以可以debug utils。
+message type呃，然后叫做。
+yl是这个那么把第二个也监听到啊，然后继续监听vk debug uq 4 message type。
+呃，这个名字叫做performance，关于这个性能上的，也把它给加上OK好，那么我们就监听上了所有的啊，在我们需要的type啊，然后呢，我们要规定create infer这一个。
+啊debug messenger，它的回调函数啊p user call back啊call back=debug callback诶。
+诶，然后呢？
+它的这个user infer啊，就是我们在这边。
+convex，它可以携带一个uer 1份啊，这边就不携带了。
+不等不加。
+好，然后我们东西可以调用啊create。
+哎，这个地方就又有问题了啊，因为呢，我们这个validation layers啊，就这个create这个messenger，大家都知道啊，我们填充完一个信息之后要调一个create函数去create这个messenger。
+但是create messenger的话呢，它需要调用的那个create函数呀，它并没有是属于那种预先加载的啊，也就是说你就是说现在在我们这，比如你读dll，你进来之后这个dll还没有加载啊，或者说压根这个dll就没有被读进来啊，这种感觉。
+也就是说，这个玩意儿的函数并没有并没有加载进来，我们要手动把它这么着加载进来啊，手动载进来，所以说我们还需要在这给出一个辅助函数啊，来看这个真的很麻烦啊，但是其实一切都是有章可循的是吧，在这边我们还要给出个辅助函数啊。
+这个辅助函数就是用来帮忙创建的啊，我们好不容易搞了这么一堆的这个呃infer，然后想用它来创建一个呃messenger，想用它来创建这个messenger的时候，我们发现找不到函数了啊，找不到创建它的函数了，我们找把它加载进来啊，加载进来。
+OK，这个辅助函数的写法是这样子啊vk result。
+我们返回一个vulkan的result啊，是成功还是失败了，然后这个函数叫做create OK，我们把它写作一个static。
+create debug utils messenger est啊，那我们输入什么呢？
+我们输入的是vk instance。
+instance.然后呢，再输入第二个参数啊，叫做const vk z bug utils messenger，然后create infer。
+ext行那么叫做infer，就刚才咱们填写的那一堆东西是吧？
+然后接下来呢，我们再说一个count v kl location。
+身呃call back sack。
+那么这个的话就是一个内存分配器啊PL，然后我们肯定这个时候传的时候就传空就好了啊，然后vk debug utils messenger，然后ext对吧？
+就是我们最终想要去生成的那个句柄啊，这个句柄呢，也全是指针进来的啊。
+debug messenger OK deb ug messenger没问题好，那么这个就是我们的辅助函数，在这个辅助函数里面啊，我们要尝试去加载真正的那个create这个debug messenger的函数啊，把它加载进来。
+所以说是这样做啊，auto funk我们要把这个函数拿到啊，funk等于什么呢？
+等于vk get instance block address。
+那么，从这个instance里面啊，我们要拿到拿到我们某一个函数的地址，从哪个instance里面传传进来？
+这个instance它里面。
+拿到这个函数vk crazy bug。
+utills然后mason这儿这个可不能打错啊ext这样一个函数的地址，我希望从啊这个instance到函数列表里面给我拿出来。
+并且把它转型成为啊，做一个转换转型成为pfn，然后vk great debug utills。
+messenger ext好的转型同学，我需要这个类型啊，我就需要这个类型对吧？
+OK，那接下来呢，我们判断一下，如果这个funk不等于呢OP tr的时候，我们这一步啊，其实已经把这个函数啊，通过instance给加载进来了啊，加载进来，如果我们成功的加载到函数的话呢，我们就调用它return。
+funk把这个instance对吧？
+把这个上面的列表在原封不动的给人抄过来啊p create infer，然后plkkk。
+这样t allocator，然后是debug message这。
+诶，发个message OK ay？
+两分不能超回来啊，那么如果它不行的话啊else。
+呃，这个。
+出现什么问题了？
+啊啊，这个没问题OK，然后return类k，如果不行的话，我们就返回一个error是吧？
+error extension not present I。
+咳咳。
+就是说呢，我们这个extension并没有被支持到啊OK，那么这个就是create的这个辅助函数啊，写了这么多，大家啊，一定不要忘记我们写这个东西的目的何在啊，我们的目的是什么？
+是创建这个messenger是吧？
+创建这家伙。
+创建这家伙的话呢，我们刚才写了这么一堆的创建这家伙用的信息体，这里就要真正开始调用，是不是？
+如果如果我们刚才这个函数create debug messenger details messenger啊，然后传入的是min stance。
+然后呢？
+第二个是我们的create infer啊，就刚才填的这个结构体，然后呢？
+内存特别细，我们用默认的那么最后的话呢，是我们的。
+m第八个啊，我们声明的就是程序变量，如果它调用完毕之后啊，不等于vk success的话，那么。
+这就出问题了是吧？
+没有声长的这种。
+sdd x3呃SD啊，叫做叫做这个runtime error。
+这边叫field two grade debug der。
+OK，这样的话理论上讲啊，就应该能生成了，那么这个set up第八个什么时候使用呢？
+在这啊，那么在这使用，如果enable了validation layer的话啊，那么就这样子好呃，那么我们把它们啊都放到instance的后面吧。
+在这边，我们生成了一次对吧？
+生成一次之后啊，我们在这边做set up。
+第八个这里做就好了，因为我们必须要有了in sense啊，才能在这里面去用这个in sense啊，才能用这个insense o kay set up第八个才能在这里啊，去用这个in sense。
+好，我们先跑一跑看看啊。
+啊，但实际上没有什么问题啊，说明诶，但是刚才说错了啊，大家看啊，我这里也给大家做一个，正好做一个演示啊，我这根线件怎么用看啊？
+现在没有什么问题，对吧？
+没有问题，这是要输出什么？
+但是当我关掉窗口的那一刹那诶，说第八个出现个error，看看什么error打出了一个error，他说。
+呃，前面就是一堆的信息啊，这个东西是吧？
+这样一个instance得巴我叫messenger就是我们刚才生成的那个东西，对吧？
+它has not been destroyed，就是它并没有被消灭掉啊，the vulcan spec says说all child of screetly you in instance must have been destroyed，prayer prayer就是说。
+你看啊呃，所有的啊，用这个in s啊，做出来的这样一个东西啊，必须被销毁啊，在我这个in s之前啊，因为什么呢你看？
+我们的这个messenger啊，就亏出来这个东西，这个第八个啊，这家伙是不是用这个生成的对吧，然后这个它是啊，它是在最后我们这样一个函数里面啊，这样一个机构里面吸掉了，对不对？
+吸掉了，但这个第八个是这家伙还没有被吸掉啊，所以说就出这个问题了啊。
+那么正好呢，连成这样，你看强大之处就在于它可以给你描述的非常的清楚啊，非常的清楚OK，那么下来啊，要把它给吸掉。
+大家知道要吸掉它也是很麻烦的，对不对？
+因为从你的这个创建上都能看出来啊，因为创建上的函数都需要这样的形式去把它这个函数加载进来，那么吸掉它啊，吸够掉它这个函数呢，仍然是需要啊，这样的方式去把它加载进来的，我们看一下啊。
+其实基本上都差不多static。
+void叫做destroy，destroy，destroy这个词没错啊，destroy debug utils messenger，然后ext啊。
+我们是要把这个把这个函数给从这个instance里面加载进来啊，它需要的参数是谁呢？
+首先是一个vk instance啊，直接拷过来，然后呢，它需要的是一个debug messenger，就是这家伙它也拿过来。
+啊，这时候呢？
+debug messenger就不用说这个新了啊，直接这样就好。
+然后呢？
+它需要一个分配器啊，分配器呃cater。
+好，就需要这个东西啊，然后在这边also funk，要把这个函数读进来是吧？
+这个函数的话叫做呃vk还是get呃instance？
+pro address，然后这边呢是m essence。
+然后我们要给它这个函数叫什么名字啊？
+搞定这个函数叫做。
+vk this troy destroy debug utos messenger ext啊，叫这个名字。
+okay，这个应该是这样诶。
+instance好，要叫这个名字啊，然后呢，接下来我们要执行啊，就是跟这差不多啊好。
+如果方程不会空，然后把这个方程去执行，对吧？
+去执行的话呢，肯定就不是这个参数了啊，人家的参数是是这个顺序的啊，先是instance。
+然后是debug，然后是le bug啊，然后是呃plk it。
+啊，好，这个地方就没有钥匙啊OK，然后这个地方还有问题啊，我的类型怎么着转化一下对吧？
+它叫bfn，然后vk ds周一abu gutos messenger OK？
+这样就完美了啊，没有问题了，那么我们在in sta的析构的时候啊，就要调用这个函数了，this draw a debug有QS点啊，把这个m debug给我干掉好，我们再试一下啊。
+诶md八个。
+好，还需要再传一个instance啊okay？
+minters好。
+然后然后再传一个now PR看一下是否正常，因此第八个啊，然后elevator啊，没有问题。
+好呃，干掉诶。
+end of he buffer我们来看一下啊，调试一下，看看有没有出错。
+destroy.好，然后关掉。
+如果不等于好啊return。
+这里没有问题，然后帅。
+呃，继续诶，好，那这个问题我们就在下节课看啊，我们看一看到底是出现了什么问题？
+

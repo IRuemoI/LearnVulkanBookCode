@@ -1,0 +1,127 @@
+06-06.Vulkan-FrameBuffer创建
+
+啊呃，这里呢，给大家更正一个bug啊，这个bug是这样的，在我们的呃pipeline里面啊，pipeline里面它的生成build的时候啊，这边有一个循环，这个循环呢，是用来设置data的，对吧？
+但是这个地方呢，有一个这么个地方啊，之前用错了啊，如果是按照这个调用方法的话呢，首先这个share对象啊，它就是一个呃引用，但这个一呢，它返回的这样一个entry point的string啊，是个临时的，这个临时对象呢，它的c stream那么更是个临时的，对吧？
+等于它之后呢，就会被出圈儿之后。
+吸够了啊，出圈儿就吸够了，所以在这个地方我们怎么做啊？
+get shared entry point，这点我们应该返回一个引用啊，返回一个引用，这样的话呢，它拿到的就是这个实例，它里面的这样一个啊stream，这样的话应该就问题不大了。
+看一下，这就没有了，对吧？
+好，那么我们这节课呢，给大家讲两个问题啊，我们看一下第一个问题是render pass里面要加入加入到pipeline里面啊，render pass要加到pipeline第二个呢，我们要为它生成frame buffer啊，生成frame buffer那么这个呢，一会我们来解释这个，我们先做啊。
+我们先去到pipeline里面，我们看修改一下它的构造函数啊，需要传入一个什么呢？
+传入1 pass，所以这边我们要给加入。
+round render pass那在这个地方count render pass ptr，然后render pass好，然后把变量记录在这里啊。
+呃，叫做render pass p trm render pass。
+now b点儿好，然后呢？
+我们就在这边开始做了啊，首先create函数，要把它修改掉啊，这边这样子，这边文档pass。
+第二个的话呢，就是我们要去掉它的构造函数，把这个参数给复制过去。
+在pipeline这边承接一下render pass=render pass好，然后在它build的时候啊，我们要给到它了，这个地方啊，用render pass。
+诶，用到是ramp ring点pass。
+get render pass啊，在这个地方呢，有一个函数啊，就这个函数，我们是新增的啊，这样。
+no第二的auto啊，get return这个值OK，那么这边的话呢，由于是值传递啊，这个不是指针，是值传递，我们就可以直接复制过来了，然后这边的sub pass呢，是零号，因为我们只有一个sub pass，对吧？
+所以这个答案是用于这个。
+render pass里面的这个saddle pass来渲染的对，然后我们去到application里面也给它补上参数啊，这个地方am render pass补上好，那么就健全了啊，我们跑下试一试先清理。
+好像。
+诶，看一下啊，很正常，然后关掉啊，也很正常啊，资源析构很正常，好在这里的话，顺便提一嘴啊，我们在application里面是不是有一个clean up函数对吧？
+大家看。
+这个肯定要函数啊，其实是比较多余的，为什么呢啊？
+因为啊，它主要来保证一个机构顺序啊，你看我们的render pass就没有写在这，如果要写的话呢，我们就在这啊，render pass。
+然后reset，但是呢，我们用的是智能指针，而且有依赖关系的对象之间都互相保存了智能指针，说它不但保存了一个rada pas的智能指针，而每一个这个对象都保存了device的智能指针，所以说呢，只有当这三个对象吸够的时候，它才会吸够掉，对吧？
+你自己从这吸够用，比如说我们拷到这来看一下啊。
+这样其实是啊完很不允许的啊，但是这样也没关系，因为我们毕竟在它们里面都保存了它智能指针的实例，对吧？
+来看一下。
+然后关掉诶，仍然是没有问题的啊，就是因为这个道理，我们现在恢复一下。
+好，关于这方面，大家也要好好思考一下啊C加加的智能指针还是很好用的，另外的话呢，我们进入第二个课题啊，就是frame buffer啊。
+就是在这里，我们之前学过啊，说render pass里面呢，需要加入attachment对吧？
+加入attachment，那么attachment就是一张画布，那么我们的画布在哪啊？
+我们的画布其实在这里啊swot swot chain里面。
+是由这个images和image views啊，那么这个是一个管理框架来管理这个option的images，那么我们造有血容管线进行渲染的时候，需要把这个家伙呀包装成一个frame buffer啊，变成一个帧啊，就一帧，那么这个frame buffer是干嘛的呢？
+我们边创建边。
+来观察它啊好，那我们首先做一个数组仍然是这样子。
+vector在sop chain里面加入vk frame buffer，所以真然后sop chain。
+呃frame buffers。
+好，仍然是创建n个分八份，那么我们从哪创建呢？
+我们看一看sub chain啊，复习一下。
+之前的话呢，我们创建的s1路走下来，然后创建了image link啊，在这个地方，那么接下来在这个地方，我们就延续下去啊，创建frame buffer。
+好，怎么创建呢？
+首先swap。
+frame buffer把它先给resize一下，resize成多少呢？
+resize成我们的m image是吧？
+有多少张图，然后我们做一个循环for in I。
+等于0I小于叫做m image count。
+加加I好在这里呢，我们要开始创建它们了，要开始创建frame buffer了，那么我们在这里啊，看一看frame buffer啊，其实是一个什么东西呢啊？
+frame buffer里面为一帧啊，为一帧的数据，什么数据呢？
+比如有n个。
+color attachment.一个depth。
+s attachment.那么啊，fringe buffer是说这些个东西的集合为一个fringe buffer啊？
+那么这些。
+诶，这些东西的集合。
+为一个frame buffer啊，那么这个frame buffer的话呢？
+送入管线啊，就会形成一个索引啊，就会形成不能说一个索引啊，就会形成一个嗯，怎么说呢，这个gpu的集合啊，那么这个集合呢是由？
+上方的attachments构成那这样的话呢，我们向管线内输送的时候啊，我们就不需要输送说啊，哪个是color，它指的哪个是depths了，对吧？
+我们就把这一股脑的包在一个服用buffer里面送进去就好了，是这样的。
+好，我们现在开始创建啊呃，我们首先创建一个数组s da。
+是个什么单位呢？
+是v可以imagine view给啊，它这个every多大呢？
+我们现在只有一张图，所以说我们只能是一对吧？
+attachments诶等于。
+把谁放进来呢？
+把m stop chain image views的第I个放进去啊，这样的话呢，由它自己来形成一个数组诶，这边怎么了？
+看一看。
+诶，不允许使用不完整的类型。
+OK，那看来就是我们这个没有定义啊，我们现在去到base把这个加进去啊，下面。
+叫做Eric好再回来。
+啊，不就可以了OK，那么我们接下来呢，就开始把用它啊来做一把粉，当然如果说你有深度缓存的testament，或者有n个卡，老师们的话，那么你就把它都塞到这么一个数组里面来就好了啊，一定要记住是按顺序塞什么顺序呢，是按照我们萨博帕斯的引用顺序啊，所以说各个类。
+之间就串起来了，对吧？
+关系就串起来了，首先vk frame buffer create infer。
+呃，叫做那个frame buffer great infer。
+指空，然后它的s type。
+等于vk structure type嗯，叫做k structure type frame buffer。
+呃，create infer这个。
+然后呢？
+我们要给它一个render pass唉，给它一个render pass对吧？
+那么这个render pass呢？
+就是说我被用在哪个render pass上，所以我们突然发现咦，这个地方不行对吧？
+我们必须要一个render pass才能创建它啊，而这些东西呢？
+是在render pass之前就创建了。
+所以说呢，我们得把这个创建free buffer这件事独立出来，对吧？
+所以说我们需要subst啊，给它的对公函数里面加一个东西，叫做void great frame buffers。
+它传入的参数是什么呢？
+就是一个render pass啊，这边。
+诶呃，叫做render pass好。
+render pass.OK，那么我们把这个函数实现一下啊，刚才是在这个位置对吧？
+刚才是在这个位置上，我们做的，现在呢，把它独立出来。
+好把这堆拿下来。
+然后呢？
+在这边我们它render pass就等于首先看看这是个引用还是个啥啊？
+这是一个OK，这是一个值传递啊，没有问题，它等于render pass。
+get render pass拿到它好，那么我们继续来制啊，刚才做了一些调整，它的catchment count等于什么呢？
+static cast。
+按int 32，杠t。
+好，这边传入的是attachments的呃size。
+然后frame buffer break infer the p attachments=attachments the data没问题，它的这个frame buffer的宽等于什么呀？
+我们swottion已经记录了accident是吧的宽度。
+那么，它的高度等于sub chain accident的高度，这些设置完之后，我们再设置一个额外的系数啊，就是它的layer。
+我们之前讲layer是什么来着？
+是层对吧？
+可能vr里面会需要有两层的渲染，那我们现在是不需要啊？
+OK，这样直接创建vk create frame buffer。
+它第一个是device device。
+get device.第二个create呃叫frame buffer create er第三个默认分配器，第四个就是我们的frame buffer啊，这个frame buffer是什么呢啊？
+就传入m。
+对吧，然后给它加个取地址。
+好，如果它创建不成功，不等于vk success的话。
+好，那我们就呃报警throw呃叫s dd run time error。
+field create.frame buffer好，那么frame buffer这个就呈现完毕了啊，我们现在呢？
+什么时候调用它呢？
+整理一下。
+调用它呢，就是在我们的application里面是不是啊？
+这边你看我们的vendor pass创建完毕啊，创建完之后在这边我们再次调用stop chat，从这里great frame powers传入m render pass。
+好，那就没问题了，我们来测试一下啊，清理。
+好下好，那看来没有什么问题啊，没有什么问题那么关掉诶。
+把它关掉好，关掉的时候出问题了，我们来看一看它说呀，就是我们的frame buffer啊，并没有吸垢掉，还是那么具体的照应啊，所以我们在这个呃swap chain它死亡的时候啊，也需要去清理这个frame buffer在这个地方啊。
+清理复印buffer嗯，看一看呃，这样吧。
+for frame buffer，在sion frame buffers里面啊，我们都用一个函数vk destroy。
+弗雷恩巴特尔。
+这里呢，我们传入的是fin buffer就可以了啊，这样就可以了，非常简单啊，我们再跑一跑看一看。
+OK，仍然是创建的过程，没有什么问题，然后把它搬掉，哎，也没问题了，好，那么我们这节课就到这里啊。
+

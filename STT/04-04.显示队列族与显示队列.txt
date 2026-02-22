@@ -1,0 +1,145 @@
+04-04.Vulkan-显示队列族与显示队列
+
+那么，我们上节课呀，已经做完了WINDOWS surface的创建啊，那么这节课呢，我们来为啊显示为显示这件事来做一个队列啊，申请一个队列仍然是要关注在这个device这个类里面啊，我们之前呢，是不是已经做完了这样一个东西啊vk q？
+它的graphic q啊，graphic q就是用来渲染的这个任务队列，那么接下来呢，我们是渲染完毕之后啊，还要把图像提交到这个呃显示器啊这一端，然后去做显示对吧，与窗口相相连接。
+那我们就需要以这件事呢，创造一个叫做present q啊present q OK，我们记录一下啊sdd。
+option a.然后呢，仍然是一个unit 32t。
+om present q family啊，关于新的任务的提交的队列组，然后呢vk q。
+m呃叫做present q log变变量，所以说we get now handle。
+OK，那么接下来呢，我们就要开始啊，为这两个量而进行努力是吧？
+那么我们第一步啊，一定要去到。
+去到这里啊in的q family啊，我们在引进的q family的时候呢，就有个循环，是不是啊？
+它一直在查找所有的这样一个队列组啊q family s里面啊，这边呢，以前的逻辑是什么呀？
+是找到一个拥有graphics bit的这么一个队列。
+啊，如果我们找到这个队列的话呢？
+has value，那么它就退出了，是不是？
+但是现在呢？
+我们退出这个循环的啊，一个主要的点在哪呢？
+在于我们的graphic q以及我们的present q这两个family啊，都要被找到。
+所以说呢，我们先定义一个这样退出它这样一个循环的条件啊，这个条件的话，我们写一个小的辅助函数啊。
+找破玩。
+叫做is q finish is q complete。
+是否q是完备的啊？
+然后这个is q complete函数啊，常量or那么device is q complete。
+那什么情况下算是complete呢？
+是不是啊？
+我们的这两个q family啊，都是有值的啊，都是有值的，找到了它的index是吧？
+那么在这，我们这应该取名叫q family company啊，这边叫q family吧，再明确一下，在wal CON的程序里面啊，还是习惯性的啊，这个名字起得越明确越好family。
+OK，那么返回的是return mq呃graphic q family has value啊，然后并且呢m present q family has value。
+对吧，你这样的话啊，就说明它俩都被初始化掉啊，那么两者可能是同一个队列族，也可能是什么不同的队列族，对吧，都有可能。
+好，然后呢？
+我们去到unit q families啊，在这个地方呃，然后呢？
+我们上面把这个条件啊，需要换掉了。
+这个是指啊，如果graphics q family没找到的话啊，那么就break退出，但是现在不行了啊，现在是is叫做q family complete的情况下才能退出这个循环，否则你继续给我找。
+那么这边呢？
+我们要开始寻找寻找支持显示的对列族啊啊，这边寻找怎么找呢？
+首先我也可以布尔32啊，我们做一个布尔量是mal CON布尔量啊present。
+support.等于啊vk force。
+那么呃，只有啊，只有在它啊为处的情况下，这么有没有找到那如何去更改这个变量的值呢？
+是这个函数啊，我们把它写近一点。
+叫做vk get physical device，然后呢呃surface support k叉啊这样一个gross函数啊。
+那它里面传什么参数，大家看一下，一个是physical device，一个是q family index，一个是surface，一个是啊，这样一个supported一个变量是这个，那么我们发现还缺一个什么，还缺一个surface对吧？
+还缺一个surface。
+okay.那么，我们就需要在device里面啊，在它做初始化的时候，希望呢，把一个surface传进来。
+那么这边s。
+OK，我们把surface也传进来，并且做一个记录啊，跟音放在一起surface啊，window surface它的ptr m surface。
+now btr OK，那么呢，我们要在这里面加一个参数啊，在它构造的时候，我们要把这个surface也作为参数传进来。
+surface同样我们把这个create函数啊，做一下更改。
+surface OK，然后我们去更改它的构造函数啊device也去变量了。
+诶，这样okay，在这里呢，让m surface=surface啊，然后呢，在这边啊，在这边我们也去做reset啊，我们surface。
+reset.其实呢，这边是不是不做也行啊？
+对吧？
+on device直接就是被它的职能指针啊，包装这个device的职能指针销毁的时候，其实顺带着就已经把这两个销毁掉了啊，但是呢，我们这么写主要是用人工的方式啊，去控制当前这个职能指针啊，就可控性更强吧，当然你也可以，如果程序的架构比较好啊，也可以不这么写，对吧？
+它的自然销毁就是更加的rai了啊OK，那么接下来我们要在构建device的地方，我们看构建device在哪呢？
+这是不是innate版本对吧？
+你的那么surface是在device前面以内的啊，所以说没有问题。
+把这个做好的surface传进来，这样的话呢，这个device就有service了好，那我们回到刚才修改函数的地方啊。
+真是绕了一大圈。
+在。
+呃，device。
+在这里啊，那么这里我们知道要调这个函数去看啊，当前这个ID的队列组啊q family是否能够符合什么呢？
+是否能够符合支持我们这个surface的特性啊？
+那第一个参数传进来的是physical device。
+那么也就是说，这个device对吧？
+这个device OK device第二个是什么？
+第二个是q family index啊，那么传递的是什么？
+是I对吧？
+就是它的这个index。
+那么也就是说，这个device对吧？
+这个device OK device第二个是什么？
+第二个是q family index啊，那么传递的是什么？
+是I对吧？
+就是它的这个index。
+第三个呢，是surface，那么就是surface第二诶，好get哎，我们发现这里是不是surface又缺了一个get数对吧，所以写引擎的时候啊，其实是一个查缺补漏的过程啊，很多接口都是应用当中来添加的。
+OK,out get please.count return m surface.那么，这个同样标上no discard？
+好no discuss OK ay，然后我们再来就可以调取这个函数了啊get surface。
+好surface拿到之后，最后一个要传入一个布尔量的指针，也就是说这个present support传进来好，终于完毕了啊。
+那么，我们接下来要看啊，如果它为true的情况下，是不是就可以指定当前这个di的index的family，就是我们要的那个支持显示的family，对吧？
+所以如果。
+brand support啊。
+没问题，那么am。
+呃，我们的present。
+q family啊，present q family=I这样我们就找到了一个什么，找到了一个I，它支持了我们的这个surface啊，支持了显示。
+OK，那么如果两个都找到的情况下，上面这个QQ family找到了，下面这个也找到了，然后is complete也会完成，对吧？
+那么这个循环啊，就被退出了啊，就被退了。
+那么接下来呢？
+我们要生成什么？
+我们现在已经有了啊，这个present q family，我们要把这个present q给做出来，对吧啊？
+你光有这个类型不行，你得搞定一个实例啊，那搞定一个实例，大家复习一下啊看。
+诶，再往下一点。
+在这里呢，我们是做了q create infer对吧啊？
+然后呢？
+把q create infer填写好之后呢？
+又扔到了我们的advice的create infer里面啊？
+那这样的话，上次我们是创建了一个q是吧？
+这次我们要创建什么两个q啊？
+创建两个q的话，做一下准备工作，两个q的话，大家看这啊。
+这有q great infer丝对吧？
+它其实是一个q create infer的数组，其实我们之前只有一个，那么这边是q create infer count就是要做多少个q对吧？
+我们以前呢？
+因为只有一个graphics q，所以这个是一，但是我们现在呢？
+可以用数组的形式给它传递了啊，我们要有两个东西了。
+那么就是说呃，首先呢，我们做一个CD vector at 32p啊，这里面装的是什么呢？
+装的是q。
+啊，不是那32题啊，那么应该是一个vk device q啊，叫做create infer啊，就是我们创造这个q的create infer啊，要做成一个数组了，因为我们要创造两个q create infer。
+OK，接下来呢，我们把我们要创造的q family啊q family把它做成个数组啊sdd这边直接用set。
+诶set，我们这边还需要再加上set的定义啊set的include set。
+这边在base里面加上啊，然后去掉device继续啊set这个set什么类型呢？
+是按int 32。
+这个名字叫做啊，叫做q family啊yes q families等于什么呢？
+等于啊m graphic q family的value啊，以及m present q family的value。
+好，我们现在啊，已经把这个两个q family的ID都取出来，组成了数组，然后呢，我们还做了一个vector，用来装它们两个的什么，它们两个的create信息对吧，所以说接下来呢，就需要做一个循环来做这件事了啊，这里面把共用的变量就是这块，我们给拿出来。
+然后开始做循环for an int 32杠t叫做q family类，在q family类里面对吧？
+对每个ID我们都要做一件事，做什么事呢？
+啊，把这个infer诶给填写好，对吧？
+把它移进来啊，创建一个infer去填上信息啊，然后呢，只不过这边不一样了，是不是这边是变成q family类了啊？
+对于每一个q family的ID啊，都不一样填在这对吧？
+然后我们仍然是一个队足创建一个队列啊，一个队列组创建一个队列。
+然后呢，它的优先级。
+这边优先级呢，它俩显示跟渲染的啊，都是一啊，所以说在这对吧诶，这样就没有问题了，然后呢，再把它push到我们的队列里面去啊push我们的数组里面去q create infer 4啊，这有个小S是吧复数啊？
+然后铺上来。
+heal create infer.诶诶q create语法。
+好，这样的话呢，我们把这个q create inference都弄出来了，然后我们接下来就开始要往我们的这个逻辑设备的创建的信息里面去填信息了啊，大家看啊，首先第一个是什么先填这个啊？
+create count count呢，老规矩呢，start take cast按int 32底。
+那么里面呢，就是q create inverse的size。
+然后呢？
+这边就是q create inference的内容对吧？
+叫q create inference的data好，然后data啊，那么接下来呢，就是创建逻辑设备哎，已经创建完毕了，是不是？
+在这边呢，是用这个graphics q family去获取了啊，这个队列组里面大家听啊，这个队列组里面是不是有很多的队列啊，其中啊，第零号把它拿出来。
+这个意思，因为我们在这儿啊，只生成一个graphics q，所以说呢，我们要第零号就好了是吧？
+你要生成两条的话，那下面可以再写一句号啊，这个意思，所以说graphics q family下面有很多的graphics q。
+那么同样啊，我们也要在这儿去拿present q啊vk get device q。
+m device am present q family的value啊，在这个family的下面拿它的零号给到谁呢？
+给到m present q啊，给到这个q。
+okay，这样我们就把这两个q就都生成了啊好，然后我们清理。
+清理完之后呢，我们生成一下看一看啊，没有问题。
+好没有什么问题啊，然后关闭啊，也没有问题好。
+那么在这里呢？
+我们的代码啊，已经写了不少了啊，那么现在还没有出现一个三角形对不对？
+反而我们书写的过程中有很多的错误啊，但是写v来讲的话，大家要习惯这种节奏啊嗯，你现在所想所有的东西都是在为后面的这样一个实现打基础是吧？
+很多东西写过一遍，兼容性强一点，架构好一点。
+啊，它就能够使用的时间更长一点啊，你修改起来这个压力也比较小，所以说呢，其实我们现在在干什么？
+在造轮的啊，造轮的好，那么在我们获取到啊这节课的内容就可以结束了啊，我们这节课主要是获取这两个东西啊present这个family跟present q，并且呢，我们是使用了啊，就使用了这个sir。
+去检查，并且获取了这个present q啊，所以说呢，大家不要乱present q是一定跟这个surface相关的，而这个surface 1定跟什么window和instance相关的OK？
+那么，这节课就到这里。
+

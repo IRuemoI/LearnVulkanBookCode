@@ -1,0 +1,26 @@
+各位同学大家好，那么上节课呢？我们做了相关 form description 的一些变更，那么这节课开始我们继续来写 descriptor pool，那么关于它的话，我们仍然是要这么做。首先我们给它要做一个 build 函数 build pool，对吧？ build 函数里面给它传入什么呢？肯定传入的还是这个描述的信息，对吧？description，然后这里边的话应该传入的是 STD writer description 叫做 uniform description， uniform 拷过来没有找到，继续更新一下，更新下缓存。 uniform 的 parameter 这样子，OK， parameters 我们用这样一个来创建这个pool，OK，那么我们现在去到 CPP 去实现一下。
+
+descriptor pool h。构造函数析构这边需要传入。然后把 device 赋值上，同样这边如果 pool now 的话，那么我们去把它给析构掉。OK， destroydescriptor pool 这个传入device，第二个是pool，第三个是 allocator now PR OK，那么接下来我们就要开始做它那个 build 函数了，就这个拷一下，把帽子摘过来。
+
+OK，那我们首先。把它划归成两个步骤，第一个步骤是描述，到底描述每一种 uniform 都有多少个，那么我们第二步是创建pool，在 buffer 里面我们怎么去描述？是通过这样的方式描述的，我们先做一个Vector，这个 Vector 里面装的是什么呢？是 VK descriptor pool size，它其实是通过这个结构来进行描述的，我们看这结构是什么？这里面首先有个type，然后有一个count，就是说像 uniform buffer，或者是像这个图片texture，它们到底是哪个种类？每一个种类有多少个是这么个意思。
+
+好，那么我们这边有个叫 poor size，OK，那么我们接下来开始遍历 parameters for counts auto，引用叫做paro，然后在 parameters 里面一个个去循环遍历，看一看都是什么。然后接下来是，那么就是要去做每一个这个 port 的一个填写。但是在这里有个问题，我们的这个 parameters 里面，它只是对于每一个这个 unique 变量数，它并没法知道说每一种有多少个，所以在这个前面我们需要做一个统计信息。比如说统计信息int，那么来一个什么叫做比如说这个 uniform buffer count 到底有多少个 uniform buffer？然后可能在这边还有些其他的Todo，我们还要写上，就是纹理这个种类的 uniform 有多少个？这边还得要去 todo 一下，我们在后面去写这个东西，那么我们首先就统计一下到底有多少个 uniform buffer count，我们这边要做一次拆包，对它提前进行一次循环，进行循环看一看，OK，在这边的话我们看一下param。
+
+它的这个 type 等于了VK，叫做 descriptor type uniform buffer，如果它等于这种的话，那么我们的 uniform buffer count 就加，那么如果说它等于其他的这个还是Todo，就是说如果说还有其他类型，那么其他类型也在这边统计好了。然后我们现在开始填写这个东西，那么第一个我们叫做 vkdescriptor type process。是 uniform buffer size 的描述，然后它第一个是type，等于这个，对吧？然后第二个 count 等于我们刚才刚统计的这个count，好，那么现在就这一种，所以我们在这边就写了这一种啊。好，那关于这边还得把它给赋值进去，是吧？放进去。
+
+好，那么我们的这个 size 就做好了，做好 size 之后就创建 pool 的话，我们肯定是需要一个VkDescriptorPoolcreateinfocreateinfo。那么接下来 create infer 的 type make key structure type descriptor for create infer 接下来它的 for size count 有多少个呢？就是说它的描述信息，那么肯定是有它这么多个，是吧？OK， cast i int 32 它的 size create infer，那么它的这个 key processes 等于 for size data OK，那么接下来再填一个 Max sets 最多有多少个？那么对到多少个这种 size 是什么意思？我们看。
+
+刚才我们是把这个 pool 就告诉他说对于任何一个这里，大家对于任何一个描述符集，那么他拥有，比如说他拥有这么多个这个 uniform buffer，他也可能拥有，再拥有那个，比如说 5 个 texture 这样一个uniform，对吧？那对于一个描述符集来讲，那么在这边我们还是要给大家先写点东西，在这里，这里面有一个坑很有意思，这个参数我们先空着不填，它可能走到这一步，很多同学顺着刚的思路就走下来了，但是有一点忘记了，对不对？有一点东西还没有说，我们留到现在，我们梳理一下现在的关系， descriptor 描述符， descriptor set 描述符集。
+
+描述符集，描述符集里面有很多的什么描述符，对吧？描述符。那么我们现在的这个 size 是个啥东西？就比如说这个size，就比如说这个这个 size 信息我们现在的理解是这样的，比如说这个是 a 种类的描述符，这个也是 a 种类的，那这个是 b 种类，那么我们现在统计的其实是，比如说 a 种类的到底有多少个需要被用到？但是我们有个问题还没有说 descriptor set 可能要乘以 n 个，也就是说对于每一个物体的绘制，那么可能需要 n 个这种描述符集，为什么呢？因为描述符集合当中。
+
+可以是绑定了 buffer 的，在创建描述符集合的时候，我们能看到每一个描述符上都挂着一个什么呢？都挂着一个buffer，那么就有个问题了，我们这个 Vulkan 是通过 so 链交换链来进行绘制的，那么极有可能就会出现一种情况，当前一帧提交的时候，其他的帧正在绘制当中，也就是说什么意思？即uniform。
+
+buffer 可能正在被读取，此时 CPU 端的下一个循环却对其进行了数据的什么修改，对吧？所以说我们必须要为每一帧去创建一个这样的一个 descriptor set，然后每一帧都有自己的描述符集，每一帧也都有自己的 descriptor a 和b，那么仍然 buffer 就会有多个buffer，每一帧都会有自己的一个 buffer 桶，OK，那么这个地方我们这边是不是就不能简单的写成一个这个了？我们统计的是一帧当中有关于 uniform buffer 类型的， uniform buffer 就这种，我们有多少个？但是还有 n 多帧，对吧？所以说我们这边还要传入一个参数什么呢？ count int 叫做 frame count。我们一共会有多少个 SUB chain 的 image 并行渲染？OK，那么我们把这个拿过来，对，也要加到这里面。
+
+OK，我们接下来对齐继续修改一下这个count，还能是这样吗？那是不是要乘以一个什么呢？ frame count，对吧？乘以 frame count，OK，那么这边有一个叫做，我们就回来了，叫 Max sets， Max sets 我们要创建多少个 descriptor set 就是多少个，这个我们知道要创建 n 个，对吧？这个 n 是什么来着？帧是有多少个帧？同时绘制有多少个帧并行就是 frame count，我们要有这么多个 short take cast int set frame count，OK，那么在这边我们就给它填写完毕了，填写完毕之后我们就开始创建 Vkcreate descriptor pool，传入第一个device，第二个是，第三个是一个默认分配器，第四个是我们的pool，如果不等于 success 的话。对，那么就错了。
+
+on camera failed to create descriptor pool OK，那么关于 descriptor pool 就做到这里，我们就算创建成功了。好，那么我们现在把它也加到我们的程序里面，去到 application 这边有一个 set layout，这边我们就加上 reapper descriptor pool。好，OK，那么我们接下来去创建，走到这里对 descriptor 先创建描述符描述的这个结构体集合，然后创建layout，创建完 layout 之后在这边我们继续对。 script pool 等于 wrapper script pool create 这边是 m device 好，然后这边我们把它建立出来。 build parameters m unit parameters 第二个 frame count 通过 option 来拿 get image count 好，我们编译一下，发现错误先清理一下吧。
+
+好，现在就没东西了，是吧？那也非常简单，为啥没东西呢？因为咱是不是还没给它传这个 uniform 的变量呢？对吧？这边说这个layout，对于 set 0 with bound off，看下这边的错误啊。OK，没问题，OK，那么这样的话，我们就等到我们全部都做好之后，才能对于这个 descriptor 这个这种体系进行测试，写不了。好，那么我们这节课就编写了 descriptor pool，就到这里。
+

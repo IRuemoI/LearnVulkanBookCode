@@ -1,0 +1,171 @@
+06-05.Vulkan-RenderPass创建
+
+OK，各位同学大家好。
+刚才我们上节课已经封装完毕了ra as这样一个类型。
+那我们开始去填充它，生成一个这样的一个对象。
+好，然后再说你看。
+pipeline的前面为什么呀？
+因为pipeline之前是不是还缺一个系数啊？
+对吧？
+缺一个render pass render pass=wrapper。
+render past create.这里面应该传入m device。
+好render pass做出来之后呢，我们要专门做一个函数去为这个render pass做填充啊，它有这么多的信息需要我们去体验，所以在这里我们做第二个函，第二个函数boy grade render pass。
+到下面来呃，在这里吧b application。
+create render pass诶，create render pass。
+好在这里呢，我们首先要做一个什么呀，是不是要先做一个catchment对吧？
+有了这个catchment之后呢，我们才能开始往下继续创建。
+好呃，首先用一个叫vk attachment description啊，我们先做第一个这样的参数attachment。
+es，然后我们对它进行填充，看一看都需要填充哪些呢？
+我们首先填充它的format哎，这里它的format应该等于什么呀？
+大家想一想啊，我们输入的这张图片。
+是出的什么图片呢？
+那应该是在sop chin上的那个图片对吧？
+在交换链上的那个图片，我们在交换链里面生成了n张图片啊，我们只要把它的格式给捞来好m so p chin。
+get有没有啊？
+好还没有好，我们在s里面还要把它补上。
+看一看s chat里面的话呢，我们已经有了这个s chat format这样一个图片格式，我们就把它get出来。
+get函数写在这吧。
+它会。
+no discard诶。
+返回值g auto GE to mat。
+const return m stop chin come好。
+然后再回到我们的application啊，它就可以等于get format了。
+然后第二个参数就是它的采样啊，三号等于v啊sample count 1啊，我们采样一个bit这个呢，我们在后面会讲解啊。
+然后接下来我们要填写这样一个参数啊，叫做attachment啊，这个叫做load operation对load operation什么意思啊？
+就是说你加载这张图片进来的时候。
+啊，因为呢，我们的render pass呢，它主要管理的是输入和输出，对吧？
+那么对于输入来讲的话，我们需要把这个画布给到render pass，那么给到render pass的话呢，会有一些情况啊，首先呢，这上面可能就预留了一些像素啊，原来就有些像素。
+那么，如果原来有些像素的话呢？
+我们是给它保留还保留呢？
+那么写在这儿告诉它。
+vk attachment load operation啊，我们告诉他要让它clear吧啊，你就直接把它给我清空掉啊，那么清空完之后呢，那么还有一个输出对吧，这个是输入，你就把这张图片画布给我清干净，那对于输出的话呢？
+我希望你给我保留啊attachment。
+store operations to re.为什么要保留呢？
+因为我们啊，不光说渲染，渲染完毕之后还要把它拿去显示啊，那么当然要把这个像素给我保留一下了。
+接下来，我们要给到啊，叫做stencial load operation，我们这边毕竟还没有去做啊，这个这边啊，有个很重要的一点啊，插一句话，这里把它给这样啊，置空掉啊，这样的话就会就会我们没有设置的参数就会变成零啊，如果你不置空的话呢，这边。
+那么就会出问题啊，里面又不一定是什么纸啊？
+好，这个什么意思啊？
+对于stencil如果说啊，这是一个stencil的touch ment的话，那么它输的时候什么样子呢？
+因为我们没有用stencil啊，所以说我们直接attachment。
+load operation一个什么样的呢？
+叫don't care啊，我们并不关心它，因为我没有用到它嘛，无所谓。
+然后是stencil star。
+vk attachment.store operation仍然是don't care啊，我就不关心了，好接下来我们还要规定对于这张图片来讲啊，它initial的layout我们希望是什么啊？
+我们希望是不是也可以image layout？
+undefined啊，对于任何一张图片来讲呢，它的initial layout只能有几种格式啊，要么就是这个undefined啊，要么就是。
+和这个啊叫啊，叫做v这两个什么区别呢？
+你像wiki layout undefined这个东西啊，它说啊，不能被gpu使用，而且第一次会丢弃文速啊，就是说它上面上面的所有的图啊，数据都丢掉啊。
+然后呢，像这个东西呢，它会保留这个数据，一般情况下，我们都是用这个啊，那对于initial layout再强调一下，对于initial layout，那么只有这两种可能啊，只有这两种可能性OK，那么我们回去。
+这里第二个。
+它的final layout为image layout，那么我们用什么呢？
+用这个present为什么呢？
+因为我们渲染完这张图片之后呢？
+我们要将它转为一个适合于啊，适合于显示的这么一张图片，所以说才用这样的一个layout格式啊OK？
+那么，关于这个啊attachment，我们就做完了attachment，做完之后呢？
+我们应该把它加到哪里呢？
+加到我们的m render pass里面是吧？
+add attachment。
+嗯，叫做这个，这个attachment。
+discussion好，那么我们上一个简单的绘制的话呢，就用一张图片就好了啊，一张画布，那这个是描述信息，并不是画布本身，大家一定要注意啊，这信息OK，那么第二个的话呢，我们要去做一个attachment的reference啊。
+叫做vk attachment reference，这个reference是什么来着？
+是由attachment description组成的数组的什么的索引对吧？
+attachment reference。
+指空那么我们看一看attachment reference需要填写什么内容？
+attachment唉，attachment reference。
+的OK两个内容，第一个attachment当然是零了，是不是因为我们数组只有一个description，那么它就是零号索引，接下来它的又是layout啊，这个layout什么意思呢？
+就是那这当前这张图片。
+在输入我们这个sub pass的时候啊，那么我希望它是什么样的格式，那么gpu就会隐视的帮我们把这个片从这个东西上转成我们所要的格式，那么我们所要的格式是什么呢？
+是vk image layout。
+叫做color attachment。
+嘿vk image layout color attachment optimal啊，这样一个格式好，我们现在出现了三个格式啊，这个是initial的格式，然后在进入sub pass的时候会被转化成我们所需要的color attachment optimal。
+就是用于我们fragment输出啊，fragment是一点输出最优的格式，那我们会在绘制完毕之后把它转成present source k叉，就是适合显示的格式好。
+做完了reference之后呢，我们要开始做什么？
+做sub pass了啊，我们声明一个sub pass。
+wrapper sub pass呃sub pass。
+OK，那么这个surpass呢？
+我们要向其加入多少？
+add color attachment reference，这个reference呢，就是这个对吧？
+加进来好，那么还需要加别的东西吗？
+啊，应该就不需要加别的东西了是吧？
+因为它只输这一章，我们是最简单的绘制啊。
+那么帕斯去干嘛？
+biu的一下。
+阅览完毕之后啊，我们接下来写下注释吧，首先是这个输入画布的描述。
+然后呢是？
+这个啊，就是说对于画布的索引设置以及格式要求。
+再后面呢，就是创建啊，这个子流程。
+然后接下来我们要做什么？
+要做子流程之间的依赖关系啊。
+那么，对于这个来讲的话就比较有意思了，是不是啊？
+它只有一个子流程啦，那么啊，这个o这个wal CON呢，会为了统一这个程序的啊，这个统一统一性，那么一般会自动为我们生成一个初始的流程啊，一个虚流程在上面，然后在下面也会生成一个流程啊。
+好，那么我们为这个虚流程到sub pass，我们真正的这个pass之间做一个依赖关系啊，叫做Vicky dependency啊，Vicky sub pass dependency。
+这个a喷等4 AA喷。
+dependent诶嗯，cok差点不会写了okay那么dependency怎么设置？
+首先source。
+some pass那个虚拟的流程叫什么叫这个啊vk sub pass external，这个是它的那个虚拟流程啊，上面不会什么都不会做的，只是做一个帽子而已啊。
+然后它的desk。
+sub pass等于什么呢？
+等于零零是什么意思啊？
+因为啊，sub pass是不是也在我们的人的pass当中形成了一个数组啊？
+对不对？
+也形成了数组，那么唉，就比如说在这里有没有加进去啊？
+add sub house，先把这个sub house先加进去啊。
+你看它加入了我们render pass的数组，里面也会形成一个数组啊，如果有多surpass的话，那么这个依赖关系的这个零代表数组数组当中的第零号surpass啊，这个意思，因为我们只有一个嘛，所以就是零好，然后继续开始迭代。
+它的啊，叫做source stage mask，就是说上一个虚拟流程支撑到哪里的时候，我们还罢休呢，叫做vk。
+hip line stage color attachments out beat就是说呀，上面这个虚拟的流程，你输出咱那个fragment sheet里面你输出这个颜色之后啊就可以了。
+输出到哪呀？
+肯定输出到画布上，对吧？
+那么输出到画布的话，呃，这个过程这个是一个输出的过程，但里面也会有很多的细则啊，所以说我们用s or sss来规定它的哪个操作？
+啊，它的vk access。
+color呃叫做Vicky access。
+好OK啊，这里应该是零啊，应该是零零代表什么呀啊？
+我并不关心你上一个阶段什么操作啊，因为你毕竟是一个虚拟的阶段嘛，对不对好？
+就是说呢，那我们延伸到我们之前讲的内存上来讲，就是我并不关心你所谓的啊，就是说从SM 0对吧，同步到储存，再从储存啊变成visible，这种感觉我们根本就不去关心，因为这是一个虚拟的阶段，里面什么都不会做啊。
+所以说尽快开始，下个阶段我们开始下，下个阶段呃叫desk stage，我们这个desk stage啊，会停在哪个阶段呢？
+会停在AA。
+pipeline stage.诶vk pipeline stage。
+叫做color attachment outfit啊一样，我们是在即将要输出，那我们即将要输出到画布上颜色的这个阶段停下来啊，那么这个阶段的什么操作停下来呢？
+这个阶段的。
+access mask v key access叫做color attachment，read bit读与写v key access。
+color attachment呀，就这样，所以可以access。
+hello，attachment right，OK，我们到了读写阶段的时候，这两个操作啊，都在这个阶段阻塞住，等上一个阶段完成，那实际上的话会阻塞住吗？
+其实并不会啊，因为上个阶段就只是一个虚拟的流程啊，你下一步。
+OK，那么我们就填写完了它其中的关键信息啊，我们再看看它的信息有没有需要我们填的一二三四五六啊，都签完了，我们这个暂时需要填，我们把它置零就可以了啊，原来就已经置零了，在这边儿。
+这个好dependence算完之后放到哪里啊？
+放到render pass里面对吧？
+好的啊，这个add dependency。
+呃，dependency好艾特进去啊，等我艾特完毕之后我们就要开始干嘛了？
+I am render pass做一个build。
+好，这样就完毕了啊，这样就完毕了，我们先执行一下，看一看啊，这儿打个断点啊，打个断点，然后调用一下这个函数。
+应该是在。
+这儿啊，这great render pass。
+好，我们调开看啊。
+诶，又引发了一个异常。
+我们看什么原因呃，往往遇到呃，往往遇到这种异常的时候，我们先干什么，先清一下整个工程，先清一下。
+啊，全部清理，然后重新创生成一下缓存啊。
+好好啊，这就很顺利了啊OK，那我们去到b5的render pass里面啊，你好好跟一下。
+f10首先啊，这几个都没问题，都补空啊，然后转换wrapper出来，wrapper出来之后呢填写。
+填小明之后，我们看一下啊，这里面都有什么？
+attachments没有问题啊，都是一一一啊好，然后创建可以创建完毕走，然后运行。
+那么完毕上我们还要考虑一下啊，就是它的机构对吧？
+看吸管有没有问题啊？
+哎c勾也没有问题呃，有问题吗？
+有问题了看啊，说create。
+来我们看一下。
+OK，那么我们也看到了问题啊，就是说深度这个模板attachment对吧？
+没有用到，要用到的话呢，结果我们这个地方啊呃，在这里啊，rendell pass在这里啊，还给它设置了进去啊，那么呢，这个里面虽然已经置零了，但零代表的就是vk image。
+layout Andy find对吧？
+那结果就给它设上，这样是不对的啊，那么我们应该怎么办呢？
+那么应该是这样子啊。
+看一下它。
+的叫做layout啊，如果是等于了vk里面是layout叫undefined啊，如果诶。
+等于vk image layout undefined，如果它是未定义的话，说明什么？
+说明这个是零是吧？
+没有用到它啊，没有给它设置了，是不是呢？
+如果是的话啊，没有设置。
+来看define，如果没有设置的话，我们就给到它一个now now撇儿，那么如果设定了值它不等于这个layout and defined，那么才让它等于。
+这样一个值啊，加它等于自己okay，我们再试一下啊。
+诶，不需要关掉。
+好再看啊，这样的话呢，我们的就没有报任何的错误啊，没有报任何错误，然后关掉唉，也没有报任何错误啊，好那么关于这个地方呢啊，这个东西我们在后面做深度模板attachment的时候，我们再去细讲这块的内容啊，这里呢，大家就先防御一下，再加固做一下防御啊。
+如果它不等于它等于这个undefined说明是空，就给它赋个空值，如果它不等于undefined，就给它赋一个什么赋它自己好，那么这节课就讲到这里啊。
+

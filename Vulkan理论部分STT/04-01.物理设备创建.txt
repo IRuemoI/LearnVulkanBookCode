@@ -1,0 +1,193 @@
+04-01.Vulkan-物理设备创建
+
+啊，那么就是在程序退出的时候呢？
+会啊，遇到这个内存溢出崩溃的情况啊，在这边呢，我们加一句话啊，就把它抑制住了，就是在application进行clean up的时候要做这样一个操作，把instance给reset啊。
+那么，这个智能指针的reset呢，是使它的引用技术减一，如果引用技术为零，那么对象就会吸够掉呃。
+其实我是在重启完机器后啊，就已经没有问题了呃，那么我估计的问题点啊，可能有这么一个问题啊，就是系统中其他的这样一个进程，包括可能是输入法啊，它劫持了。
+我们这个进程当中，那么希望那么以前也遇到过啊，某一个输入法在这里，我就不提名字了啊，会遇到这样的问题，那么现在重启之后没有问题，但是我在这边也会加上这么一句约束啊，在application clean up的时候，我就希望这些关于v的东西啊，都给吸购完毕，是这样子。
+OK，那么这节课开始呢？
+我们来了解一下，就是physical device啊，physical device这个非常简单啊，我们做physical device呢，无非涉及到两个过程，第一个是评估每张显卡的分数啊，我们不管是它是独显还是集显还是多张独显啊，我们要评估一下它每张的分数来选一个分数最高的。
+第二的话呢，我们要检查一下设备的特评估分数是否独立显卡，它支持最大的纹理尺寸是否启用几何的着色器啊？
+那么这都是我们评分的标准。
+这个呢，检查设备的特性啊，是否独立显卡是否集合注册器啊，这个是评分的，这个是我们要求的啊，我们作为本节课来说，它的要求啊OK嗯。
+那我们来看一下。
+在这呢，我们要增加一个啊device的这么一个包装类，我们把接下来要讲的这个physical呃，接下来要讲的这个logical device啊，跟我们现在要做的这个物理设备啊，我们把它都放在这样一个啊，都放在这样一个包装类里面，新建文件叫做device。
+点h，然后呢？
+把它的实线我们也要做起来啊。
+device点cpp。
+好，然后呢？
+把必要的东西先copy过来啊，这些东西。
+哎。
+拒绝访问是怎么回事？
+我重新做一下啊。
+加新建文件DOS点h。
+啊，我们不去主动的更改好这边呢，我们先把它靠过来。
+然后呢？
+device点h呢？
+我们再再去给它增加一个事件啊？
+device点cpp啊好。
+进到device表示里面啊glass device。
+老套路private呃public。
+private OK，那这边呢？
+它的device构造函数device吸构函数，然后呢？
+为了方便外界对于接口的调用，我们是不是还要加关于智能指针呢啊？
+加一个类型的，一是吧ttr点ctd。
+share然后device。
+static 1 r great这边sdd make share device。
+OK，然后呢？
+我们在这边啊，就要开始加上我们的这个物理变量了啊，就物理显卡在物理显卡上的话呢，我们这样写啊，我也可以咦，大家发现啊，这个地方是不是识识别不了，对吧？
+时间表呢，是因为它没有加入到这个c mic的编译链条当中啊，我们在application里面把它加进去，include呃叫做v vapor里面的device，好加进来，加进来之后呢，我们来生成一下缓存。
+好，这样的话呢，这个文件就被加入进来了啊，加入到cm ake里面，然后我们vk physical哎，就提示了是吧，physical device MC。
+好device初始化为null Vicky null handle。
+这是一个啊，很专用的一种啊，空指针啊，或者说空值的概念啊，空值的概念OK，然后呢，我们再修正一下instance啊，把instance里面也给它做一下啊，这样子Vicky handle啊，这边是Vicky now handle都给它做进去了，然后呢，在这边我们加了一个函数啊。
+也带着大家写一下吧，这边在这个instance里边啊，我们加了一个函数，就是获取这个instance，因为我们在生成device的时候啊，是需要获取到这个instance实例的这家伙啊。
+我们返回instance。
+叫get instance。
+return点misses。
+OK，加一个约束nod。
+这个no discard呢，就是你不能空掉这个函数啊，你必须要对我的值进行处理，这个意思好，那我们补全完了，这个insight这个类啊，进到device。
+device这边呢，我们给它做一个参数吧。
+include啊，然后instance那么由于啊，生成physical device的话呢，需要从instance里面获取，所以这个device啊，我们需要传进来一个instance。
+ptr instance同样它的create函数里面要有这个参数，把它传进去好，这样就完备一点了啊。
+随后呢，我们去到application里面啊，去把它生成一下，在这里加一个变量。
+叫做wrapper。
+device PT RAM device ro PR.OK，然后呢？
+我们在unit Mark的时候啊，这里已经做完了instance了是吧？
+我们让device=v。
+device great传进去的参数是什么？
+是min stance。
+好，那么在clear的时候啊嗯device 1定要在instance之前对吧？
+因为它是用instance生成的，所以m device reset。
+好在我们外部的框架就打好了啊，打好了，然后呢，在这边我们要开始进行生成这边的话呢，咱们要写几个函数啊，第一个是peak physical device。
+就是说呢，我要选择一个physical device啊，选择一个无零件给到它，然后呢，并且啊，我要给每个个的rate啊，device就是说呢，我要给device进行打分啊，传进来的vk physical device device啊。
+voice当然就是给这个physical device进行打分啊，并且我们还需要有一个布尔的函数啊，就是is the device suitable啊suitable。
+就是说呢，当前这个device是符合我们这个程序啊，独特的需求是吧？
+OK，那么我们就去实现这三个函数。
+接下来，去到device cpp啊，先把device拿进来，然后呢，命名空间。
+在这里呢，先把device的构造。
+呃，叫做instance。
+一条instance。
+写在这啊，然后minstance OK在这里呢，还是要给device啊，加一个成员变量就是用来承接一下这个instance的智能指针啊，加instance。
+OK，这个就是一个智能指针，而不是一个lock的变量啊，是我们这个类是我们这个类在这里面min stance=instance。
+device它的析构。
+在这里呢，让min stance它的引用技术减1 OK，接下来mo ID。
+peak哎device。
+peak physical device啊，选一个物理设备，然后呢，这是int device rate。
+就是给这个device进行打分啊，我们int spot先等于0 return。
+诶，这边有什么问题啊？
+OK参数vk physical device device，然后呢？
+最后是一个布尔device。
+叫做is device suite是吧？
+上面的这个device的参数啊，拿下来用。
+好，那么好，我们一个一个来实现啊，那首先第一个是什么呀？
+第一个的话就是rate device啊，那么在这边这最好写了啊，我们看一看。
+那么，首先我们要拿到它的这样一个properties啊，叫做vk就是physical device，physical device properties就是它的属性啊属性。
+叫做device prop。
+vk get device properties啊，get get physical device properties这个呃，那么传入的是device以及要装到这样一个properties里面啊，这样子。
+好，这样我们就拿到了啊，在这里面会有很多的属性啊，比如说它设备设备名称啊，类型啊，然后包括说支持支持vulkan的版本啊，等等啊，都是在这里面。
+都在这里啊。
+接下来呢，我们要拿到vulcan physical啊device features，就是它的特性啊device feature。
+urs到vk get physical device，哎，好了，断开了vk vk get CC call device features。
+这个那么传用的也是呢device啊，以及它的feature。
+获取到这个变量里面，那这个非常色里面呢？
+是什么呢？
+是比如说啊，纹理压缩格式啊，然后浮点数啊，运算性质啊，然后运算特性啊，是否多视口旋？
+视口渲染啊，等等啊，都是在这里面啊，所以我们获取到它的，它的这个属性及它的特性啊，拿到之后呢，我们就开始评分啊，如果。
+device prop art type啊，等于叫做vk呃physical device discrete CPU，如果它是一个什么独立显卡，那我给你加分加多一点是吧？
+独立显卡的分还是很高的。
+score+1000分，最后呢，我再让这个score啊，加上这个device prop里面的limits下面有一个呃叫做max image。
+呃，叫做max image dimension 2d啊，就是说对于纹理来说啊，它到底能支持多大的纹理？
+OK啊。
+那么接下来呢？
+呃，就要给它看一下它是否是是支持这个geometry sheet r我device啊？
+features它的geometry shield r不被支持对吧？
+就是不被支持哎，那么可能就要干什么呀？
+给它read 0了就给你个零分。
+你必须要支持这个什么，只要我们学习了好，这样一个简单的，这样一个打分函数就做好了，当然大家也可以根据查找文档啊，选择更适合你的下面一些，这样的一些这个硬件啊，在这边呢，我们接下来要看一下它是否suitable，同样我们先把它的这样一个特性跟它的属性全都拿到。
+拿到之后呢？
+我们这边有特殊的要求嘛，对吧？
+我们本节课啊，要求的是什么return啊？
+我要求你呀，这个设备呀，必须得是独立显卡device type=v KC。
+device你必须是这个啊，并且呢，你还要给我支持啊device features，你还要给我支持，只要么谁谁的，对吧啊，这是我的要求，当然如果你的机器不支持，只要么谁谁的啊，那个也不是读检，你就把这个去掉就好了，那你就要求低一点吧。
+也没关系好，那么最终啊，我们做好了这两个工具函数呢，我们就开始要pick我们的device了，首先我应该找到这个系统当中啊，所有的设备。
+同样找到所有的东西，怎么找来着？
+int 32t是吧？
+首先把它的数量device count先找到，那么怎么找vk enumerate physical？
+啊，devices这个对吧？
+然后呢？
+第一个什么呢？
+是instance啊，那么我们已经拿到instance了，再构造函数对吧？
+instance at。
+get essence啊，拿到，然后我们再去到给到它的这个数量device count那么调完这个函数呢，它的数量就会被写到这样一个变量里面啊，它里面然后呢，那最后一个是我们要填充数据的地方，但是我们还不知道啊，它有多少个数据需要填？
+所以说呢，它就空了，然后接下来我们已经拿到它的数量了啊，如果device count啊，如果你是个零对吧？
+那抱歉，这个事就完蛋了啊。
+throws dd runtime error。
+叫error。
+failed doe nu enumerate say they call device.那如果说它不一定可以把这个physical device啊，全都取到一个数组里面是吧？
+scd vector。
+叫做vk physical device，那么叫做devices给它预留多大的空间呢？
+预留device。
+count这么大的空间好，然后再次调用它啊，把这个数据真正的获取出来。
+好，最后一个就是咦。
+啊，最后一个应该就是device data好。
+获选出来之后，我们就要开始为它打分了，那么打分我们用的这么一个结构啊SD mountain map。
+它的key是一个int，它的value是一个v key，physical device叫做啊，我们把它叫做。
+呃，candidates啊，就是候选人们是吧？
+候选人们呃，什么意思呢？
+这边它的k啊，就是它的分数，这边就是那个device了，然后呢，这个multi map呢，是可以按照这个key的大小啊，从小到大进行排序，所以说我们对大的分数得分者啊，会被安排到这个multi map的尾部啊尾部。
+OK，接下来打分for count auto device。
+devices便利每一个，这里面的device，然后呢？
+int score=rate device，把device存进去。
+得到的分数啊，得到分数呢，我们在candidate里面把它insert进去。
+插入，然后cd make pair。
+k是什么呀？
+k是small对吧？
+值呢？
+只是device。
+完事之后呢，我们要看一下得分最高的那个啊，得分最高的那个是谁，如果那么得分最高的是不是应该排在这个candidates的末尾呀？
+对吧？
+所以说呢，这个candidates的r begin就是reverse begin啊，从尾部来看第一个是谁，对吧？
+然后first就是它的得分必须是大于零，并且呢啊，这个candidates啊，并且呢is device suitable啊，就是这个得分最高的，这个device呀。
+它的这个设备还要符合我们的要求才行啊，把它传进去。
+get好这个，如果这两个都符合了，没问题，又大于零是吧？
+得分，然后又符合我们的需求，那么唉，很简单physical device等于。
+啊，这个candies的r begin。
+呃，second。
+达到啊，如果最终啊physical device呢？
+都还是等于vl的话。
+就是我们一直没有挑选到，是不是Vicky now handle？
+那么我们就得报警了，是不是就得报警了啊throw？
+runtime never failed to get physical device好，这就是这个peak device函数的事啊，那么在这里呢，我们在构造函数里面啊，进行了对于instance获取，然后这边呢，我们可以直接调用peak。
+physical device啊，对device进行获取就可以了，好，那么我们看一下流程啊instance里面有instance啊，有这个application里面啊，有这个instance也有device。
+啊，然后呢？
+在application的这个innate里面呢？
+我们enate了enate了device，然后这边的话，我们clean up的时候呢？
+清理了device，清理了entance倒过来是吧？
+好，那么我们跑一遍。
+嗯啊，这边啊，下边开始。
+啊，这边大家注意啊，这个十七二位弹回去这个啊。
+诶，有异常啊，有异常我们看下下，这是列并没有返回什么东西啊，并没有返回什么东西好，那么我们来。
+第八位device啊，peak device哎，从这里打个三点。
+进一步进步，进一步没有问题，没有问题啊，没有问题，没有问题score，没有问题，看来我有两张显卡，对吧？
+你看一下哎，两张显卡，一个独显眼，对吧？
+看这里词。
+里面有两个。
+然后呢？
+去拿到它的rd根啊，赋值OK，那没有问题了。
+physical device结束啊。
+啊return那这时候诶return回来了啊回弹数那么这边device也接到它了啊。
+哎device在接到它的时候，在这个这个地方出现了问题啊。
+OK，这边的问题似乎是什么呢？
+应该是这个device没有呃做好。
+诶OK啊，刚才那个问题啊，是这样的啊，就是我暂停了，具体大一下是一个比较，怎么说呢，让人恼火的问题啊device啊，它一开始我们其实是在这边已经做了，那我ptr对吧，但是在那个工程啊，有一个比较讨厌的地方啊，就是呢，我在写完这个之后呢，它我必须要去做一下这个全部。
+清理啊，它才会把以前的记录给清理掉，因为以前某一次的编程记录啊，可能记录这边它没有n ptr，没有把它初始化啊，那么对于一个没有初始化的这样一个智能指针呢，可能在这边直接赋值的话，它会认为这个智能指针其实是有值的。
+然后它就会跑到这个对象里面啊，进去把它的这个智能指针啊，给它引用参数，引用技术给减一，但其实它是空的，对吧？
+你减一的话就是也指针了，就错了。
+那么，在这边给大家再看一下标准的样子啊。
+那运行到这边的话呢，你看instance已经被赋值了是吧？
+device应该是个empty啊，应该是个empty，所以说对用用智能指针的话啊，大家一定要记住在application这边啊，这边一定要都初始化成now ptr对now ptr啊，然后呢就没有问题了，继续。
+OK，这样的窗口就生成了，我们再看啊，这边有很多的这样一个输出，对吧？
+这都是给到我们的啊，一些详细的信息，很多详细的信息啊，各个音符啊，等等是吧？
+都出来了好，然后呢，我们关掉窗口唉。
+也没有问题了，清洁没有问题了OK，我们今天到这。
+

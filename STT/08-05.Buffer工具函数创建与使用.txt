@@ -1,0 +1,22 @@
+各位同学，大家好，我们上节课写了这么一个 buffer 这么一个类，然后给它补充了它相关的函数。那么这节课我们首先给它做工具的函数，为什么要做工具函数呢？因为我们如果要做一个 text buffer，或者是说做一个 index buffer，那么每一种不同的 buffer 它都有不同的参数，在外面调起来的时候传参很麻烦，所以在这里就给大家去封装这样的函数工具，函数出来，那么我们需要更多其他的工具函数的时候，也可以同样在这边做封装啊。
+
+首先 public static，那么我们返回的是一个PTR，那我们把它写在下面吧。好，在这边我返回一个PR，叫做 create what text，然后我们还要做一个函数 static p r create 叫做 index buffer，上面这个就是存储顶点信息，就是我们在 model 里面做的这个信息顶点，然后下面的这个是创建的是存储 index 的信息。
+
+我们知道画一个三角形要有除了顶点之外还有索引，对吧？表明哪三个连在一起为一个三角形，那么索引信息也需要创造一个 buffer 来做，OK，那么创造这个 buffer 的时候，我们对比看一看，对于 create 函数而言，那么 usage 是可以写死的，在这里面 properties 是可以在这里面写死的，那么 device 是需要外界传进来的， size 需要外界传进来。好，那么我们就把这两个东西给它拷过来。OK，然后我们去实现这两个工具函数，把帽子拷过来，好，检查一下，对，这边一个错，应该是他的PTR。
+
+好，那么首先我们做这个 create bytebuffer，那么做这个的话我们其实还需要传进一个数据来，就是它的data，就是我们真正要往里传的那个数据。 BYTE 型 data 写成 p data，然后同样把它拷过来这边，然后我们去到 buffer. CPP 缩进来。好，那么我们现在开始创建auto，叫做buffer，等于buffercreate，那么里面传入首先 device 传进去，然后 size 传进去，那么还有usage，那么对于一个 whattextbuffer 来讲，我们希望拷贝数据的时候，对，我们要想想像它里面拷贝数据那应该用哪种方式啊？我们是不是有通过 map 来拷贝的？还有通过 stagebuffer 来拷贝的。那么由于这个我们很少去更改一个模型它的数据，所以说我们就选择用 stage 来拷贝，因为用 stage 的话，我们所创建出来的这个buffer，所创建出来的buffer，那么就是一个 GPU local 的这么一个buffer。
+
+好，那么我们去创建一下，这边先给一个属性叫做 VK buffer usage transfer，那么它应该是一个什么呢？dest，它是一个被拷贝的目标点，就是说从 stage buffer 向它拷贝它这么一种特性，这么一种特性，这么一种用处吧。然后第二个参数 VK 叫做 buffer usage Vertex，我们告诉系统这是一个顶点用的一个buffer。好，我们把它稍微切下段有点长了。好，那接下来还有什么参数啊？就是它的buffer，是吧？那么它的 buffer 由于它是顶点用的buffer，所以说我们可以给它做成叫做 device local bit，就是说它在 GPU 本地才可读这么个意思。
+
+好，那么做完了，做完之后我们接下来开始要向它拷贝数据buffer，做 update by stage，这边需要传入data，这是我们的 p data，然后需要传入 size 多大。好，那么这样一个 whattext buffer 创建的过程就结束了。好，那么我们如法炮制一下去创建一个这个，创建这个，当然这边也做 return buffer。然后这边我们也如法炮制一下，唯一不同的地方就在于这里是不是它不是一个 what text 数据的 data 了啊？不是一个 what text 数据的 buffer 了，而是一个 index buffer bit 它是用来存储 index 的，看一下没有问题，然后最终我们在这边把它 return 回去，叫做buffer。
+
+好，那么我们就可以在外面去调用这几个函数了，然后我们去到 model 里面，此时我们的 buffer 已经做完了，然后我们去到这里面再补一些数据，我们之前没有写 index 数据， Vector float 就是一个 index data，OK，那么我们在这里把它进行一下初始化， index data 等于。
+
+我们看一下这样一个三角形是什么呢？这个是他的头，是不是？这个是他的右边，这是他的左边的点，这是上右左，是一个顺时针。OK，那么我们接下来检查一下我们的管线，哎，发现他是用的是顺时针为正面，那就没有问题，顺时针为正面，那么我们就可以在这边把那个 index 这么去写，对吧？ 0 ok 这边不应该是float，这边是int，那这边就是零一2。
+
+好，OK，那么这样一个数据就完成了，完成之后我们要为这个 model 创建buffer，是吧？我们就把这个 buffer 搞进来。好，然后我们这个私有变量里面加上去一个是buffer，一个叫 wrap buffer 的PTR，第一个是叫做 word text buffer，第二个是 index buffer。好，然后我们去到构造函数，在这里面我们开始生成这个 buffer 了。第一个是 word text buffer，等于我们用刚才做的工具函数buffer，然后create。
+
+bytebuffer 这样的话传入 device 的话，那么这个 model 这边我们也要把 device 传进来，对吧？在这边我们写一个传入 device 的操作，OK， writer device，那么在这边 device r device 这边要加上内存空间，好，然后这个 device 就可以传到这里面来了。然后我们需要传入 size 多大？OK，那我们应该传入 m data 的size。随后我们最后是把 data 存进去 m data 的data，OK，这样我们就完成了这个顶点 buffer 的创建，就是它，然后是 index buffer 约 rapper buffer create index buffer device m index data。
+
+m index data get data，好，这样的话我们就创建完毕了，然后我们再加几个接口。加什么接口呢？这边把这几个东西给传出去的接口，首先 get Vertex buffer， return Vertex buffer，第二个 get index buffer，好，那么我们就为顶点准备齐全了，我们再回头检查一下这个buffer，看一下他缺什么接口，我们也补一补。现在有了 get buffer 这个接口，OK，OK，这个 buffer 还不缺接口啊。好，那我那么我们这个显示一个长的三角形的这么一个。工作就准备完毕了，好，那么这节课就到这里。
+

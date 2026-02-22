@@ -1,0 +1,28 @@
+各位同学，大家好，我们上节课讲了关于顶点数组的描述问题，那么这节课呢？我们就来审视一下我们原来的程序，我们看之前我们写的顶点着色器是这样的，也就是说以前我们是用写死数据这样的方式，那我们现在的目标就是接收 c 加端传向我们 GPU 端的数据，而不是自己在这里创造数据了。
+
+所以两个数据我们就跟它说再见了，是不是就要把它给注释掉？然后在这边我们的顶点着色器应该接收一个输入，对吧？ layout location 等于 0 这个地方我们输入一个 VECTOR 3 是 in position，这个是不是通过 attribute 它描述来描述的，对吧？然后我们再输入一个。在 location 为一的地方 vector 3，那么 in 是个color，是个颜色。
+
+好，那么接下来我们就开始修改这边原来是glposition，等于这么一坨，对吧？等于原来这个里面的东西，但是现在我们既然有了顶点的输入，我们就把顶点给输入进来就好了，那么颜色呢？就是等于它顶点输入的颜色在这边，好，哎，这样就没有问题了。当然在这里我们也没有去做 MVP 变换，因为这边我们还没有学习到 uniform 类型，OK，所以这边我们还是输入这种 NDC 坐标系下的东西， fragment shader 是不需要变动了，还是这个样子输入的颜色直接输出就好了。OK，那么我们接下来去到。文件夹底下去编译一下，好， compa OK，编译成功，然后把 vs 和 FS 拷出来，去到 out building 这下面 shaders 拷进来替换好，这样我们就完成了 shader 的改动啊。
+
+完成 shader 改动之后，我们接下来要考虑我们得构建一个模型，对吧？这个模型输入到咱们程序里面，好，那么我们在这边加入一个新建的文件，叫做 model h，那么我们呢？就把东西写到这里面就好了， program once namespace FF。
+
+class model public private model 高函数我们直接在这写一会，然后 model 析构，然后这边我们给它加个帽子 shared 这边还没有加入头文件 include base 弄进来 STD shared PTR model OK start PTR create return STD make shared 叫做 model OK 好架子我们就搭完了。搭完架子之后，我们先把它入到编译链条， include model 进来更新一下缓存。
+
+好，再回到 model 里面，在这里面的话我们肯定要存储我们想构造的数据，这节课我们就非常简单，直接构造一个什么呀？直接构造一个三角形就行了，所以说我们打算使用一个 interleave 的类型，也就是说它的position，还有它的 color 统一都放在一个 SD Vector 当中， float mdata。
+
+好，现在我们在这边构造这个 data mdata，等于首先我们写第一个顶点的话，我们先写它的位置 0.0 F，然后负 0.5 F， 0.0 F 这个点在哪啊？我们现在 Vulkan 的坐标系，它的 y 轴是冲下的，所以你- 0.5 的话应该是在屏幕的上方的位置，对吧？屏幕中心线往上移 0.5 的位置，那么现在我们还没有进行 y 轴的反转的操作，所以大家先这么看，回头我们可以通过扩展来开启，然后做完他的位置之后面紧跟着就是他的颜色，我们是红色，0点零一 f 零零，好，接下来我们要构造它的第二个顶点是0.5，这边也是 0.5 在下方，然后第二个顶点是一个绿色，接下来是 d 顶点，这边是。-0.5，这边是0.5，那这边就是蓝色，好，这样的话模型的数据我们构造完了，那么这个数据它最终被送到一个 GPU 的显存空间当中一个 buffer 里面。
+
+那么接下来我们要在这个模型里面做两个函数，第一个函数是用来描述它的顶点的， input Vertex， input description，形成一个数组，然后第二个我们是来做它的 attribute description，你要形成一个数组，好，我们先做第一个static，这是一个返回值，然后它应该返回的是位 Vertex input 叫做 binding description。 VK vertexinputbinding 就这个 getvertexinputbindingdescription 那么这个返回的是什么呀？是不是返回的顶点数组 buffer 相关的信息，对吧？比如说它的stride，它在这个顶点数组的什么位置等等，对吧？那么我们既然返回的是一个这个类型，我们就先构造一个这个类型的变量 bindingdescription 啊。
+
+好，然后我们因为只有这么一个数，这么一个buffer，这数据都会被放到一个 buffer 里面，对吧？所以说我们就先给它写死它的 resize 一下。只有一个，然后我们接下来对这一个进行填写，第0个，对吧？它的 binding 等于0，因为这个数据所放在的那个 buffer 只有一个，对吧？我们现在是把位置和颜色放在一起了，所以只有一个buffer，最终形成的那个 buffer 的数组只有一个元素，所以说我们只对它 0 号进行填写，并且它的 binding 的位置肯定是数组的第一个元素，就是 0 号，好继续，那么它的 stride 等于什么呢？也就是说我如果取完了第一个点的数据，大家看这么多，对吧？我要接下来取第二个点的数据的时候，我要跨越过多少个float？那么在这里我们可以先封装一个顶点的对象，也就是说把上面这个数据再格式化一下啊。
+
+在这里我们做一个struct，叫做Vertex，一个 Vertex 我们现在给了它一个 gl m Vector 3 OK，形成了一个position，然后我们还给了一个 gl m Vector 3，叫做color。好，然后我们让这样一个数组，我们改造一下，把它改造成一个顶点的数组， Vertex 的数组，诶，这样子放，这样放之后我们就可以去构造了，我们来切割一下这些数据，你看这样去切割它就是构造了一个Vertex，构造了一个 VECTOR 3，对吧？构造了第一个 Vector 3，再切割一下，又构了第二个 Vector 3，然后把整体包在一起，是不是就构成了一个Vertex，对吧？同样的操作在下面也如法炮制一下。
+
+这边好，这样的话我们就构造把这个 data 数组就变成了好几个，有三个顶点数组构成的数据，这样子的好，那么它的 stride 等于什么呢？我们用完了一个顶点数组数据，要跨过一个顶点数组数据的大小，是不是这样就可以了？然后接下来是它的 input rate，就是我们是按照什么来输送给顶点着色器的，那么当然现在我们是用的最简单的顶点绘制方式，所以它的 rate 应该是位 k 顶点 input rate，顶点按照输入即可啊。好，然后我们最终 return 这个 binding description，好，把这个返回去就拿到了。那么接下来我们要制作attribute。相关信息与 vertexshader 里面的 location 相关了。是这个意好，那么我们还是先写返回值，那这里面是什么呢？是 vkvertexinputattribute description，是一个 attribute description getattribute descriptions 这边加个s。好，这边的话我们还是要声明一个。的数组叫做 attribute DS，那么我们现在有几个 attribute 需要描述，是不是两个？一个是位置，一个是颜色 precise 2。好，下面开始描述第一个，它的 binding 肯定是等于0，是不是当前描述的这个属性，它肯定是要从 binding 为 0 的这个数组里面这个 buffer 里面去读，哪个 buffer 就是这个buffer，对吧？它的 binding 为0，所以说要从这读啊。
+
+第二步它的location，我是描述位置信息， location 为0，就是与我们这边的location，这边 location 相对应。好接下来它的format。这个 format 是什么呢？是为 k format r 三十二 g32B 32 杠 s float 说白了就是由三个 float 类型带符号 float 类型所组成的。
+
+这么一组数据， offset 等于 offset of Vertex m position。这个宏什么意思呢？就是从这个结构体里面来讲，需要跨过多少的距离才能读到一个position？那么我们看这边的话肯定就是不用跨距离，直接是0，对吧？这个道理。然后我们拷贝一下描述第二组数据，就是颜色，就是从第二个里面记录 binding 仍然为0，还是要从这个数组里面去读，是吧？然后但 location 为一，因为我们的 Vertex shader 里面 location 就是为一这个颜色，然后仍然是 3 个float。
+
+offsetof 这边应该是 m color 距离这个这样一个结构体开头是多大的距离呢？是跨过了三个float，对吧？所以这边应该是三个 float 的距离，这样子，OK，那么然后 return 这个 attribute description 好，这样的话这个类就比较全面了。
+

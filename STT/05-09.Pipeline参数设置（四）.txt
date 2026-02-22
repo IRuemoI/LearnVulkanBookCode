@@ -1,0 +1,124 @@
+05-09.Vulkan-Pipeline参数设置（四）
+
+我们这节课来继续设置pipeline uniform的传递，这个阶段所谓的uniform什么意思呢？
+对于我们的来讲啊分为VS和fs对吧？
+然后我们的VS阶段呢？
+它是通过了attribute来输入什么呢？
+输入的position呢？
+还有。
+normal啊，color啊，uv等等这些信息对吧？
+那对于说其他的信息，比如啊光照想在fs里面啊，fragment系列里面得到光照相关的位置信息，我们视线的法向量等等啊，视线的向量等等，那么这一系列的信息呢，就要通过说uniform进行传递啊，那么我们就需要专门为每一个object开辟。
+uniform的一个显存一个空间，然后呢，我们将需要的一些参数在每一帧上传，比如说每一帧我们都会传递啊MVP变换的矩阵以及光照的参数进到uniform的啊，这个内存里面啊，进到uniform的显存里面。
+然后由我们的shadow进行使用，所以uniform是一个很重要的东西，但是呢，这个东西我们在这先不设置，我们后面会详细讲解uniform的作用啊，那这里呢？
+还是pipeline？
+m叫做layout state这个啊，那么它的。
+第一个参数set layout count，我们就没有layout。
+然后考一下。
+第二个是p set的s啊，等于空。
+还有一个呢，是叫做push常量啊，push constant count，我们也把它设为零，这两这是第二呢，向它里面向谁的里面传递数据的方式啊，那么这个的话呢，它是属于常量传递推送，它为什么叫常量呢啊，并不是说我们在CPU端不去改变这些推入的值。
+而是说呢，推入到了管线当中啊，它在你们呃，比如说VS呃gs fs ts等等阶段吧，里面都是可以去使用的，而且值是不变的啊，在整个管线阶段是常量，是这么个意思，那么我们在外界呢，是可以更改这个值，那进入到下一个管线阶段呢，它仍然是不是一个常量，对吧？
+对各个阶段来说。
+是不变的啊，因为只是在外面第一个阶段变了，后面都是一样是吧？
+好，那么这边我们暂时不使用它啊，拍不到呀，哎，这个好像这边叫p push。
+consent now好啊，那么这边的话我们就给它设置完毕了，接下来呢，我们要生成这个layout啊，给它生成这个layout，那么这个管线布局怎么去做呢？
+我们直接跑到pipeline里面去啊，在这。
+在设置完blend之后啊，我们在这做那个layout的生成。
+生成okay，先判断一下，如果啊m layout。
+out等于诶v know handle啊，它如果空的话，那么才行，或者是说它随便这样子啊，如果它不为空，那么我们就把原来的layout给干掉啊。
+vk destroy pipeline layout.那么，传入的是m device，该device。
+第二个是要删除的tab lineal t。
+第三个分配器默认的OK，那么这边清理完毕啊，同时我们在这边呢，要开始生成它，对不对啊？
+如果它不行，我们就再重新生成一次啊。
+if vk create pipeline layout.k那么第一栏数是什么？
+是device啊device？
+layout参数是great infer啊，great infer的话，我们这边就是m layouts it好，然后呢，是allocator now ptr，最后呢，是这个layout啊。
+取地址看play out。
+如果它不等于v case，再次。
+那么，我们slows d run time。
+l.field two great i plan layout好啊，那亮的就弄出来了好，那么我们把这一切都做完之后啊。
+我们就可以去拼装整个啊，渲染管线了，那拼管线的时候呢，其实还缺少两个东西啊，缺少两个东西，那缺什么呢？
+一个是缺我们的rcast这个量啊，变量，一个是缺sub cast的变量。
+我们把这个写在这里啊，因为呢，render pass还需要单独去生成啊，所以很麻烦，我们先把变量写在这里，然后后面的话我们再去生成它啊，再写个to do吧to do。
+render needs render pass and sub pass index啊OK，显示一个to do啊，我们接下来拼装在它只是拼装，但是我们不一定能生成啊，因为它那个render pass的信息填不进来，我们还要去封装data pass类诶。
+OK，好看一下，那么接下来呢，我们要创建vk graphics pipeline，叫做create infer。
+诶，这个叫pipeline create fer。
+啊，直接空，然后呢？
+对于create info，我们应该设置它的type。
+等于vk structure。
+type graph pipeline printer.然后呢，我们首先设置它的啊shade stage是吧？
+就shade的这个组啊，它的stage count等于我们不是把shade是不是把它放到了这样一个组里面？
+对不对？
+这个组在哪呢？
+是不是这个啊shade great inference对吧？
+已经做出来了。
+我们就等于还是它的类型啊start take cast in 32t里面是set great inference的size啊k。
+然后呢，我们再把它。
+啊的PC这次对吧？
+等于c create infers的data OK，这样这步就完成了，然后呢，我们开始设置啊p vertex infer state等于。
+m vortex e.好的呃，叫做p input assembly state等于我们的m assembly是吧date？
+它的p viewport啊，这个等于我们的m viewport state啊，这样一一填上对吧？
+我们之前都已经设置完毕p rus ter=rus ter啊诶，实际是m rus ter state。
+然后还有什么还有它的b multi t3号。
+等于我们的m sample sample c。
+然后还有p depth是吧？
+这个我们没有设置对不对？
+先把它弄掉吧啊，以后我们再做这边啊，一个to do。
+add depth and central啊，这个to do。
+然后我们继续啊，它的bbl end state这个color blend state等于什么呀？
+是不是应该等于这个东西是吧？
+blend state啊，这个blend state在这边已经组装好了啊，我们在它内部的设置的地方，把它与它上面字相连了，没问题啊。
+所以说它等于绝对值m plant state这个。
+然后呢？
+是layout？
+等于mz out。
+好，然后这边其实还缺一个什么radar pass啊，这个地方。
+先拿掉吧，那我们看一下啊。
+扔到pass的后面，那它等于的是v know handle这边摇to do一下啊to do。
+add underpass.对好，然后它还要填render pass的sub pass啊，这个概念的啊，这个概念的知识我们后面会做讲解啊，会做讲解render pass啊OK，然后呢，接下来。
+pipeline还有它的什么呢？
+base pipeline还有它的相当于父类的信息，我们没有什么父类啊，没有继承的东西，这边的话呢就是。
+啊，以以之前啊，以存在的pipeline。
+为基础进行创建会更快，但是需要指定flex什么flex啊，它的flex啊，比如这边啊。
+它的flex这个东西啊，这个flex。
+只要指定这个东西啊，才能使用上面这个以负雷为基础进行创建啊，需要指定flex啊喂，为什么呢？
+为这个值啊，叫做vk啊pipeline。
+great哎呦，就这样子了。
+vk APP line create呃derived啊，叫做derived bit这个地方这儿好。
+请它设置出来，我把它写在这啊，就可以了，然后呢？
+继续h。
+诶hello create infer的is pipeline index index啊，等于负一就行了好，我们终于把这东西都弄好了，现在愉快的创建啊，如果。
+vk create graphics pipelines啊，那么。
+首先是device。
+dev se啊，get device，然后第二个是它的呃pipeline cache啊，啥是pipeline cache呢？
+这个地方也解释一下啊，pipeline cache。
+啊，可以将相关数据存入缓存啊，这些设置信息都存入缓存，然后呢，在多个pipeline当中使用啊，是这样的，也可以存到文件不同程序调用啊OK。
+然后这边我们不用啊，我们不需要什么缓存，现在啊，我看到okay，然后呢，我们就是p create infer了p create infer。
+呃，叫做pipeline create infer，然后呢？
+就是我生成的那个pipeline所用的分配器啊，最后是要生成pipeline m pipeline好。
+不等于vk success的话啊，那么我们就。
+抛出一行slow呃，叫做slow那个sdd啊，long time ever。
+呃l failed to create。
+点击pipeline OK，那么在此之前，我们还要呃给pipeline一个测试啊，看一下到底有没有被创建出来过啊pipeline？
+如果它不等于vk，那我看到我们这个单脚本是吧？
+干掉是吧？
+vk destroy。
+ib live device.dead wise.那么这里好了啊hi line第三个是location lpr OK？
+好检查一下有没有什么问题啊？
+应该是没有什么问题的啊，没有什么问题，这个在build上啊，那么我们在application里面去写一下它的build信息啊诶。
+the application.我们这里做好了所有的设置，对不对啊？
+然后在这里pipeline正式要去build了啊build。
+好，我们接下来我们要环保看一看是不是能行啊？
+先更一下，先清一下吧啊，每次。
+测试被这个c mic搞怕了啊。
+啊，有语法错误，我看一下。
+嗯呃，这个不接受参数好。
+看一下它这是什么参数啊，第一个是device，第二个是pipeline cash是now是吧，第三个是infer哦infer count缺一个infer count啊，这个地方这样啊就好了。
+因为它可以一口气创建多个盘了啊，哎，错掉了啊，错掉了，我们看一下错的原因是什么，应该很有意思，刚才说到。
+完了，这些列里面讲啊，说唉，这个东西啊呃required parameters这个render pass specified as这个了啊，就是说你把这个render pass变成now是吧，然后后后面怎么讲啊，咱们说render pass必须是value人pass含道啊，必须是这个样子才可以，这是welcome spec。
+从文档上说的啊，这么一个大纲，那么也就是说，其实我们之前写一个to do的问题啊，这里。
+就是这个问题啊，这个问题那么我们在后面讲完了nur pass才能给它设置进去，对吧？
+所以在这里呢，我们就先不去生成了啊，先不生成。
+先把基础的设置都做好。
+再跑一下啊，这也没啥问题啊，因为毕竟没有加什么新的生成嘛，对吧？
+肯定OK，那么这个关于啊拍不烂，我们还有最后一个小遗憾啊，就是没有把render pass给它放进去，那么我们接下来后面的课程要详细去讲解所谓的render pass这些东西OK，那这节课就到这里。
+

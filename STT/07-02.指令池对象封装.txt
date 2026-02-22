@@ -1,0 +1,129 @@
+07-02.Vulkan-指令池对象封装
+
+各位同学大家好，我们之前呢，已经给大家讲了相呃，这个command buffer相关的知识，那么我们这节课开始呢，就要在我们的里面加上相关的内容，那么有一点呢，需要给大家讲清楚command buffer呀，它并不是单一进行分配的。
+啊，那么它是通过叫做command pro这样一个命令池啊，或者说内存池来进行分配，那么为什么呢？
+首先呢，就是说啊，每个command pro它的更新策略不太一样，有的呢，是一起更新，有的是单独更新，那么对于内存的组织上就有很多优化的空间。
+啊OK，那么关于这个wrapper，我们首先要做的第一个就是command for相关的封装啊，就是command for这样一个vulkan的对象。
+还是添加一个新软件。
+叫做怎么样呢cool？
+诶，command point点h。
+然后on点ctp。
+OK啊，这边调整一下。
+好，那在这里，我们首先还是把帽子摘过来。
+这里吧呃，去找一下这儿的帽子啊，好command破这边。
+然后我们写class叫做come on for。
+public private.然后呢，是它的构造函数和析构函数。
+好，然后呢？
+继续之前我们先把它加到application这样一个编译的队列里面啊，include叫做open wrapper，然后呢？
+command pool。
+好，然后更新一下我们的缓存。
+然后再回到这边command pool这个东西呢，在vulkan里面呢，表示对象呢zk command pool啊，这样写。
+vk commander诶没有出提示vk嗯，为什么没有出提示呢？
+清理一下。
+然后再次生成一下。
+OK，那我们直接打吧vk command for，然后呢m command for这边vk，然后handle。
+好，然后呢？
+除了存这个之外，我们是不是还要再存一个device啊？
+对吧？
+每一个由wal CON生成的一个对象，句柄总是要借助于device的点儿后这边，然后撇儿。
+好，然后呢？
+command我们在这边再加个帽子using。
+ttr=scd shared ttr command tool。
+然后static ptr。
+return wait share.好房子破。
+好，那么我们接下来就考虑啊，我们做一个这样的command pro，它需要传入怎样的参数呢啊？
+它需要传入的是如下的参数，第一个的话肯定是device。
+CON device.对device那么第二个参数是什么呢？
+command command pro啊，它所产生的命令啊，command buffers那么一定是在某一个列上执行的啊，某一种队列组的管理下执行，比如说在显示队列组，还说传输队列组。
+啊，还是说等等其他吧，那么这边我们就要传入一个啊s叫int。
+32g的q family index。
+OK，那么除此之外呢，我们还需要有一个东西啊，它叫做vk command pool create flag。
+beats叫做OK，这个是用来干嘛的呢？
+这个一会儿我们啊在进行编写这个函数时候再给大家讲解。
+然后我们把这些参数同样拷给create。
+好传进去device q family index，还有flag。
+好，那么我们现在去到啊，这个command port cpp里面去实现一下，include command port。
+game space f.好好来。
+首先是它的构造函数command pool。
+很忙的破。
+然后参数拷过来。
+这一堆，然后command for它的析构函数啊，command for。
+那么这边呢，如果m command for不等于vk，然后handle，那么我们才会去把它释放掉是吧？
+destroy。
+command for这个第一个参数啊device m device。
+get device第二个参数啊，command pool啊，command pool，然后默认分配器。
+好，然后呢？
+我们接下来要在这里面去给它做构造啊，相关的内容，首先呢，我们要把它device拿过来。
+一个se。
+等于device。
+然后呢？
+我们就要开始啊，来做这个command pool这个对象，那么这个对象的话呢，要做肯定是需要一个create infer对吧？
+人家需要一个create infer叫做vk command pool create infer。
+这样一个东西啊，create infer。
+然后还是要先给它一个啊type vk structure type command pool create infer好。
+然后我们看一下需要填哪些内容啊，首先是它的什么family index啊，就等于这个q family index就好了啊，它要服从于这个队列组的管理。
+那么，像这种队列组去提交啊，它产生的命令那么第二个。
+呃，叫做它的呃，这个flex这个flex就等于这个flag OK，那么我们在这里给大家讲一下这是什么东西啊？
+那么这个flag呢？
+它其实是一个啊指令。
+修改的属性啊，或者说呃，这叫做指令池。
+啊，内存属性怎么去理解呢？
+它的其中有一个参数叫做啊vk amount呃poor create。
+叫做reset command。
+reset command buffer it如果说这个flag啊，传递的是这么个东西的话，这么一个属性，那么代表着什么？
+代表着啊，从这个command池里面所分配出来的command buffer是可以可以啊，分配出来的。
+command buffer可以干嘛呢？
+单独更新啊，可以单独更新或者说单独啊重置。
+okay.那么，如果说有另外一个参数。
+对叫做vk command。
+poor诶，poor。
+呃，create。
+如果这样的一个东西，什么意思啊？
+那说是什么呢？
+就是啊，每一个command buffer不能单独reset啊，必须集体重置啊，为什么说集体重置呢？
+你想想啊，如果说。
+我这个command buffer分配出来的，这command pro分配出来的这么一堆command buffer啊，如果说它们都更新的很频繁，每天都在更新，那么我是不是把这一堆内存分配到同一个空间紧凑链，然后一口气更新掉会更好一点呢？
+它的速度是更快的，对吧？
+所以说呢，它就不允许啊，单独reset必须集体重置啊，集体重置是叫什么呢？
+vk reset come on the poor啊，这样一个命令就能够把它集体重置了，所以说这个东西啊，是不是干这件事儿的？
+好，那么我们根据我们的需求，可以传入这样flash，那么这种flag的话呢？
+我们完全可以啊，给它提前打一个默认值。
+呃，我们提前可以给它打一个默认值好等于AK把它拷过来吧。
+呃，你想要单独去更新每一个嘛，所以说我们要选择这个嗯，单独更新每一个command好，把它默认值等于上。
+okay，那么这样的话呢，我们就填完了它的这个啊，create infer的信息，然后这边我们如果。
+vk哎vk create。
+呃command for那么第一个传入的是device，get device第二个呢是create infer啊，create infer。
+第三个默认的分配器，第四个的话呢，就是它本身啊，它的本体command for如果不等于vk success的话。
+那么slows TD run time error。
+叫做field to create。
+command pro OK这样的话，我们command pro啊就已经完成了啊，就这么简单，我们现在把这个command pro加到我们的application里面啊。
+在这边wrapper。
+come out poor，然后ptr。
+m command for.烙片儿。
+好，然后我们回到啊，这个application它的in里面啊，在完这些东西之后，我们command pro要被弄出来了，等于wrapper。
+command for create常用的参数，首先是device啊m device传进去QQ family index怎么办呢？
+我们通过sub chain啊来获取一下get okay，我们这还没有写get函数，我们去到sub chain里面把这个get函数给补上啊，我们要get的是什么呢？
+啊，其实是它的队列名称呃，看一看应该不在里面啊，我们应该在device里面获取看一下device有没有？
+有啊，get这样叫get graphic q family啊，是在device里面的，所以说呢，我们就在。
+这个command port哎application到这边。
+不是锁不成了，用device诶，那我们这样可好啊，我们这里这边就不传了，我们再更改一下这个函数啊，我们直接去用command for这边，我们就不传这个。
+哎，不传这个，您带走啊，我们去到。
+这边把这个index干掉，我们怎么办呢？
+直接去用这个device获取不就完事了吗？
+对吧？
+get来graphic kill family好，这样就很方便了啊诶。
+啊OK。
+那么就是点value不是option好，那就没问题了，那我们再回到application，这样的话只传一个device就够了，然后后面的话呢，我们有自己的默认参数啊。
+所以诶呃great这边还没有默认参数的添加啊，有很多错误，那么这边我们也给它默认上吧。
+flag等于诶。
+呃，等于这样一个默认参数，在这边加上我们再回到application看一下。
+默认参数OK，应该就没有问题了啊，这边为什么还没有消OK，我们再看一下。
+哦，这边儿这边儿的这个啊，没有消掉它啊q family index啊干掉。
+好再回去啊，反复多遍的修改是吧？
+这是我们的这个城之道啊。
+好，那么我们运行一下看看。
+诶，又发生了错误，那么呃，发生这种错误怎么办来着啊？
+是不是要先习惯性的清一下啊？
+清一下，然后再跑跑看？
+这个是因为我之前并留下了一些痕迹啊OK，这样就没问题了，我们看完了就是这样，没有问题啊，窗口没有问题，干掉干掉机构也不会出现顺序上的问题好，那么这节课就到这里，我们就把盲括给创建出来。
+

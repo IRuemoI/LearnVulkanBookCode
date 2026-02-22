@@ -1,0 +1,16 @@
+我们这节课来实现一下 command buffer 里面这一堆指令制函数，我们先把它一个一个的先拷过来，这是一个，然后去掉它的默认，OK，然后第二个 begin render pass 这行的参数太长了，拉过来一下，OK，下一个 bind graphics pipeline。下一个draw，这个 n 好，把帽子都戴上。好，OK，那么我们第一个实现的肯定就是这个begin，这个命令的话我们肯定要构造一个 begin infer AVK command buffer， begin infer 这是用来向 begin 命令里面传输数据用的结构体，那么叫 begin infer，开始填写它。好， begininf 肯定有一个 s type 是吧？ vkstructure type 叫做 command buffer 的begininf，就这家伙好，然后它的flags，对吧？我们之前介绍过flags，所以等于flag，然后这些 flag 彼此之间都是可以干的，是可以做互相之间做与操作，对吧？或者做或操作都可以看一下。
+
+然后 flags 做完之后，我们还有一个 Infra 叫什么pinheritance，就是继承信息，这个继承信息让它等于这个，但是这个的话就是说如果它是一个空的，我们看这是一个默认的空，对吧？如果是个空的，那也可以给它，没关系。如果它里面有内容，也可以给它这样的，然后我们调 begin command buffer。第一个参数是 command buffer，那自然就是我们这个 command buffer 了，对吧？第二个的话是 begin info，就是这个 begin info 这家伙，好，那这样我们就完成了 begin 命令的录制。 begin 命令录制完毕之后，我们接下来又开始完成这个 begin render pass 这个命令的录制啊。看一下我们直接调一个函数即可。
+
+CMD bind 叫做 begin render pass，这个OK，第一个参数 m command buffer，这个第二个参数是 render pass begin，这么这这个结构体我们是在外面给它填好的，就是这个。OK，第三个是什么呢？OK，第三个的话这边有错，需要填这个，第三个看是什么contents，就这家伙好，也给它填进去。
+
+OK，很，就这么简单，我们再复习一下，这是干嘛来着？这个 render pass contents 是 render pass content render pass contents 要么是 in line，要么是 second command buffers 是吧？要么是记录在主里面，要么是记录在副里面。好，接下来 bind graphic pipeline vkcmd bind pipeline 这个。
+
+好，第一个参数 color buffer，第二个参数叫做 pipeline bind point。什么意思呢？就是说这个 pipeline 它到底是有什么用途？我们先给它写一个用途，叫做bind，叫做 pipeline bind point Graphics 这个用途我们进去看一下多少种用途，看它是可以去用来绘制图，也可以用去做这种compute，就是说计算，谁知道去用也可以做retracing，是吧？它的功能好多，我们这边就用它一个功能，就是做绘制，做 render 用的。那么接下来就是 bind 的这个 pipeline 放去就好了。好，这个就搞定了啊。
+
+接下来是 draw make command bind index bind 应该叫。来，叫 VK command draw 这个命令好，里面填什么参数看一下。首先是 command buffer，第二个是vertexcount，就是这个 vertexcount 就是你要画多少个点所构成的图形，然后是instancecount，填一就好了，现在还不用instance， Firstvertex 是0， Firstindex 是0，对吧？我们重点是这两个参数，我们要画这么多个，画这么多个这个顶点所构成的模型，然后从第 0 个顶点开始画，那这么个意思，然后就是到了 end render pass，那么直接 VK CMD end render pass。
+
+直接一个 command buffer，最后是 end wait com CMD end 叫做 wait CMD end 应不是 CMD end run command buffer OK，这函数太多了，我们看一看它的参数，仍然是一个 command buffer true buffer 诶，这边没有加帽子 buffer 好，OK。
+
+那么在这么多一些函数里面，就是这两个函数，一个是begin，一个是end，都需要给它们做一下防护啊。如果它不等于 VK success 的话， throw SD runtimeerror error failed to begin command buffer 同样在这边看一下，它也是一个 vkresult 的返回值，如果它不等于 VK success 的话，那么 throw SD runtimeerror。OK， error failed to end command buffer OK，我们编译一下，现在也就是编译没有问题，因为我们还没有把它正式加入到执行里面去啊。好，那么这节课的内容就到这，我们就先给到这么多的命令。
+

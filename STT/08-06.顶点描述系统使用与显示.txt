@@ -1,0 +1,32 @@
+各位同学，大家好，我们上节课已经公主的创建以及咱们 model 里面的一些补齐接口，包括数据等等一些补齐，那么现在我们总结一下，我们已经能拿到顶点的相关描述信息了，对吧？就这两个，一个描述顶点，一整个顶点它的分段信息和它绑定的信息，另外一个描述了它一个顶点内部它如何去区分每一个 attribute 这么一个信息？那么我们还做了两个buffer，一个 buffer 用来存储 Vertex 相关的信息，就是一个顶点的颜色，还有它的position，还有一个用来存储它的 index 的信息，就是它的索引。
+
+好，那么我们现在有了存储，有了描述，那么我们就要开始去使用它了。我们现在回到 application 里面，把这个模型先做出来，先看一看模型有没有拿进来这里，好。那么我们在这边去创建一个模型，叫做REP，叫做model，一点 m model。好，那么我们在初始化的时候去把它创建出来，我们应该是在比如 init work 里面去创建，比如说我们就把它放在这里， m model 我们就顺序执行，等于 m model create 好， create 里面是不是还缺东西，对吧？这边还缺一个就是device，把它补上，这边是device。OK，检查一下。嗯，应该没有问题。
+
+好，再回到application，这样的话就可以把 m device 给传进去，这样 model 就生成了它的描述，它的buffer，我们先把这段跑一跑，看 buffer 有没有什么问题，好，出现了个异常，出现这种情况的话，我们最好先是清理一下，好，清理一下。然后再看 validation layer 的报错信息，看会不会出现什么异样的情况。
+
+嗯，看一下 validation layer 错了，里边他说 submit 的时候必须是 ok 这样的一个infra，看一看之前有没有漏写，应该是在 command buffer 里面，我们是加了一个提交的函数，就是这个，我们这边是并没有去写它的类型信息的，它的 type 等于 void function 叫做type，嗯， submit infra。好，然后我们再跑一跑，看看这个有没有出现啊。好，我们看一下这边除了 shader 有报错之外，应该就没有其他错误了，现在把窗口关闭掉也没有什么问题啊。好，那么我们再回到application，那说明现在一切正常，因为我们还没有向管线里面绑定应该绑定的东西啊。
+
+现在我们看一下这个位置是否合理，我们边写边思考，这合理吗？各位，大家想一想是不是不合理？因为在这边我们有一个 create pipeline 的操作，这里面它就是需要什么呢？它是不是就是需要我们模型的相关描述信息？所以说我们把它提前一下，把它提前到我们 subscription 后面，在这个地方，然后我们打个标识创建模。
+
+好，那么在创建模型完毕之后，我们就可以向 pipeline 里面去提供我们的描述信息了，因为 pipeline 是个模板，而我们提供给它的关于顶点的描述其实也是一种模板，我们看一看，原来这边我们都是0，是吧？现在也这大大方方的去写了啊。 m 好，这边是一个数字，可以bindingdescriptorcount，我们应该这么做 auto 首先是 binding whattext bindingdescriptor 等于 model OK，它有什么样的函数叫 get 这个 bindingdescriptors get 一下，那么我们是不是还要把 attributedescriptor 也要拿出来？ attributedescriptor 等于 m model getattribute 好，把它这个数组拿过来扔到这调它的size。然后再把它的内容给它填写进去data，同样 attribute 这边儿也是把它的 size 大小放进去，这边儿放它的data，OK，这样关于这个模板我们就生成了。
+
+那么除了描述信息之外，我们还要向其中在真正绘制的时候去绑定buffer，对吧？你得有数据读取的地方，你只知道怎么读，每个什么意思，但是你得知道从哪里读好，那么我们就应该来操作一下command，对不对？我们用 command 去绑定到底用哪个 buffer 画，用哪个 index 去绘制，我们还要在这里面再加上新的接口，我们现在有 bad graphics pipeline，那么在这边我们仍然还要做一个叫做。
+
+bind，Vertex， buffer 这样的一个函数，那么这样一个函数里面传入的是什么呢？是一个顶点的数组信息，对吧？我们现在是只做了一个buffer，如果说你把颜色跟顶点分开，跟它的位置分开，那就是两个 buffer 了，对吧？好，那么我们把它传入一个 conststd Vector，那么叫做 VK buffers，那么这个叫做buffers。好，那么除了绑定顶点之外，我们还要绑定什么呀？绑定index，对吧？ byte bind 叫做 index buffer，那么 bind 一个 VK buffer 叫做buffer。好，我们再实现一下这两个接口，把帽子摘过来。
+
+好，在这里我们先写一个东西，就是它的offset，因为绑定这个 buffer 的话，它一般情况下就是从这个 buffer 的头开始算数据，这样读一个，对吧？但是我们也可以给它规定一个offset，你可以比如说先向后移 8 个BYTE，然后你再开始读数据，也可以，所以说我们这边先写上 SD Vector 叫做 way case device size 叫offset。
+
+好，那么这个 offset 里面放的是什么呢？放的是多少个 0 啊？我们放这么多个 0 这个意思，那么我们有多少个 buffer 就放多少个0，代表对于每一个 buffer 来讲，我们从头开始读数据，而不是说跨越多少个 byte 去读。好，接下来我们来写vkcmd，那么 bind 或 textfirst 这么一个 Vulkan 函数，第一个是commandbuffer，向这个 buffer 里写什么呢？firstbinding，那么我们从第 0 个 buffer 开始 bindingcount 绑定多少个 verticalust int32T，那么这里面就是 buffers 的size，我要绑定这么多个buffer，然后就是它的内容buffers。
+
+data 好，然后就是offsets，我们就传一个 offset data，好，那么这样的话我们就绑定完了 word text buffer，接下来我们就要绑定一个 index buffer， akcmd bind index buffer 第一个参数还是 command buffer，第二个参数是一个本就是它，那么第三个的话是一个offset，我们当然是 0 了，是吧？就是不去做什么移动了，那么接下来的话就是个它的 index type，也就是说我们对于这样一个 index buffer 来讲，我们是一个index，是一个 int 还是一个 int 10 六 INT32 还是个啥，对吧？我们现在是一个int，那就是一个 int 32 vkindex type an int 32 这样一个东西，同时我们也看到它是anint，我们这样的话再去到 model 里面去做一下小小的修改，在这边我们把它改成一个unsignint，这样更加的准确啊。
+
+好，那么我们这两个函数就做完了，做完之后我们回到 application 里面，嗯，在这边绑定 pipeline 之后，我们就要开始绑定所需要的顶点数组和顶点的 BA indexbuffer 了。bindvertexbuffer，那么 mmodel 看一下getvertexbuffer。但是还要把真正的 buffer 给 get 出来，对吧？然后再将它们包装成一个数组，加一个大括号，就是构造成了一个 tag Vector，绑定完这个之后我们再去绑定 m command buffers，那么 bind index buffer，那么需要一个 buffer m model get index buffer，把这个 buffer 再给它取出来。好，这样的话就 ok 了，那么我们接下来运行一下，看一看效果。
+
+效果并没有出来，我们来查看一下问题，OK，我们看一看，应该问题在这里，我们是 draw 函数，并没有说 draw index 这样子的，那么我们应该用上 index 去绘制，这个是用顶点单纯的去绘制，在这边我们应该补一个函数叫 draw index，这边 size t 是 index count，OK。那么我们把这个函数也补到我们的这个 class 封装里面，把头摘过来， VK CMD draw index，OK，然后这边要传入 command buffer，然后是 index count 同样实例的话我们绘制一个，是吧？然后 first index 从第 0 号开始，然后 text offset 布尔 set first index 0 号。好，然后我们再回到 application 里面，把它换一下，把它换成 draw index。
+
+那么这个 3 我们就把它替换成为我们这个 m model，应该是看一下，应该是这么做，我们在 model 里面再看一看，调整一下 get index buffer，我们应该做一个这样的函数，做一个临时的这串 auto get index count return，我们先 return size，应该是 return m index buffer 不对， index data s size。好，我们这样做，然后还是回到 application 这边，我们就用 m model。 get index count，我们画多少个 index 检查一下，这没有问题。好的，运行一下。诶，这边就报错了。 bad index 链，我们仔细看一看。
+
+好，我们读一读，他说这个 index size 乘以这一堆东西，也就是说他算了一个最终的这个 index 的 size 应该多大？就这个buffer，他说是比我们的 3 要大，诶，也就说我们写成了3，是吧？这段有错误，带大家一起去思考一下，为什么这个地方会错呢？我们看一看，先关掉它说 index 的大小不对，我回到 model 里面看一看我们到底 index buffer 搞了多大啊？这哦，我们说 index 的 size 是这个，这个是正确的吗？其实并不是，对吧？这是它元素的大小，你看 index 在这，那么关于这个顶点上面的 buffer 和index。那 buffer 的 size 是不是都出错了呀？应该怎么着啊？乘以 size off float，对吧？这样才可以啊。我们刚才只是说这个 size 只是有多少个，而并没有加上说它真正的数据，这样的话我们再试一下，哎，这有错还是有错？好，那么我们先关掉一下，看一下时间。
+
+OK，没问题，我们在这里先清理一下，怀疑是这个地方的更改没有同步的问题，好，哎，还是没有显示出来，对不对？还是没有显示出来，这样我先看一看，好 debug 一下。好，各位同学，这边终于找到这个问题啊。是啊，非常这个愚蠢的一个错误，这边应该是一个 word text，对吧？因为这边我们的数组是由三个顶点组成的，所以它的 size 就是3，然后那么乘以一个顶点的大小就变成了这样子，那另外我们经常容易犯错误的还有一个点，就是在 application 里面的这个容易犯错误，大家一定要注意，因为如果说你开启的是 call mode back，那么你这边这个设置就很重要了，你要自己感受一下这个是顺时针还是逆时针为正，这个一定要注意。好，我们来跑一下看一看，哎，好，我们这个三角形就出来了。另外大家也注意这种比较柔和的颜色，看上去比较光亮，比较光艳，对吧？这个就是 srgb 带来的一个结果，我们用 srgb 的方式来绘制好，那么这节课就到这里。
+

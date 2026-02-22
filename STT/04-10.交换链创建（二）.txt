@@ -1,0 +1,117 @@
+04-10.Vulkan-交换链创建（二）
+
+我们这节课呢，来完成啊，这两个家伙的创建啊，这两个家伙的创建，那么创建sop chain的image呢，是比较容易的啊，因为它直接从sop chain里面进行获取就好了。
+我们先回到这里啊，我们看一看，我们已经把需要的东西进行了什么进行了赋值对吧？
+进行了赋值那么接下来呢，我们就需要去获取到啊，从我们的里面把这个东西给获取出来把什么呢？
+把图片获取出来啊。
+在获取图片之前，我们刚才说了啊，上节课说这个min image count就是说它最小的图片数量对吧？
+stop ch呢？
+在创建的时候可能会创建出来比这个image count更多的数量啊，更多的数量。
+那么，我们先做一件事啊，我们也把image count给它记录下来啊。
+image count，咱怎么申请？
+这边是一个。
+okay，我们这个抗体是一个IE的32，把这也做成IE的32吧。
+叫image count。
+OK，然后呢？
+我们在这里要统一换掉啊，这个里面里面这个com呢，说实话比较多余啊，因为呢，我们用image这个数组去做reset的时候啊，就已经把这个com含进去了，但是在这里我们还是做一个记录。
+OK，没问题啊，把它放进去imagine count imagine count这边也是啊，这边也是。
+好跑一下，看没问题。
+好没有问题，接下来呢，在这边我们刚才说了啊，我们给到image count，现在是什么系统能兼容的最小数量是呢？
+通过create啊image count呢？
+可能会会发生改变啊，就是它能创建的，比我们给它传的要求这种mean的数量更多的图像，所以说我们先拿出来。
+直接写一下系统，可能创建更多的image。
+当前的image count是最小数量。
+好vk gets w chain。
+images kh 2，OK？
+然后这边我们传进去m device。
+get device，然后第二个参数是subtends wot chant，第三个是I magin count的。
+地址传进去，最后是images啊，我们还到count，先把它指空，然后m stop chain。
+做一下resize sub chain images啊，做一下resize。
+image.好okay，把它扩大一下，扩大一下之后呢，我们再次进行获取，把这个图片给获取出来。
+好那么传进去的就是它的data。
+同一行更加清晰啊。
+好，那么接下来其实我们是需要做什么？
+做image了是吧？
+做image view了那么做image view之前呢？
+我们先做一个工具函数啊，就是来创建一个image view，其实image是一个在后面，我们会把它做封装啊，在这里我们先单写一下，因为不太一样。
+它不一样，在哪儿呢？
+在写vocal引擎的时候就会发现啊呃s创建的image是单独在我们剩下创建的image，是由我们自己管理的啊，所以它不一样啊，所以不一样啊。
+好，这里我们加一个华为函数。
+这八位函数是为了创建vk image 6的。
+great leave.那么，传入的参数啊，首先是一个week image，我们要给哪个image来创建？
+这个image view，然后它这个week image的format是什么？
+然后呢？
+我们再给它出一个vk image expect flex啊，这个是什么呢？
+就是说我们来创建这个image view的时候啊，去管理这个format的什么啊，去管理这个format image的什么，对吧？
+对吧aspect flag，因为它的管理东西还是很多的，我们看一下。
+唉，它可以管理啊，把它管理color管理，把它当做深度进行管理，把它当做颜色进行管理，把它做这个模板进行管理，对吧？
+把它当做啊，把把它这么一大堆东西进行管理啊，我们最常用的就是前三个是吧？
+啊，这样这里呢，我们是把它当做颜色进行管理啊，当做颜色进行管理，最后一个是an int 32杠7 mip levels。
+就是说它的一个mip级别啊，我们默认已经好了，因为我们现在还没有使用mip啊，就是一个多级的lod的一个分分层显示图像技术啊好。
+我们去到这里实现一下。
+把帽子也摘过来。
+好，我们看一下啊，首先第一步啊，我们要create一个image view，我们就需要干什么呢？
+是不是先做一个vk image，然后view create infer对吧？
+先做一个create infer。
+然后呢，叫做view infer准备置空啊，置空之后呢，我们view infer呃s type等于保证常态是吧？
+vk structure type。
+叫做image view，great infer好，然后v view image infer，它的image等于我们传进来的image view infer，它的。
+view type哎等于v ka match view type 2d啊，是一个2d的图像对吧？
+view infer。
+好format等于我们的format传进来的，这个format啊，这个format是什么来着？
+eg ra 8是吧？
+eg ras rd啊，这样一个图像格式，然后呢？
+view infer的三。
+sub resource range，the aspect mask等于我们的aspect flags啊，就是说我们把它当做什么来解析，我们关心这个图像方面对吧，肯定是color啊，对吧，刚才大家看。
+然后呢，考一下吧。
+它的this mip level，mip level=0。
+啊，也就让它等于我们传进来这个levels。
+好，然后。
+呃，level count哦，不对，level count是这个啊，这个地方写错了。
+这边应该是零啊，就是说它基础的这个mip lab级别啊，这边的话就是有多少个mip labs啊，多少个mip labs，我们这边应该升过吧y是一啊，就一个级别。
+这边默认是一啊，一个级别好，我们继续fill infer呃还是sub？
+那么，它的base every这这等于零啊，零号every然后。
+不要它的layer count=1。
+就只有一个链嘛，我们我们又不是vr程序，对吧？
+不需要那么多的链，然后接下来啊，我们就要去做vk image view了啊，image view这样image view。
+初始化v kl handle。
+然后呢？
+如果vk great image view这个函数m delays。
+get device.第二个参数是create infer啊，就是这个view infer，第三个是分配器，我们先闹掉，最后是我们要做的这个view啊，叫做image view。
+不等于如果，不等于位置success。
+那么就slow run。
+run诶，runtime。
+l.叫做failed to great image view in。
+好，最后return image view啊，创建好的这个view的handle的值给它return回去啊，让回去好那么这个mip level啊，这个view image啊，view image就已经创建好了，就这个函数就写好了啊。
+写好之后呢，我们要去到上边给每一个image去创建一个什么image view啊，给每一个image去创建一个image view。
+那么在这边，我们首先要做的第一件事，创建image view，哎image view。
+好，那这样我们首先啊m。
+image view，我们要把这个家伙给resize一下啊，让它来承受这么多啊，承受多少呢？
+承受image count各图像的view啊，然后在这边for。
+inter I=0 I小于m image count加加I在这里面，我给它创建了是吧？
+给它创建。
+怎么去创建呢？
+m sub chain image views的第r一个等于。
+great image view.四首先啊，第一个参数是s option image的第I个，第二个参数是啊，第二个参数是format format，我们是不是刚才已经把它存下来了是吧？
+这里啊，这个format给它。
+第三个参数是它的aspect，我们这么写啊vk image呃s color比特，我们我们发现它的颜色啊，这个image没有关关注，或者说关于image的啊color。
+OK，最后我们明白了吧？
+一啊，明白了吧？
+一只有一个来往是吧？
+零对吧？
+是零这个明白了吧？
+OK，创建完毕，创建完毕之后啊，不能掉以轻心是吧？
+我们应该在这个。
+析构函数的时候啊，在这里去给它做一下析构，如果m啊，比如我了啊for呃count呃auto。
+叫做image view在m swap chain延伸views，对于每一个元素，我们都做一次析构啊vk destroy。
+image 6。
+那么，传入的是device get？
+get device第二个是image view啊，那么就是这个image view第三个是一个分别函数啊，好，这样就OK了。
+嗯，那么在这边呢，我们并没有去对image做什么操作，对吧？
+没有对image做操作，就是说没有对这个这家伙做操作，为什么它有suption创建有suption销毁啊？
+好，最后我们去到里面啊，看一看瞧一瞧，确定确保一下啊，首先销毁，然后是device是吧，然后surface instance文字化没有问题，这样一个顺序销毁啊。
+okay，我们跑起来看一看。
+好，没有问题，关掉好，我们也确认一下啊，是否已经生成了，这边打个点。
+看一下这家伙里面有三个啊okay，三个里面这边有的生成了没问题。
+好，我们这节课就到这里。
+

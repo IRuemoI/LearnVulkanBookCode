@@ -1,0 +1,28 @@
+好，各位同学，大家好，我们上节课呢，已经做了相关代码的整理，修改了相关的shader。那么这节课呢，我们首先去到 buffer 里面，因为 uniform buffer 它本质上来讲还是要把数据存到 buffer 里面的，那么在这里面我们就要专门写一个静态函数，为我们的 uniform buffer 来生成一个buffer， static PTR create uniform buffer，那么仍然传入的是 device 以及有些整齐device，以及一个 VK device size 以及我们的data，这个 data 可以是个空，它默认可以先是个空。好，那么我们去实现一下这个函数。好，其实整个过程都差不多，我们要拷贝下来，在这边buffer，OK，那么这边传入device，传入一个size，那么后面的参数是什么呢？是usage，就是你到底是用来干嘛的？那么我们这边并不是用来传输数据的，它是 vkbufferusageuniform bufferbit，诶，这里我们是一个 uniform 的用处，那接下来就是它的一个properties，它有什么样的property？那我们这边就肯定不能用 localbit 了，是吧？ device localbit，否则我们就没办法从 CPU 端更新了。
+
+这边应该是一个VK。 memory property host visible 是 host visible 能不能看到？并且它是一个VK？ memory property 叫做 host coherent，就是我们可以通过 VK map 的形式，那么直接把它更新更新，更新完了之后就立马显现，是这个意思，更新完之后就立马就到咱们的 buffer 里面了，不用再进行Flash，OK，这就是我们的这边的话，我们还要判断一下，如果 p data，那么不等于now。 PR 的话，那么才会去进行数据的更新，否则的话我们只是把这个 offer 建立出来而已。
+
+OK， offer 这边就搞定了，那么接下来我们要做一个描述符池，描述符的分配池是用来干什么的呢？我们都知道，是吧？ command buffer，你是从 command buffer pool， command pool 里面给分配出来的，那么同样 descriptor 这样一个 sets 描述符集，它也是从我们的 descriptor 的这个 pool 里面给搞出来的。
+
+OK，那么接下来我们就创建一位 descriptor pool。然后再为他做一个CPB，OK，同样我们把这个脑袋先拷过来， plus descriptor poor，OK，然后再为他写上智能指针。好。 start 小二。 make sure 好，然后先把它加到编译链当中，方便我们使用for，然后生成下缓存。
+
+OK，那么我们接下来就要开始写这个 Vulkan 端的这个 handle 了，是吧？那么在 Vulkan 端的 handle 叫做vkdescriptor，然后for，诶，descriptor，然后 for 这么一个东西 for OK。 now handle 那么既然有这个的话，就一定要什么device，是吧？ m device now PTR OK，那么这边就要传入 device 作为参数了，同样 create 里面也得传入device。
+
+好，那么我们接下来考虑这个 descriptor pool。想要被创建出来，它就需要知道一定的信息，得到什么信息，就是说你到底首先每一种，我们把这个写在这里，接下来的话需要知道什么呢？每一种uniform。 form 都有多个才能为其预留分配空间，对吧？比如说 uniform buffer 有 7 个，它们每一个大概都有多大，是吧？就给他分配过多大的这个空间，然后这个 texture 的 uniform 有多少个，那么它也要为其预留空间，但这大家注意一个点，容易搞混的所谓空间并不 uniform buffer 的大小，而是什么呢？根据每种 uniform 不同，那么描述符就不同，对吧？所以描述符不同的话，所以说空间指的是描述符的大小这么个意思，这个是蕴含在系统内部的。
+
+好，那么知道这些事情之后，我们就要考虑怎么去描述了，那么我们需要做一个改动，我们找到这个 layout 这边，我们曾经是不是做过这样的一套参数体系，对吧？那么好，我们现在把它给做一下更改，让它能够通篇进行使用。就是说我们要很多地方用到这样的描述，一次设置处处使用，我们把它拿出来，然后我们先这样子，在这里面，我想一下我们可以在这个外边，嗯，在这里我们加一个文件，我们叫做 description 点 h 各种各样的描述结构，我们把它放在这里，那么这边是首先。 pragma once 然后我们先把这个东西，把它先放到 application 里面，我们先把它引进来，方便我们接下来这个有提示description，然后我们把这个更新一下，去到 description 里面，我们在这里把这个结构放在这，我们给它改个名字，不叫班丁 parameter 了，我们就叫做 uniform parameter，它描述的就是我们这个需要的所有 uniform 的这么一个描述信息。
+
+ok，那么接下来我们就要对 layout 进行一次修改，我们需要 layout 这里，然后把这个结构，我们就把它干掉了，看一下啊。OK，把它干掉吧。
+
+那么在这里面我们是有一个这样的数组，是parameters，对不对？我们直接给它改名 uniform parameters，它的一个数组，这边的话我们是一个一个添加，对吧？我们现在也不一个一个添加了，我们这样子直接 set uniform parameters 传进来一个这样的一个数组parameters，好，然后把它去掉，看一下有什么问题。嗯，OK，我们是没有加头文件，把头文件给它搞进来，那么include。嗯，OK，我们把description，我们还是把它放到 Vulkan Wrapper 里面，把它放进来，我看一下有没有。这样子，然后 description 好，嗯，还需要把它给生成加保存好，看一下在文件夹的结构下它是不是0。没错的，就在这个 Wrapper 下面，所以说我们是把 description 这个家伙给放到了 Wrapper 下面，这样的话结构会更加的清晰一些。
+
+好，那么关于这个 descriptor set layout，我们就这样去改，这样改之后去到这边原来的这个一个一个 push 的，这样我们就把它去掉了，然后这样换进来，然后 parameters 等于我们的 parameters 啊。OK，下面一切都没有什么其他变动了。
+
+OK，没问题，这样之后我们就得修改一下application，这边我们有个之前有一个create，在哪里？在这里 create application 这边的话有一堆这些内容，那么这些内容我们怎么办呢？由于设置这种 layout 也好是用于 form 相关的东西，我们是一次设置通，处处使用。你不光是用来生成layout，你还可以生成，用来生成pool，对吧？描述这个东西好，那么我们把它给放到哪里？放到 application 里面不就好了吗？这边我们再改一下。我们把它放在这里面，在这个地方 SDB Vector 那么叫做 Wrapper descripdescriptor，OK，在这边我们还要去加一个东西吧，加一个命名空间 NAMESPACE wrapper，把它拿进来，好再回到application，我们这修改的也蛮多的，希望同学能跟得上，然后走到点 h 这边我们要做的事，它下面应该有一个 uniform parameter PR。
+
+m uniform parameters 这么多的parameter，那么我们接下来就要构建这个东西，对吧？所以说我们需要加一个函数，加一个是加在这里吧。 create uniform parameters 好，然后我们把关于 parameter 的一些生成的东西我们放在这里， parameter 的参数的生成全都弄在这里，然后我们再把这一段在这里，把这段都拷过来，OK，拷过来 create uniform，这，然后这边就不是，这个是不是应该是 uniform parameter？哎，这样子，然后这边也是，然后把这调，我们就单纯的来生成这些参数，每生成一个参数，我们就把它 push 进去， uniform parameters。
+
+push 进去 Vpparameter 这边一样， uniformparameters push object parameter。好，那么我们现在这家伙里面就装了所有的我们关于 uniform 的什么描述信息，对吧？那我们再回到这是不需要生成了，都不需要生成了。那么在这边就有一个非常简单的操作，是不是在这边直接这样，我们再简练，再简单一步，我们会越来越简单，是吧？越来简单。那么在这边我们直接这么干，也不 set 了，我们直接，唉，把这个参数装到这个 build 里面去，这个函数就不要了。这还不如直接不要了。
+
+好，这样子搞，然后呢？ parameters 这样等于parameters。好，我们在 build 的时候直接去把这个参数传进来就好，这样的话我们就省了很多东西，对吧？你像在这个 application 里面，之前我们还需要有个这个，现在这个函数也可以不需要了，就这个 create 函数不需要了，把它去掉之后我们怎么办呢？我们回到 init market 这边去掉，在进行所有的 descriptor 相关的东西的时候，我们先 create uniform parameters，准备好所有的描述参数。然后它生成出来，然后直接 build m uniform parameters，这样的话是不是就方便了很多，对不对？好，那么绕了这么多弯，看一下时间，OK，那么这节课的时间已经很多了，那么我们就把这个关于 descriptor pool 这个创建我们就放到后面啊。
+

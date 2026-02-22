@@ -1,0 +1,32 @@
+各位同学大家好，我们这节课开始将命令缓冲填充起来，应用到我们的 application 里面，那么命令缓冲的话，我们需要做出来 n 份，为什么要做出来 n 个命令缓冲呢？是因为subchat，就这家伙里面他们是有 n 张图片的，对吧？用来被渲染，那么 n 张法它就会产生一个异步的情况，比如说 0 号图片已经被渲染完毕送去显示了，那么 1 号图片已可能正在被渲染，那么同样可能 1 号图片在被渲染的同时，那么 2 号图片已经被递交上去准备渲染了，那也就是说会产生两帧图片它所对应的命令同时被提交的情况。
+
+那如果你只用一个 command buffer 肯定是不足够的，因为它被提交过一次之后就不能被提交第二次。好，那么我们接下来就开始做一个数组，这个程序写完大家应该就都明白了。Vector，然后是 Wrapper command buffer PTR，我们存一下它的智能指针 command buffers，好，那么我们还是在 init Vulkan 这个地方去给它生成一系列的 command buffer for。那么这样，首先我们先把 command buffers 给它扩容一下，扩容的话就叫做。 Precise.
+
+这边还没有，我们去到 solution 里面补这个函数，首先我们要知道他图片的水， no discard auto get image count cost return m image count 第二个 no discard auto get swap chain return m swap chain 好，就补这两函数，然后我们再回去这边就是 get image count，我们把它扩容成这么多份，每一个 image 我们有一个 buffer 去提交，然后 for int i 等于0， i 小于。
+
+And sub chain that image.
+
+好，在这里面的话，我们初始化一下这个，每一个 command buffer 打一个等于 m command buffer，等于一个叫 wrapper command buffer create。那需要传进去什么呢？一个是 device m device，一个是 command pool， m command pool 这家伙，然后是不是secondary？我们现在就不secondary。不，我们是主缓冲区，主命令缓冲区。好，那么做出来之后我们要就要开始给它录入命令了，给这一个家伙去录入命令。
+
+那么我们知道录入命令的话，首先一定是说要做一个它的begin，对吧？要做begin，那 begin 的话就会有一个begininfra，我们先看一看它的begin，这它需要传入的是什么呢？是这个ucblanks，还有一个它的继承信息的话，我们现在既然做的是一个主命令缓冲区，就不需要传这个继承信息了，因为它并不是一个二级缓冲区，对吧？好，那么我们 begin 的话有没有特殊要求这个参数没有特殊要求，我们并没有特殊要求，对吧？我们既不是一个只提交一次的，又不是一个这个二级指令缓冲，是吧？然后那个渲染位于，也位于这个一个 render pass 当中的这个二级指令缓冲也不是，然后我们也不是说就是允许再次提交的这种指令，那么我们既然三种情况都不是的话，我们直接就给它默认为 0 就行，就没有什么特殊求，对吧？就是一个普通的指令缓冲啊。好，那么我们直接 i begin 就好了，然后同样我们也把它这个 end 给它打个包围啊。好，在这中间的话我们就要开始做了，我们就开始做什么呢？那么我们就开始构造这个 render pass， begin render pass，我们先写在这里，看一下它需要什么样的接口，需要什么样的参数。
+
+begin render pass begin render pass 我们看一看这样一个函数里面我们之前设计的是需要 render pass begin 的info，是吧？还要有一个这么一个标志位，好。那么我们先做第一件事，做那个 render pass 的 begin infer，我们可以 render pass， begin infer 这样一个结构叫 render begin infer。好，我们给它做一下赋值，首先 struct AK， struct type render pass begin infer 好，然后它的里面有几个参数需要填写，一个是 render pass，这个参数等于我们的 render pass，这家伙 get render pass，然后它的 frame buffer，那么应该等于它现在是第 i 个，对不对？我们应该从 suboption 里面拿出第 i 个 frame buffer 给到它与这个怎么说这个？布的这个编号要与这个 command buffer 的编号要一致，他们的 index 要一致。
+
+好，我们看一看这个地方有没有取 frame buffer 的接口？没有。好，那么我们再补一个接口， all discuss auto get frame buffer 传入的是一个 int 值 index return m soft chain framebuffers 这个的 b index 好，我们看没问题。那么它的 framebuffer 就等于 swapchain get framebuffer 第 i 个好，然后它的接下来几个比较小的参数， renderarea offset，这个很容易理解，对吧？就是它的这个在画布上，在这个 framebuffer 上，它这个 render 的起始地点，起始位置，那肯定从零点开始，对吧？我们要全部绘制，然后 renderarea 是不是还有一个x，对吧？等于，应该是等于什么呢？ m swapchain 这个 m swapchain。
+
+bet。这又缺了一个接口， option 里面缺的东西还蛮多的，这边应该还有一个 get 到 option 的这样一个accident，就是它的长宽范围， no discar auto accident return m option accident。好，然后回到这里，我们继续 get accident。
+
+好，填写完这些东西，我们还是需要有一个东西，这个东西什么呢？叫做 Wek clear value。这个 clear value 是什么东西呢？它规定了你每一帧在绘制之前就要把整个 framebuffer 对应的这个画布去给它清理一遍，那么请问你是用什么样颜色去清理它这个意思？所以 clear color 我们是用什么颜色去清理它呢？那么我们用黑色来填补，0.0，0.0，加个 float 0.0，最后阿尔法1.0。
+
+好，然后 render pass begin infer 它的 clear value count，我们现在只有一种。那么到底为什么这会有个 clear value count？这个我们后面就是做深度的时候就知道了，那么 p clear values 等于谁呢？就等于 clear color，OK，那么这一步也做完了，做完之后我们就可以正式去调用了 command buffer。
+
+begin render pass 诶，在这已经写了好第一个参数，把 render begin info 给它放进去啊。第二个参数什么？这个我们是一个默认的叫 VK subpass contents in line，是吧？就是说这个绘制过程就是在主命令缓冲区了，我们也不需要改动它，这样就可以了，默认是这个值没有问题。然后我们接下来下一步，既然 begin 的话就必须要干，必须要有一个end，是吧？end，render，pass，看一下参数，没有什么需要在它俩中间，我们就开始做这一个 render 的这么一个操作了啊。那么 render pass 它的操作主要分为几个内容，首先肯定是绑定一些东西，然后执行一些东西，对吧？那对于我们现在这种简单的情况，直接就办了 Graphic pipeline 就可以了。那么需要传入的是一个 pipeline m pipeline 就是它 get pipeline a，好，OK， pipeline 还需要补一个接口，看我们的这个 Web 随着书写的进程你就补越来越多的东西。
+
+诶，之前这个名字感觉有点不对，缺了个 e 也给它改一改，然后好在这边的 pipeline 缺了个e，改一下，这样的话保证我们拼写准确，这些手误也要随手改掉。好，那么我们会说这个 pipeline 的话，我们是需要 get 到这个家伙的，所以说我们要补一个接口，看一下补到哪里呢。到下面来，好，这个可以删掉，我们已经做完了。
+
+return pass no discard auto get pipeline return m pipeline。
+
+好，现在我们去到 application 在哪里？这里？ m pipeline get，诶，在上面 get pipeline OK，这样我们绑定这条pipeline，用这个 pipeline 去做绘制。那绘制什么呢？大家还记得吗？就是我们原来做 pipeline 的 shader 的时候，里面已经写我们传入三个点这件事，对吧？我们回忆一下，在这个顶点 shader 里面我们三个点，对吧？它的位置和颜色已经完全写在里面了，所以说我们要绘制的点是一个三角形，是由三个点构成，所以我们可以在这里要用draw，然后传入就是3，那就三个点。
+
+OK，那这样啊，我们的命令就录制完毕了。通过这一系列的调用，我们就从它的 begin 到它的 end 之间就已经录制完了，而且录制了 n 个，这个 n 就等于这个数量， n 个bytebuffer，OK，那么我们还是先跑一跑好，看一看 validationlayer 有没有什么错误的输出。嗯，没有问题，没有问题。然后消灭掉也没有问题。嗯，好，OK，那就没有问题了，那么这节课就到这里。
+

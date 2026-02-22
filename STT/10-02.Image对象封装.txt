@@ -1,0 +1,210 @@
+10-02.Vulkan-Image对象封装
+
+OK，各位同学大家好，我们这节课呢来先实现一下图片类，那么这个图片类呢，我们还是要添加一个文件啊，包装一下image点h。
+然后这边点cap OK，然后同样啊，我们要先拿一个帽子，帽子拿谁的帽子呢？
+拿他的帽子吧。
+呃，image。
+把这个去掉。
+可以glass。
+诶public private。
+然后image构造析构。
+上面呢using r等于对吧？
+这个大家都已经很熟了啊，非常优良的小方式static etr create。
+return cna me.share然后emit。
+OK啊。
+帽子我们就写好了，这个壳子，然后呢？
+我们先把它放到f里面吧。
+open map image，okay，然后我们更新一下保存，okay？
+好，来到这里啊，那个一般情况下呢，我们现在要考虑对不对，我们要做一个image的本体，这个的本体呢，它叫做vk image这个东西。
+m image now handle.那么，接下来第二个就是vk device是吧？
+它的三件套之一的memory啊，然后叫啊image memory。
+OK，你看呃now。
+handle那接下来呢，是vk image view对吧？
+最后一个三节课啊image view v know handle。
+OK啊，然后整理一下。
+那么，通常呢，在有这样的这个要做这些句柄对象的时候啊，我们肯定要拿进来一个device是吧？
+device OK，然后接下来我们来看一看它的构造函数怎么去做啊？
+因为image涉及的参数比较多，所以呢，我们来逐步添加这个参数啊，首先我们添加一个device。
+好，我们来把它做成竖排的，因为参数实在太多了啊。
+然后我们啊先就到这个cpp里面看一看啊，我们先把它写到这啊image cpp。
+好，然后image它的构造。
+match细构。
+OK，这边呢？
+我们先写上const device。
+ptr device，okay诶。
+先把它进行赋值。
+好，然后我们来看啊，首先我们肯定是要创造一个image的，那么它会有一个什么呀？
+就是vk image create infer这个东西对吧啊？
+create infer我们把它写成image image create infer吧。
+然后image create info放到s type，我就等于vk k structure type image。
+great infer OK，那么我们接下来看啊，首先它肯定要一个什么长度和宽度，对吧？
+所以我们要把长度和宽度作为系数添加进来啊。
+int那么。
+宽度杠四。
+in that e好，把这两个拿过来啊，一边做啊，一边往里面添加。
+这样的话呢，其实大家也会记得比较牢固是吧，很多东西都会忘掉。
+这边in infer我们找到它的这个accident的宽度等于宽度。
+同样，这个accident。
+的高度等于高度好，那么接下来我们还有什么呢啊？
+是不是它的format对吧？
+它需要一个format参数啊，那么我们去到这边把format给它拿进来。
+啊v行吧vk format。
+AK和net。
+format OK，这个加进来啊，一个一个来不着急是吧？
+别有什么说啊，好format=format。
+这个品牌的什么来着？
+是不是rdb rdb a什么这些东西对吧？
+那么接下来的话呢？
+我们再看一看啊，它还需要什么？
+它是不是需要一个image type啊？
+看一下image type这个什么类型呢？
+我们看一看啊哦，它是一个这种类型啊，那么它决定它是一个2d的图片还是一个什么3d的一个纹理，对吧？
+那3d纹理呢？
+我们在这套课程当中呢，还没有涉及啊，应该是type，然后这样，然后image type。
+这时候啊，它也可以过来了。
+它等于image type。
+好，我们再看看接下来还需要什么啊？
+那么我们除这个还需要它的telling啊？
+telling这个东西telling什么来着？
+是不是啊？
+这个横平竖直对吧？
+以行为为主啊，这个零零零一零二零三啊，还是那种以块儿为主，对吧啊？
+这样的一个分配方式。
+那么，它有零的话呢？
+它的类型看一下哦image，它好再回来这个地方补上去。
+const const vk image tiling使用平板啊，没错。
+tally把它拿过来。
+等于咖喱。
+还有什么东西啊？
+我们再看一看。
+嗯，应该还有它的usage，它就是用来干什么？
+看一下对usage OK，我们再去考一下它的啊image usage flex啊。
+好，我们去到头文件。
+usage,OK?去到这边。
+usage它是用作颜色还是用作depths呢啊？
+对吧？
+这个意思。
+那么我们看一下啊，还有什么东西呢？
+还有它的sample count啊，sample哎，samples那么这个samples的话是什么类型啊？
+是这个东西啊，它是嗯，只采样一个bit还是四个bit八个bit 16 bit等等啊，那么这个会用在我们制作这个抗锯齿的时候啊。
+好，我们去到image点h嗯，把这个参数再补上。
+sample,OK?三炮。
+好，那么剩下的东西呢？
+我们就大概填一下，看一看啊，不需要这个特殊指定的，首先呢VIP levels啊，这个是我们在后面用的，现在我们先给它写成一。
+然后呢？
+是它的呃，这个every layers那么是一张图是吧？
+就是一那么还有什么呢？
+还有image这个东西的什么initial layout，我们就给它一个vk image layout undefined是吧？
+这个给大家先讲过啊。
+这是一个数字化的格式，那么另外的话呢？
+关于accident啊，还有一个维度啊，还有一个维度accident的depth，我们给它先设置成为一啊升一，这个也先不用管它。
+然后呢？
+再看还有什么啊？
+还有它还有一个东西叫做sharing mode啊，它只能给一个队列使用啊sharing mode啊，叫excursive啊，就独占只能给一个队列使用好，那么这一堆东西啊，终于做好了啊。
+做好之后呢，我们就要开始生产它，如果v pay great image来就这么简单是吧？
+传进来的是一个device device。
+get device，然后是infer image great infer。
+然后呢，默认分配器，然后就是它的这张图啊，叫做image。
+如果不等于vk success的话，那么我们就throws dd runtime error。
+error failed to create image.好image终于快快用完了啊，弄完了，那么接下来就是一些比较简单的工作了啊诶，简单的工作是什么呢？
+其实就是分配啊，显存空间对吧，或者说分配内存空间吧，这样比较准确啊。
+好，那么在这边首先vk memory，我们把这样直接拷过来啊，我们以前写过这个东西在buffer里面啊buffer这边。
+呃，在这里啊，创建显存空间对吧？
+这些东西其实跟它怎么着都是差不多的是吧？
+首先get，然后做一下分配信息啊，做一下分配信息好，我们先将这个东西啊，先把它扣过来。
+呃，把这一段给拷过来了，创建显存空间好，这一段拷过来，然后。
+分配内存空间。
+我们检查一下啊，这边的话呢get是不是应该变成啊get的话呢？
+应该变成什么变成vk get image memory？
+那么这个地方呢？
+就应该是m image对吧？
+这样的话，得到它的想要的那个内存的requirement，就那些需求要求是吧？
+然后呢？
+它去做了一个elk infer，就这个东西，然后size呢？
+就是这个size对吧？
+elk infer的呃，这个东西等于find memory type，然后这样子对吧？
+哎，这个地方的话，我们需要注意，是不是有一个需要传进来啊？
+对吧？
+另外还有一个这个函数也要靠近过来啊，那么我们先把这个函数靠近过来啊。
+find memory type这个我们就不讲第二遍了，过了。
+memory还有match这边。
+好，然后换一下名字。
+然后呢？
+把这一堆啊，去到函数里面去到类里面声明一下。
+诶，很好。
+好没有错了，然后这边的话呢properties什么来着？
+是不是访问权限对吧？
+它是logo bit还是host visible等等对吧？
+所以说呢呃，就需要在。
+我们的这个构造函数里面再加一笔。
+这边儿cons叫做vk memory啊，property lags。
+叫做pro啊吧。
+好，然后我们再过来继续补上函数啊，上面这个是什么image？
+对不对？
+这个是什么是duffer的啊？
+好，那么properties也有了，那么接下来呢？
+我们就是开始分配这个存储空间给它。
+那么用的东西呢？
+还是alloc memory就可以了啊？
+这一堆，然后分配的是image memory，这个东西好，这样的话很简单是吧？
+就是这个东西也分配完了，那么这边我们要我也可以banned一下是吧？
+banned immense memory，把这两个东西给在一起。
+那这谁呢？
+第一个是device啊，这个是device哎，真的是无处不在啊。
+哪哪都有你，然后是image，然后是memory image memory on set呢，我们就给到零啊，不需要offset，不需要说移动多少格之后才绑定是吧？
+然后接下来我们要创建啊，创建image live了。
+诶，这边我们专门写一写啊，因为它需要一些参数啊image 6的话呢，它首先需要一个vk image view，create infer是吧？
+下面有东西image view create infer嗯，然后这样。
+之后我们来填写它的参数啊，它的type=vk structure type image create info这个玩意儿。
+好，我们接下来看它，这里面需要填哪些参数啊？
+首先第一个是不是view type，那么view type的话呢？
+那么应该等于啊，我们这样来写。
+就是上面的这个tab。
+呃，这个对不对？
+已经有一个type了啊，那我们根据这个type来做。
+它等于vk image type 2d吗？
+如果它等于的话呢，那么我们就给它vk image view 2d。
+这样一个东西对吧？
+否则的话，我们给它vk image 6什么3d啊？
+我就这样给是吧？
+就临时这么去写也是可以的啊。
+然后虽然说三句用不上，对吧？
+这边稍微严谨一点啊，然后呢？
+它的format那么就等于我们的format。
+然后呢，接下来就是它的啊，这个叫做image，那么等于我们的image。
+随后，sub resource range等于首先啊，它的第一个aspect mask就是说它做颜色还是作为深度来进行访问对吧？
+所以说这边呢，关于这个aspect mask。
+啊，我们就又要作为一个参数进行传递了呃，我看一看这个参数它是什么啊？
+还是回到image这边就是memory了？
+那下边这个什么呢诶，怎么又这样？
+下面的话就应该是给到这个image view，对吧？
+它的vk呃叫做看一下呃。
+可以可以images pfs。
+然后叫做s pact flex OK，那么我们把它拷过来啊，这个是标注一下给到六。
+OK，然后这边的。
+ask=aspect啊flex OK好，我们看一看啊接下来这个里面是不是需要什么东西呢？
+还是saber re sound strange，它的base mip level我们让它是零啊，然后这边我们后面再说啊，然后呢，它的level count啊，我们诶。
+sub strange level count同样等于一只有一层啊，if left if然后呢？
+base every layer sub to space。
+every layer我们还等于零号，然后sub resource的layer count我们也只有一张好了，这样的话，里面这个又也完事了啊，这边我们给它创建出来。
+如果vk create image view这边device，get device，然后呢，create infer啊image view，create infer。
+呃，然后就是它的now ptr，最后是这个m image view。
+如果它那么不等于诶，这边缺括号啊，不等于AK success的话。
+好，那么我们throw CD brown time error。
+failed to create image view好，OK呃，那么接下来呢？
+我们来看一看啊，在这个image里面啊，三个东西都创建完毕了，我们这边呢，就需要去做它的什么析构函数是吧？
+第一个如果m image view如果不等于vk，然后函导的话，那么我们需要把vk destroy掉。
+image view这边是device，get device。
+第二个参数m image view，然后呢？
+OP tr。
+OK，第二个，如果I am image buffer。
+啊memory主副等于vk，然后含导的话，那么我们就。
+啊，释放掉叫做vk啊free memory。
+那么m device。
+by device呃，然后是m image image memory now Peter。
+第三个，如果m image。
+不等于vk，然后handle那么vk。
+m device该device。
+呃m image，然后是now PR好那么事，到如今啊，我们这个image就算创建完毕了啊，但是呢，现在还没有任何的数据是吧？
+哎OK，那么这节课先先到这里。
+

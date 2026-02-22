@@ -1,0 +1,22 @@
+#pragma once
+#include <iostream>
+#include <vector>
+#include <array>
+#include <map>
+#include <memory>
+#include <cstring>
+#include <optional>
+#include <set>
+#include <fstream>
+
+#include <glm/glm.hpp>
+
+#define GLFW_INCLUDE_VULKAN
+#include <GLFW/glfw3.h>
+#include <vulkan/vulkan.h>
+#include <vulkan/vulkan_beta.h>
+
+
+const std::vector<const char*> validationLayers = {
+    "VK_LAYER_KHRONOS_validation"
+};
